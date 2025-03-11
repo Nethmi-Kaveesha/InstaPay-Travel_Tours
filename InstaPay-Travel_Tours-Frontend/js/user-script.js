@@ -30,17 +30,24 @@ function saveData() {
         return;
     }
 
+    // Ensure all required fields are filled
+    if (!user.name || !user.role || !user.phoneNumber || !user.gender) {
+        alert("Please fill all fields!");
+        return;
+    }
+
     $.ajax({
-        url: `${URL}/save`,
+        url: `${URL}/register`,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(user),
         success: function () {
             alert("User saved successfully!");
-            getAll();
+            getAll();  // Refresh the user table
             clearForm();
         },
-        error: function () {
+        error: function (xhr, status, error) {
+            console.error("Error saving user:", error);
             alert("Error saving user!");
         }
     });
@@ -65,17 +72,17 @@ function getAll() {
             $("#userTableBody").empty();
             users.forEach(user => {
                 $("#userTableBody").append(`
-                <tr>
-                    <td>${user.email}</td>
-                    <td>${user.name}</td>
-                    <td>${user.role}</td>
-                    <td>${user.phoneNumber}</td>
-                    <td>${user.gender}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.email}', '${user.name}', '${user.role}', '${user.phoneNumber}', '${user.gender}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.email}')">Delete</button>
-                    </td>
-                </tr>`);
+                    <tr>
+                        <td>${user.email}</td>
+                        <td>${user.name}</td>
+                        <td>${user.role}</td>
+                        <td>${user.phoneNumber}</td>
+                        <td>${user.gender}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.email}', '${user.name}', '${user.role}', '${user.phoneNumber}', '${user.gender}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.email}')">Delete</button>
+                        </td>
+                    </tr>`);
             });
         },
         error: function (xhr, status, error) {
@@ -85,14 +92,15 @@ function getAll() {
     });
 }
 
-
 // Fill the form for editing a selected user
-function fillTextFields(email, name, role, phoneNumber, gender) {
+// Fill the form for editing a selected user
+function fillTextFields(email, name, role, phoneNumber, gender, password) {
     $("#email").val(email);
     $("#name").val(name);
     $("#role").val(role);
     $("#phoneNumber").val(phoneNumber);
     $("#gender").val(gender);
+    $("#password").val(password); // Fill the password field
 
     selectedUserId = email;
 
@@ -111,6 +119,7 @@ function updateUser() {
         gender: $("#gender").val()
     };
 
+    // Ensure all fields are filled before updating
     if (!updatedUser.name || !updatedUser.role || !updatedUser.phoneNumber || !updatedUser.gender) {
         alert("Please fill all fields!");
         return;
@@ -123,10 +132,11 @@ function updateUser() {
         data: JSON.stringify(updatedUser),
         success: function () {
             alert("User updated successfully!");
-            getAll();
+            getAll();  // Refresh the user table
             clearForm();
         },
-        error: function () {
+        error: function (xhr, status, error) {
+            console.error("Error updating user:", error);
             alert("Error updating user!");
         }
     });
@@ -141,10 +151,11 @@ function deleteUser(email) {
         type: "DELETE",
         success: function () {
             alert("User deleted successfully!");
-            getAll();
+            getAll();  // Refresh the user table
             clearForm();
         },
-        error: function () {
+        error: function (xhr, status, error) {
+            console.error("Error deleting user:", error);
             alert("Error deleting user!");
         }
     });

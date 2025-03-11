@@ -13,11 +13,11 @@ $("#tourGuideForm").submit(function (event) {
 function saveData() {
     let tourGuide = {
         guideID: $("#guideID").val(),
-        fullName: $("#guideName").val(),
-        email: $("#guideEmail").val(),
-        phoneNumber: $("#guidePhoneNumber").val(),
-        experience: $("#guideExperience").val(),
-        languagesSpoken: $("#guideLanguagesSpoken").val()
+        fullName: $("#fullName").val(),
+        email: $("#email").val(),
+        phoneNumber: $("#phoneNumber").val(),
+        experience: $("#experience").val(),
+        languagesSpoken: $("#languagesSpoken").val()
     };
 
     $.ajax({
@@ -44,28 +44,28 @@ function getAll() {
         success: function (response) {
             console.log("Full Response:", response);
 
-            let tourGuides = response;
-
-            if (!Array.isArray(tourGuides)) {
-                console.error("Error: Expected array, got", typeof tourGuides);
+            if (!Array.isArray(response)) {
+                console.error("Error: Expected array, got", typeof response);
                 return;
             }
+
+            let tourGuides = response;
 
             $("#tourGuideTableBody").empty();
             tourGuides.forEach(tourGuide => {
                 $("#tourGuideTableBody").append(`
-                <tr>
-                    <td>${tourGuide.guideID}</td>
-                    <td>${tourGuide.fullName}</td>
-                    <td>${tourGuide.email}</td>
-                    <td>${tourGuide.phoneNumber}</td>
-                    <td>${tourGuide.experience}</td>
-                    <td>${tourGuide.languagesSpoken}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info" onclick="fillTextFields('${tourGuide.guideID}', '${tourGuide.fullName}', '${tourGuide.email}', '${tourGuide.phoneNumber}', '${tourGuide.experience}', '${tourGuide.languagesSpoken}')">Edit</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteTourGuide('${tourGuide.guideID}')">Delete</button>
-                    </td>
-                </tr>`);
+                    <tr>
+                        <td>${tourGuide.guideID}</td>
+                        <td>${tourGuide.fullName}</td>
+                        <td>${tourGuide.email}</td>
+                        <td>${tourGuide.phoneNumber}</td>
+                        <td>${tourGuide.experience}</td>
+                        <td>${tourGuide.languagesSpoken}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${tourGuide.guideID}', '${tourGuide.fullName}', '${tourGuide.email}', '${tourGuide.phoneNumber}', '${tourGuide.experience}', '${tourGuide.languagesSpoken}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteTourGuide('${tourGuide.guideID}')">Delete</button>
+                        </td>
+                    </tr>`);
             });
         },
         error: function (xhr, status, error) {
@@ -77,11 +77,11 @@ function getAll() {
 
 function fillTextFields(id, fullName, email, phoneNumber, experience, languagesSpoken) {
     $("#guideID").val(id);
-    $("#guideName").val(fullName);
-    $("#guideEmail").val(email);
-    $("#guidePhoneNumber").val(phoneNumber);
-    $("#guideExperience").val(experience);
-    $("#guideLanguagesSpoken").val(languagesSpoken);
+    $("#fullName").val(fullName);
+    $("#email").val(email);
+    $("#phoneNumber").val(phoneNumber);
+    $("#experience").val(experience);
+    $("#languagesSpoken").val(languagesSpoken);
 
     selectedTourGuideId = id;
 
@@ -93,11 +93,11 @@ function fillTextFields(id, fullName, email, phoneNumber, experience, languagesS
 function updateTourGuide() {
     let updatedTourGuide = {
         guideID: selectedTourGuideId,
-        fullName: $("#guideName").val(),
-        email: $("#guideEmail").val(),
-        phoneNumber: $("#guidePhoneNumber").val(),
-        experience: $("#guideExperience").val(),
-        languagesSpoken: $("#guideLanguagesSpoken").val()
+        fullName: $("#fullName").val(),
+        email: $("#email").val(),
+        phoneNumber: $("#phoneNumber").val(),
+        experience: $("#experience").val(),
+        languagesSpoken: $("#languagesSpoken").val()
     };
 
     if (!updatedTourGuide.fullName || !updatedTourGuide.email || !updatedTourGuide.phoneNumber) {

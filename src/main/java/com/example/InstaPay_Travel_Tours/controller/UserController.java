@@ -59,28 +59,44 @@ public class UserController {
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
-    @PostMapping(value = "save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil saveUser(@RequestBody UserDTO userDTO) { // Change to saveUser
-        userService.addUser(userDTO); // Change to addUser
-        return new ResponseUtil(201, "User Saved", null);
+
+    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseDTO saveUser(@RequestBody UserDTO userDTO) {  // Fixed endpoint to /register and standardized response
+        try {
+            userService.addUser(userDTO);  // Use addUser
+            return new ResponseDTO(201, "User Saved", null);
+        } catch (Exception e) {
+            return new ResponseDTO(500, "Error occurred: " + e.getMessage(), null);
+        }
     }
 
     @GetMapping("getAll")
-    public List<UserDTO> getAllUsers() { // Change to getAllUsers
-        return userService.getAllUsers(); // Change to getAllUsers
+    public ResponseEntity<List<UserDTO>> getAllUsers() {  // Return ResponseEntity for better control
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
-    @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil updateUser(@RequestBody UserDTO userDTO) { // Change to updateUser
-        userService.updateUser(userDTO); // Change to updateUser
-        return new ResponseUtil(200, "User Updated", null);
+    @PutMapping(value = "update")
+    public ResponseEntity<ResponseDTO> updateUser(@RequestBody UserDTO userDTO) {
+        try {
+            userService.updateUser(userDTO);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(200, "User Updated", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDTO(400, "Failed to update user", null));
+        }
     }
 
-    @DeleteMapping("delete/{uid}") // Change to uid for UUID
-    public ResponseUtil deleteUser(@PathVariable("uid") String uid) { // Change to uid
-        userService.deleteUser(UUID.fromString(uid)); // Change to UUID handling
-        return new ResponseUtil(200, "User deleted", null);
+    @DeleteMapping("delete/{uid}")
+    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable("uid") UUID uid) {  // Handle UUID properly
+        try {
+            userService.deleteUser(uid);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(200, "User Deleted", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDTO(400, "Failed to delete user", null));
+        }
     }
-
-
 }
