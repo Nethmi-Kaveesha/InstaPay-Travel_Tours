@@ -76,10 +76,53 @@
         .input-with-icon {
             padding-left: 35px;
         }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
-
+<nav>
+    <ul>
+        <li><img src="img/new-logo.png" alt="Logo" class="logo"></li> <!-- Logo added here -->
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li> <!-- Home Icon -->
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li> <!-- Services Icon -->
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li> <!-- About Icon -->
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li> <!-- Team Icon -->
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li> <!-- Contact Icon -->
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li> <!-- Booking Icon -->
+    </ul>
+</nav>
 <div class="container">
     <div class="login-link-container">
         <div>

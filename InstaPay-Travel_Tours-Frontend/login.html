@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" /> <!-- Font Awesome CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+        .container {
+            margin-top: 30px;
+            display: flex;
+            height: 90vh;
+            padding: 10px;
+        }
+        .left-side, .right-side {
+            width: 50%;
+            padding: 20px;
+        }
+        .left-side {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .right-side {
+            background-color: #001f3d;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .card {
+            padding: 30px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .card-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .form-control {
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            padding-left: 40px; /* To make space for icons */
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .form-icon {
+            position: absolute;
+            left: 15px;
+            top: 68%;
+            transform: translateY(-50%);
+            color: grey;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            padding: 12px;
+            border: none;
+            width: 100%;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            display: none;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .footer-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .text-center {
+            margin-top: 10px;
+        }
+        .right-side h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .right-side p {
+            font-size: 1.2rem;
+        }
+        .right-side a {
+            color: #ffcc00;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .right-side a:hover {
+            text-decoration: underline;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><img src="img/new-logo.png" alt="Logo" class="logo"></li> <!-- Logo added here -->
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li> <!-- Home Icon -->
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li> <!-- Services Icon -->
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li> <!-- About Icon -->
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li> <!-- Team Icon -->
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li> <!-- Contact Icon -->
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li> <!-- Booking Icon -->
+    </ul>
+</nav>
+<div class="container">
+    <div class="left-side">
+        <div class="card shadow">
+            <h3 class="card-title text-center">Login</h3>
+            <div class="card-body">
+                <form id="loginForm">
+                    <div class="mb-4 position-relative">
+                        <label for="email" class="form-label">Email address</label>
+                        <i class="fas fa-envelope form-icon"></i>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                        <div class="error-message" id="emailError">Please enter a valid email.</div>
+                    </div>
+                    <div class="mb-4 position-relative">
+                        <label for="password" class="form-label">Password</label>
+                        <i class="fas fa-lock form-icon"></i>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                        <div class="error-message" id="passwordError">Please enter a valid password.</div>
+                    </div>
+                    <button type="submit" class="btn btn-custom">Login</button>
+                    <div class="text-center footer-links mt-3">
+                        <p><a href="#">Forgot Password?</a></p>
+                        <p>Don't have an account? <a href="rejister.html">Sign up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-side">
+        <h1>Hello!</h1>
+        <p>Welcome back! Please log in to continue to your dashboard.</p>
+        <p>Don't have an account? <a href="rejister.html">Register here</a></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#loginForm").on("submit", function (e) {
+            e.preventDefault();
+
+            $(".error-message").hide();
+
+            var email = $("#email").val();
+            var password = $("#password").val();
+            var isValid = true;
+
+            if (!validateEmail(email)) {
+                $("#emailError").show();
+                isValid = false;
+            }
+
+            if (password.trim() === "") {
+                $("#passwordError").show();
+                isValid = false;
+            }
+
+            if (isValid) {
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/auth/authenticate',
+                    method: 'POST',
+                    data: JSON.stringify({ email: email, password: password }),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (response.code === 201) {
+                            let role = response.role;
+
+                            let dashboardUrl = role === "ADMIN" ? "admin-dashboard.html" : "user-dashboard.html";
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Login successful!',
+                                text: `Welcome, User. Redirecting to your dashboard.`,
+                                confirmButtonText: 'Go to Dashboard'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = dashboardUrl; // Redirect user
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Invalid Credentials',
+                                text: 'Please check your email and password.',
+                                confirmButtonText: 'Try Again'
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Something went wrong',
+                            text: 'Please try again later.',
+                            confirmButtonText: 'Okay'
+                        });
+                    }
+                });
+            }
+        });
+
+        function validateEmail(email) {
+            var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return re.test(email);
+        }
+    });
+</script>
+</body>
+</html>

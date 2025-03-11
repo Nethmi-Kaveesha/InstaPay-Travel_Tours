@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Responsive Navigation with Image Slider</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Navigation Bar Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        /* Image Slider Styles */
+        .container {
+            position: absolute;
+            top: 65px; /* Adjusted for navbar */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1750px;
+            height: 600px;
+            background: #f5f5f5;
+            box-shadow: 0 30px 50px #dbdbdb;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: relative;
+            height: 100%;
+        }
+
+        .slide .item {
+            width: 200px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 20px;
+            box-shadow: 0 30px 50px #505050;
+            background-size: cover;
+            background-position: center;
+            display: inline-block;
+            transition: 0.5s;
+        }
+
+        .slide .item:nth-child(1),
+        .slide .item:nth-child(2) {
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide .item:nth-child(3) {
+            left: 50%;
+        }
+
+        .slide .item:nth-child(4) {
+            left: calc(50% + 220px);
+        }
+
+        .slide .item:nth-child(5) {
+            left: calc(50% + 440px);
+        }
+
+        .slide .item:nth-child(n + 6) {
+            left: calc(50% + 660px);
+            opacity: 0;
+        }
+
+        .item .content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            width: 300px;
+            text-align: left;
+            color: #222;
+            transform: translate(0, -50%);
+            display: none;
+        }
+
+        .slide .item:nth-child(2) .content {
+            display: block;
+        }
+
+        .content .name {
+            font-size: 40px;
+            text-transform: uppercase;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 1 forwards;
+        }
+
+        .content .des {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 0.3s 1 forwards;
+        }
+
+        .content button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            background: #ff4500;
+            color: #fff;
+            border-radius: 5px;
+            transition: background 0.3s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 0.6s 1 forwards;
+        }
+
+        .content button:hover {
+            background: #d83400;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(0, 100px);
+                filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(0);
+                filter: blur(0);
+            }
+        }
+
+        .button {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            bottom: 90px;
+        }
+
+        .button button {
+            width: 40px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border: 1px solid #000;
+            transition: 0.3s;
+        }
+
+        .button button:hover {
+            background: #ababab;
+            color: #fff;
+        }
+
+        /* Services Section */
+        .services {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 550px; /* Adjust as needed */
+            padding: 40px 0;
+            z-index: 2000;
+            flex-wrap: wrap; /* Ensure items wrap correctly on smaller screens */
+        }
+
+        .service-item {
+            z-index: 2000;
+            width: 180px;
+            height: 180px;
+            background: white;
+            color: black;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px; /* Ensure space between items */
+        }
+
+        .service-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-item i {
+            color: lightgray;
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+
+        .service-item h3 {
+            font-size: 18px;
+            margin: 4px 0;
+        }
+
+        .service-item p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .services {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .service-item {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .service-item {
+                width: 90%;
+            }
+        }
+
+        /* Logo styling */
+        nav .logo {
+            width: 150px; /* Adjust logo size */
+            height: auto;
+            margin-right: 20px; /* Space between logo and the navigation links */
+        }
+
+        header {
+            background: #333;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .about-container {
+            padding: 20px;
+            max-width: 1000px;
+            top: 300px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .about-container h2 {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .about-content img {
+            max-width: 100%;
+            height: 500px;
+            width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-text {
+            flex: 1;
+            padding: 20px;
+            max-width: 1000px;
+            text-align: left;
+        }
+
+        .about-text p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .about-text h3 {
+            color: #333;
+        }
+
+        .about-text ul {
+            margin-top: 10px;
+        }
+
+        .about-text ul li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        footer {
+            background: #333;
+            padding: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap; /* Ensures responsiveness for smaller screens */
+        }
+
+        .contact-info, .contact-form {
+            width: 48%;
+            margin-bottom: 20px; /* Adds spacing between sections for smaller screens */
+        }
+
+        .contact-info h2, .contact-form h2 {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #3e4a89;
+        }
+
+        /* Contact Info */
+        .contact-info p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            color: #3e4a89;
+        }
+
+        /* Contact Form */
+        .contact-form form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 15px;
+            background-color: #3e4a89;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #2c3e6b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .contact-info, .contact-form {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Mobile Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem; /* Smaller header on mobile */
+            }
+
+            .contact-container {
+                flex-direction: column;
+                padding: 20px; /* Less padding on smaller screens */
+            }
+
+            .contact-info, .contact-form {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .contact-info p, .contact-form input, .contact-form textarea {
+                font-size: 1rem;
+            }
+
+            .contact-form button {
+                font-size: 1rem; /* Adjusted font size for mobile */
+                padding: 12px;
+            }
+        }
+
+        /* Small mobile screens */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem; /* Even smaller font for small screens */
+            }
+
+            .contact-form button {
+                padding: 10px; /* Smaller button on very small screens */
+            }
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns by default */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .team-member img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .team-member h3 {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .team-member p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .team-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .team-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller devices */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .team-container {
+                grid-template-columns: 1fr; /* 1 column for mobile devices */
+            }
+        }
+        footer {
+            background-color: #3e4a89;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-left, .footer-center, .footer-right {
+            width: 30%;
+            margin-bottom: 20px;
+        }
+
+        .footer-left h3 {
+            font-size: 1.8rem;
+            color: #f4c542;
+        }
+
+        .footer-left p {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .footer-center h4, .footer-right h4 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-center ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-center li {
+            margin: 10px 0;
+        }
+
+        .footer-center a {
+            text-decoration: none;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .footer-center a:hover {
+            color: #f4c542;
+        }
+
+        .social-icons a {
+            text-decoration: none;
+            color: white;
+            margin: 0 15px;
+            font-size: 1.5rem;
+        }
+
+        .social-icons a:hover {
+            color: #f4c542;
+        }
+
+        .footer-bottom {
+            margin-top: 30px;
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        /* Responsive Design for smaller screens */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-left, .footer-center, .footer-right {
+                width: 100%;
+                text-align: center;
+            }
+
+            .footer-center ul {
+                padding-left: 0;
+            }
+
+            .footer-bottom {
+                margin-top: 20px;
+            }
+        }
+        .wrapper {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        .gallery-container {
+            height: 700px; /* Increased height for better visibility */
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center; /* Center the gallery */
+            align-items: center; /* Align items in the center */
+            gap: 15px; /* Add spacing between images */
+            overflow-x: auto; /* Allow horizontal scrolling for small screens */
+        }
+
+        .card {
+            width: 106px; /* Increased width */
+            height: 650px; /* Increase height for a larger view */
+            border-radius: 1rem;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 2rem;
+            margin: 0 10px;
+            display: flex;
+            align-items: flex-end;
+            transition: .6s cubic-bezier(.28,-0.03,0,.99);
+            box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.8);
+        }
+
+        .card > .row {
+            color: white;
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        .card > .row > .icon {
+            background: #223;
+            color: white;
+            border-radius: 50%;
+            width: 50px; /* Fixed width */
+            height: 50px; /* Fixed height */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px; /* Ensure number is clearly visible */
+            font-weight: bold;
+            text-align: center;
+            margin: 15px; /* Maintain spacing */
+        }
+
+        .card > .row > .description {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+            height: 150px;
+            width: 520px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition-delay: .3s;
+            transition: all .3s ease;
+        }
+
+        .description h1 {
+            text-transform: uppercase;
+        }
+
+        input {
+            display: none;
+        }
+
+        input:checked + label {
+            width: 700px; /* Increase expanded image width */
+        }
+
+        input:checked + label .description {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .card[for="c1"] {
+            background-image: url("img/hor-4.png");
+        }
+
+        .card[for="c2"] {
+            background-image: url("img/olympic-national-park-washington-SCENICCAMP0118-c5e8558166fa4bd9a8ff9bf41417cc5d.jpg");
+        }
+
+        .card[for="c3"] {
+            background-image: url("img/Goyambokka.jpg");
+        }
+
+        .card[for="c4"] {
+            background-image: url("img/istockphoto-522893595-612x612.jpg");
+        }
+
+        .card[for="c5"] {
+            background-image: url("img/1ll.jpg");
+        }
+
+        .card[for="c6"] {
+            background-image: url("img/99.jpg");
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .gallery-container {
+                gap: 10px;
+            }
+
+            .card {
+                width: 140px;
+                height: 600px;
+            }
+
+            .card > .row > .description {
+                width: 450px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-container {
+                gap: 8px;
+            }
+
+            .card {
+                width: 180px;
+                height: 500px;
+            }
+
+            .card > .row > .description {
+                width: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-container {
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .card {
+                width: 90%;
+                height: auto;
+                max-width: 300px;
+                margin-bottom: 20px;
+            }
+
+            .card > .row > .description {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 90%;
+                height: auto;
+                max-width: 250px;
+            }
+
+            .gallery-container {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav>
+    <ul>
+        <li><img src="img/new-logo.png" alt="Logo" class="logo"></li> <!-- Logo added here -->
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li> <!-- Home Icon -->
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li> <!-- Services Icon -->
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li> <!-- About Icon -->
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li> <!-- Team Icon -->
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li> <!-- Contact Icon -->
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li> <!-- Booking Icon -->
+    </ul>
+</nav>
+<!-- Font Awesome Icons CDN -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+
+<div class="container">
+    <div class="slide">
+        <div class="item" style="background-image: url('./img/dinuka-lankaloka-iduEaeBB_rQ-unsplash.jpg')">
+            <div class="content">
+                <div class="name">Mirissa</div>
+                <div class="des">Mirissa is a beautiful coastal town in Sri Lanka, known for its pristine beaches, whale watching, and vibrant nightlife. A perfect destination for relaxation and adventure.</div>
+                <button>See more</button>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('./img/pexels-kavindra-yasas-175608-10663415.jpg')">
+            <div class="content">
+                <div class="name">Adam's Peak</div>
+                <div class="des">Adam's Peak, also known as Sri Pada, is a sacred mountain in Sri Lanka, famous for its stunning sunrise views and the sacred footprint believed to belong to Buddha, Shiva, or Adam.</div>
+                <button>See more</button>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('./img/galle-fort-1050x700-1.jpg')">
+            <div class="content">
+                <div class="name">Galle Fort</div>
+                <div class="des">Galle Fort, a UNESCO World Heritage Site, is a historic fortress in southern Sri Lanka. It is renowned for its well-preserved colonial architecture, cobblestone streets, and scenic ocean views.</div>
+                <button>See more</button>
+            </div>
+        </div>
+        <!-- Add more items as needed -->
+    </div>
+    <div class="button">
+        <button class="prev"><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="next"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+</div>
+<div class="services">
+    <div class="service-item">
+        <i class="fa-solid fa-plane-departure"></i>
+        <h3>Flight Booking</h3>
+        <p>Book flights to any destination with ease. We offer competitive prices and great options.</p>
+    </div>
+
+    <div class="service-item">
+        <i class="fa-solid fa-hotel"></i>
+        <h3>Hotel Reservations</h3>
+        <p>Find and book top hotels for your stay. Comfortable, convenient, and affordable options.</p>
+    </div>
+
+    <div class="service-item">
+        <i class="fa-solid fa-bus"></i>
+        <h3>Tour Packages</h3>
+        <p>Explore amazing destinations with guided tours. Packages designed for different preferences.</p>
+    </div>
+
+    <div class="service-item">
+        <i class="fa-solid fa-car-side"></i>
+        <h3>Car Rentals</h3>
+        <p>Rent a car for your travels. We offer a wide range of vehicles at affordable rates.</p>
+    </div>
+
+    <!-- Add New Services Here -->
+    <div class="service-item">
+        <i class="fa-solid fa-wifi"></i>
+        <h3>Wi-Fi Connectivity</h3>
+        <p>Stay connected with high-speed Wi-Fi at all our locations and during your travel.</p>
+    </div>
+
+    <div class="service-item">
+        <i class="fa-solid fa-utensils"></i>
+        <h3>Restaurant Reservations</h3>
+        <p>Book your favorite restaurants in advance for a seamless dining experience.</p>
+    </div>
+
+
+    <div class="service-item">
+        <i class="fa-solid fa-suitcase"></i>
+        <h3>Package Deals</h3>
+        <p>Book travel packages combining flights, accommodation, and tours at discounted prices.</p>
+    </div>
+</div>
+
+<header>
+    <h1>Insta Pay Travel and Tours</h1>
+</header>
+
+<div class="about-container">
+    <h2>About Us</h2>
+    <div class="about-content">
+        <div class="about-text">
+            <h3>Who We Are</h3>
+            <p>At Insta Pay Travel and Tours, we are passionate about providing seamless travel experiences, making your journeys easy, enjoyable, and memorable. We specialize in offering a range of services from flight bookings, hotel reservations, to unique tour packages that suit every traveler’s needs. Whether you're planning a relaxing vacation, an adventurous exploration, or a business trip, we've got you covered!</p>
+
+            <h3>Our Services</h3>
+            <ul>
+                <li>Flight Booking</li>
+                <li>Hotel Reservations</li>
+                <li>Tour Packages</li>
+                <li>Car Rentals</li>
+                <li>Travel Insurance</li>
+                <li>Restaurant Reservations</li>
+                <li>Group Travel Deals</li>
+            </ul>
+        </div>
+
+        <div class="about-image">
+            <img src="img/1-1.png" alt="Insta Pay Travel and Tours Team">
+        </div>
+    </div>
+
+    <h3>Our Mission</h3>
+    <p>Our mission is to revolutionize the travel industry by delivering excellent service with integrity, convenience, and value. We aim to bring your dream destinations to life with a focus on affordability and convenience. With Insta Pay, your next trip is just a click away.</p>
+</div>
+
+<header>
+    <h1>Our Amazing Journeys</h1>
+</header>
+
+<div class="wrapper">
+    <div class="gallery-container">
+        <input type="radio" name="slide" id="c1">
+        <label for="c1" class="card">
+            <div class="row">
+                <div class="icon">1</div>
+                <div class="description">
+                    <h1>Luxury Hotel Sri Lanka ⭐️⭐️⭐️⭐️⭐️</h1>
+                    <p>Experience world-class hospitality at one of Sri Lanka's finest 5-star hotels. Enjoy breathtaking ocean views, exquisite dining, and top-tier amenities.</p>
+                </div>
+            </div>
+        </label>
+
+        <input type="radio" name="slide" id="c2">
+        <label for="c2" class="card">
+            <div class="row">
+                <div class="icon">2</div>
+                <div class="description">
+                    <h1>Camping Adventure <br>🌄🏕️🌲</h1>
+                    <p>Escape to nature and enjoy an unforgettable camping experience. Explore serene landscapes, set up camp, and enjoy the great outdoors.</p>
+                </div>
+            </div>
+        </label>
+
+        <input type="radio" name="slide" id="c3">
+        <label for="c3" class="card">
+            <div class="row">
+                <div class="icon">3</div>
+                <div class="description">
+                    <h1> Beach Paradise <br>🏖️🌊🏝️🌅</h1>
+                    <p>Relax on the golden sands, soak up the sun, and enjoy the refreshing waves. A perfect beach getaway awaits!</p>
+                </div>
+            </div>
+        </label>
+
+        <input type="radio" name="slide" id="c4">
+        <label for="c4" class="card">
+            <div class="row">
+                <div class="icon">4</div>
+                <div class="description">
+                    <h1> Boat Riding Adventure 🌊 🚤</h1>
+                    <p>Set sail on a thrilling boat ride, feel the breeze, and explore the open waters. A perfect escape for water lovers! 🌅⚓</p>
+                </div>
+            </div>
+        </label>
+
+        <input type="radio" name="slide" id="c5">
+        <label for="c5" class="card">
+            <div class="row">
+                <div class="icon">5</div>
+                <div class="description">
+                    <h1>digp</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem dolorum eius libero praesentium</p>
+                </div>
+            </div>
+        </label>
+
+        <input type="radio" name="slide" id="c6">
+        <label for="c6" class="card">
+            <div class="row">
+                <div class="icon">6</div>
+                <div class="description">
+                    <h1>digppp</h1>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem dolorum eius libero praesentium</p>
+                </div>
+            </div>
+        </label>
+    </div>
+</div>
+
+
+<header>
+    <h1>Our Team</h1>
+</header>
+<div class="team-container">
+    <!-- Team Member 1 -->
+    <div class="team-member">
+        <img src="img/profile-1.jpg" alt="Team Member 1">
+        <h3>John Doe</h3>
+        <p>CEO</p>
+    </div>
+
+    <!-- Team Member 2 -->
+    <div class="team-member">
+        <img src="img/profile-2.jpg" alt="Team Member 2">
+        <h3>Jane Smith</h3>
+        <p>Marketing Head</p>
+    </div>
+
+    <!-- Team Member 3 -->
+    <div class="team-member">
+        <img src="img/profile-3.jpg" alt="Team Member 3">
+        <h3>Emily Davis</h3>
+        <p>Developer</p>
+    </div>
+
+    <!-- Team Member 4 -->
+    <div class="team-member">
+        <img src="img/profile-4.avif" alt="Team Member 4">
+        <h3>Michael Brown</h3>
+        <p>Designer</p>
+    </div>
+</div>
+
+<header>
+    <h1>Contact Us - Instapay Travel and Tours</h1>
+</header>
+
+<!-- Contact Section -->
+<div class="contact-container">
+
+    <!-- Contact Info -->
+    <div class="contact-info">
+        <h2>Our Contact Details</h2>
+        <p><i class="fas fa-map-marker-alt"></i> Address: 1234 Adventure Street, Colombo, Sri Lanka</p>
+        <p><i class="fas fa-phone-alt"></i> Phone: +94 123 456 789</p>
+        <p><i class="fas fa-envelope"></i> Email: contact@instapaytours.lk</p>
+        <p><i class="fas fa-globe"></i> Website: <a href="http://www.instapaytours.lk" target="_blank">www.instapaytours.lk</a></p>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-form">
+        <h2>Send Us a Message</h2>
+        <form action="your_php_script.php" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="text" name="subject" placeholder="Subject" required>
+            <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+</div>
+<!-- Footer Section -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-left">
+            <h3>Instapay Travel and Tours</h3>
+            <p>Your travel adventure starts with us. Explore the world with our amazing tours and services!</p>
+        </div>
+
+        <div class="footer-center">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-right">
+            <h4>Connect with Us</h4>
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Instapay Travel and Tours. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    let next = document.querySelector('.next');
+    let prev = document.querySelector('.prev');
+
+    next.addEventListener('click', function () {
+        let items = document.querySelectorAll('.item');
+        document.querySelector('.slide').appendChild(items[0]);
+    });
+
+    prev.addEventListener('click', function () {
+        let items = document.querySelectorAll('.item');
+        document.querySelector('.slide').prepend(items[items.length - 1]);
+    });
+
+
+</script>
+
+</body>
+</html>
