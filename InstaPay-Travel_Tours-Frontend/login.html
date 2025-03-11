@@ -140,6 +140,25 @@
             margin: 0;
         }
 
+        /* Navigation Styling */
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
         nav ul li {
             padding: 10px;
         }
@@ -149,6 +168,58 @@
             text-decoration: none;
             font-size: 18px;
         }
+
+        /* Logo Styling */
+        nav .logo {
+            width: 150px; /* Adjust logo size */
+            height: auto;
+            margin-right: 20px; /* Space between logo and the navigation links */
+        }
+
+        /* Responsive Media Queries for Navigation */
+        @media (max-width: 1024px) {
+            nav ul {
+                flex-direction: column; /* Stack links vertically on smaller screens */
+                align-items: center; /* Center align the links */
+            }
+
+            nav ul li {
+                padding: 8px 0; /* Adjust padding for smaller screens */
+            }
+
+            nav ul li a {
+                font-size: 16px; /* Adjust font size for smaller screens */
+            }
+
+            nav .logo {
+                width: 120px; /* Adjust logo size for smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column; /* Stack links vertically for tablet screens */
+            }
+
+            nav ul li a {
+                font-size: 15px; /* Adjust font size further for smaller screens */
+            }
+
+            nav .logo {
+                width: 100px; /* Adjust logo size for tablet screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul li a {
+                font-size: 14px; /* Adjust font size for mobile screens */
+            }
+
+            nav .logo {
+                width: 90px; /* Adjust logo size for very small screens */
+            }
+        }
+
     </style>
 </head>
 <body>

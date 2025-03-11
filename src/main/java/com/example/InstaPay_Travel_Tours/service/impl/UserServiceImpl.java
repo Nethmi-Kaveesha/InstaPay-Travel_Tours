@@ -6,6 +6,7 @@ import com.example.InstaPay_Travel_Tours.repo.UserRepository;
 import com.example.InstaPay_Travel_Tours.service.UserService;
 import com.example.InstaPay_Travel_Tours.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -75,4 +78,31 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return VarList.Created;
         }
     }
+    @Override
+    public void addUser(UserDTO userDTO) { // Change to addUser
+        if (userRepository.existsById(String.valueOf(userDTO.getUid()))) { // Change to check for UID
+            throw new RuntimeException("User already exists");
+        }
+        userRepository.save(modelMapper.map(userDTO, User.class)); // Change to User
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() { // Change to getAllUsers
+        return modelMapper.map(userRepository.findAll(),
+                new TypeToken<List<UserDTO>>() {}.getType()); // Change to UserDTO
+    }
+
+    @Override
+    public void updateUser(UserDTO userDTO) { // Change to updateUser
+        if (userRepository.existsById(String.valueOf(userDTO.getUid()))) { // Change to check for UID
+            userRepository.save(modelMapper.map(userDTO, User.class)); // Change to User
+        }
+        throw new RuntimeException("User does not exist");
+    }
+
+    @Override
+    public void deleteUser(UUID uid) { // Change to use UUID for deletion
+        userRepository.deleteById(String.valueOf(uid)); // Change to UserRepo and UUID
+    }
+
 }
