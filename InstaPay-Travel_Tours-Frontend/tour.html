@@ -3,61 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tour Guide Form</title>
+    <title>Tour Form</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <link href="css/bootstrap.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
 <div class="container mt-5">
     <div class="card shadow-lg p-4">
-        <h2 class="text-center mb-4">Tour Guide Form</h2>
-        <form id="tourGuideForm">
+        <h2 class="text-center mb-4">Tour Form</h2>
+        <form id="tourForm">
             <div class="mb-3">
-                <label for="guideID" class="form-label">Guide ID:</label>
-                <input type="text" class="form-control" id="guideID" name="guideID" placeholder="Guide ID (Auto-generated)" disabled>
+                <label for="tourID" class="form-label">Tour ID:</label>
+                <input type="text" class="form-control" id="tourID" name="tourID" placeholder="Tour ID (Auto-generated)" disabled>
 
-                <label for="fullName" class="form-label">Full Name:</label>
-                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter guide's full name" required>
+                <label for="tourName" class="form-label">Tour Name:</label>
+                <input type="text" class="form-control" id="tourName" name="tourName" placeholder="Enter tour name" required>
 
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter guide's email" required>
+                <label for="location" class="form-label">Location:</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="Enter tour location" required>
 
-                <label for="phoneNumber" class="form-label">Phone Number:</label>
-                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter guide's phone number" required>
+                <label for="duration" class="form-label">Duration (Days):</label>
+                <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter tour duration" required>
 
-                <label for="experience" class="form-label">Experience:</label>
-                <input type="text" class="form-control" id="experience" name="experience" placeholder="Enter guide's experience" required>
+                <label for="price" class="form-label">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="Enter tour price" required>
 
-                <label for="languagesSpoken" class="form-label">Languages Spoken:</label>
-                <input type="text" class="form-control" id="languagesSpoken" name="languagesSpoken" placeholder="Enter languages spoken by the guide" required>
+                <label for="tourType" class="form-label">Tour Type:</label>
+                <input type="text" class="form-control" id="tourType" name="tourType" placeholder="Enter tour type" required>
+
+                <label for="availableSeats" class="form-label">Available Seats:</label>
+                <input type="number" class="form-control" id="availableSeats" name="availableSeats" placeholder="Enter available seats" required>
+
+                <label for="startDate" class="form-label">Start Date:</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" required>
+
+                <label for="endDate" class="form-label">End Date:</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" required>
+
+                <label for="images" class="form-label">Images (URLs or Paths):</label>
+                <input type="text" class="form-control" id="images" name="images" placeholder="Enter image paths or URLs" required>
             </div>
 
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTourGuide()">Update</button>
-                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTourGuide(selectedTourGuideId)">Delete</button>
+                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTour()">Update</button>
+                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTour(selectedTourID)">Delete</button>
             </div>
         </form>
 
         <table class="table table-striped table-hover mt-5">
             <thead>
             <tr>
-                <th>Guide ID</th>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Experience</th>
-                <th>Languages Spoken</th>
+                <th>Tour ID</th>
+                <th>Tour Name</th>
+                <th>Location</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Tour Type</th>
+                <th>Available Seats</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody id="tourGuideTableBody"></tbody>
+            <tbody id="tourTableBody"></tbody>
+
         </table>
     </div>
 </div>
 
 <script src="js/bootstrap.js"></script>
-<script src="js/tourGuide-script.js"></script>
+<script src="js/tour-script.js"></script>
 </body>
 </html>

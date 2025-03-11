@@ -66,7 +66,9 @@ public class WebSecurityConfig {
                                 "/api/v1/tourguide/save",  // Tour guide endpoints
                                 "api/v1/tourguide/getAll",
                                 "/api/v1/tourguide/update",
-                                "/api/v1/tourguide/delete/**"
+                                "/api/v1/tourguide/delete/**",
+                                "/api/v1/tours/save",      // Endpoint to save a new tour
+                                "/api/v1/tours/getAll"     // Endpoint to get all tours
                         ).permitAll() // Allow public access to the above endpoints
                         .anyRequest().authenticated()  // Require authentication for other endpoints
                 )
