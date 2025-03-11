@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 /**
  * @author udarasan
  * @TimeStamp 2023-07-15 15:00
@@ -32,6 +31,7 @@ public class WebSecurityConfig {
     private UserServiceImpl userService;
     @Autowired
     private JwtFilter jwtFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -40,11 +40,13 @@ public class WebSecurityConfig {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -52,17 +54,24 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/authenticate",
-                                "/api/v1/user/register",
+                                "/api/v1/user/register",   // Endpoint to register a new user
+                                "/api/v1/user/getAll",     // Endpoint to get all users
+                                "/api/v1/user/save",       // Endpoint to save a user
+                                "/api/v1/user/update",     // Endpoint to update user data
+                                "/api/v1/user/delete/**",  // Endpoint to delete a user by email
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html").permitAll()
-                        .anyRequest().authenticated()
+                                "/swagger-ui.html",
+                                "/api/v1/tourguide/save",  // Tour guide endpoints
+                                "/api/v1/tourguide/getAll",
+                                "/api/v1/tourguide/update",
+                                "/api/v1/tourguide/delete/**"
+                        ).permitAll() // Allow public access to the above endpoints
+                        .anyRequest().authenticated()  // Require authentication for other endpoints
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
 }

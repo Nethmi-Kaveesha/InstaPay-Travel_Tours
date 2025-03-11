@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tour Guide Form</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4">Tour Guide Form</h2>
+        <a href="itemForm.html"><button class="btn btn-info">Item</button></a>
+        <a href="OrderForm.html"><button class="btn btn-info">Order</button></a>
+        <form id="tourGuideForm">
+            <div class="mb-3">
+                <label for="guideID" class="form-label">Guide ID:</label>
+                <input type="text" class="form-control" id="guideID" name="guideID" placeholder="Guide ID (Auto-generated)" disabled>
+
+                <label for="fullName" class="form-label">Full Name:</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter guide's full name" required>
+
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter guide's email" required>
+
+                <label for="phoneNumber" class="form-label">Phone Number:</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter guide's phone number" required>
+
+                <label for="experience" class="form-label">Experience:</label>
+                <input type="text" class="form-control" id="experience" name="experience" placeholder="Enter guide's experience" required>
+
+                <label for="languagesSpoken" class="form-label">Languages Spoken:</label>
+                <input type="text" class="form-control" id="languagesSpoken" name="languagesSpoken" placeholder="Enter languages spoken by the guide" required>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTourGuide()">Update</button>
+                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTourGuide(selectedTourGuideId)">Delete</button>
+            </div>
+        </form>
+
+        <table class="table table-striped table-hover mt-5">
+            <thead>
+            <tr>
+                <th>Guide ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Experience</th>
+                <th>Languages Spoken</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="tourGuideTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="js/bootstrap.js"></script>
+<script src="js/tourGuide-script.js"></script>
+</body>
+</html>

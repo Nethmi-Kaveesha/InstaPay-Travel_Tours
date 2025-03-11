@@ -1,6 +1,7 @@
 const URL = "http://localhost:8080/api/v1/user";
 let selectedUserId = null;
 
+// Form submit handler
 $("#userForm").submit(function (event) {
     event.preventDefault();
     if (selectedUserId) {
@@ -10,6 +11,7 @@ $("#userForm").submit(function (event) {
     }
 });
 
+// Save new user data
 function saveData() {
     let user = {
         email: $("#email").val(),
@@ -19,6 +21,14 @@ function saveData() {
         phoneNumber: $("#phoneNumber").val(),
         gender: $("#gender").val()
     };
+
+    // Basic email validation
+    let email = $("#email").val();
+    let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address!");
+        return;
+    }
 
     $.ajax({
         url: `${URL}/save`,
@@ -36,6 +46,7 @@ function saveData() {
     });
 }
 
+// Fetch all users and display them in the table
 function getAll() {
     $.ajax({
         url: `${URL}/getAll`,
@@ -44,7 +55,6 @@ function getAll() {
         success: function (response) {
             console.log("Full Response:", response);
 
-            // Check if the response contains a data field (if using ResponseUtil)
             let users = Array.isArray(response) ? response : response.data;
 
             if (!Array.isArray(users)) {
@@ -52,7 +62,6 @@ function getAll() {
                 return;
             }
 
-            // Render the table
             $("#userTableBody").empty();
             users.forEach(user => {
                 $("#userTableBody").append(`
@@ -76,6 +85,8 @@ function getAll() {
     });
 }
 
+
+// Fill the form for editing a selected user
 function fillTextFields(email, name, role, phoneNumber, gender) {
     $("#email").val(email);
     $("#name").val(name);
@@ -90,6 +101,7 @@ function fillTextFields(email, name, role, phoneNumber, gender) {
     $("#deleteButton").show();
 }
 
+// Update existing user data
 function updateUser() {
     let updatedUser = {
         email: selectedUserId,
@@ -120,6 +132,7 @@ function updateUser() {
     });
 }
 
+// Delete user based on email
 function deleteUser(email) {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
@@ -137,6 +150,7 @@ function deleteUser(email) {
     });
 }
 
+// Clear form and reset button visibility
 function clearForm() {
     $("#userForm")[0].reset();
     $("#updateButton").hide();
@@ -145,6 +159,7 @@ function clearForm() {
     selectedUserId = null;
 }
 
+// Load all users when the page is ready
 $(document).ready(function () {
     getAll();
 });
