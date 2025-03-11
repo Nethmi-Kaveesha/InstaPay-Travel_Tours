@@ -13,4 +13,5 @@ public class UserDTO {
     private String name;
     private String role;
     private String phoneNumber; // Added phone number field
+    private String gender; // Added gender field
 }

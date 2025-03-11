@@ -7,6 +7,7 @@ import com.example.InstaPay_Travel_Tours.service.UserService;
 import com.example.InstaPay_Travel_Tours.util.JwtUtil;
 import com.example.InstaPay_Travel_Tours.util.VarList;
 import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,12 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    //constructor injection
+    // Constructor injection
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
+
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
         try {
@@ -50,5 +52,4 @@ public class UserController {
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
-
 }

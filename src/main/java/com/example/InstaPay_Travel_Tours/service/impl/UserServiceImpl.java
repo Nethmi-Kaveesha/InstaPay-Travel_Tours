@@ -68,8 +68,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 userDTO.setRole("USER");
             }
 
-            // Map DTO to Entity and include phoneNumber and address fields
+            // Map DTO to Entity and include gender and phoneNumber fields (address removed)
             User user = modelMapper.map(userDTO, User.class);
+            user.setGender(userDTO.getGender()); // Ensure gender is mapped properly
             userRepository.save(user);
             return VarList.Created;
         }

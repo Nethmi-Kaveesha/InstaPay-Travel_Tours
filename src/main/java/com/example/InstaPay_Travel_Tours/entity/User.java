@@ -25,9 +25,7 @@ public class User implements Serializable {
     private String password;
     private String name;
     private String role;
-
     private String phoneNumber; // Added phone number field
 
-    @Column(length = 500) // Optional: Adjust length based on your requirement
-    private String address; // Added address field
+    private String gender; // Added gender field
 }
