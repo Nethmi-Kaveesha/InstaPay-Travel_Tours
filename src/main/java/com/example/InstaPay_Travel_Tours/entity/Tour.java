@@ -1,69 +1,156 @@
 package com.example.InstaPay_Travel_Tours.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.UUID;
+import java.util.Date;
 
 @Entity
 @Table(name = "tours")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-public class Tour implements Serializable {
+public class Tour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tourID; // Auto-increment primary key
+    @Column(name = "tourid")  // Matching the column name in the database
+    private int tourID;
 
-    @Column(name = "TourName", nullable = false)
+    @Column(name = "tour_name")  // Matching the column name in the database
     private String tourName;
 
-    @Column(name = "Description")
+    @Column(name = "description")  // Column name remains the same
     private String description;
 
-    @Column(name = "Location", nullable = false)
+    @Column(name = "location")  // Column name remains the same
     private String location;
 
-    @Column(name = "Duration", nullable = false)
-    private Integer duration; // Duration in days
+    @Column(name = "duration")  // Column name remains the same
+    private int duration;
 
-    @Column(name = "Price", nullable = false)
-    private Double price; // Price of the tour
+    @Column(name = "price")  // Column name remains the same
+    private double price;
 
-    @Column(name = "TourType", nullable = false)
-    private String tourType; // Type of the tour (Adventure, Family, etc.)
+    @Column(name = "tour_type")  // Matching the column name in the database
+    private String tourType;
 
-    @Column(name = "AvailableSeats", nullable = false)
-    private Integer availableSeats;
+    @Column(name = "available_seats")  // Matching the column name in the database
+    private int availableSeats;
 
-    @Column(name = "StartDate", nullable = false)
-    private String startDate;
+    @Column(name = "start_date")  // Matching the column name in the database
+    @Temporal(TemporalType.TIMESTAMP)  // Ensures correct date-time handling
+    private Date startDate;
 
-    @Column(name = "EndDate", nullable = false)
-    private String endDate;
+    @Column(name = "end_date")  // Matching the column name in the database
+    @Temporal(TemporalType.TIMESTAMP)  // Ensures correct date-time handling
+    private Date endDate;
 
-    @Column(name = "TourOperatorID", nullable = false)
-    private UUID tourOperatorID; // UUID as a standard UUID object
+    @Lob  // Use @Lob to store large binary data (like images)
+    @Column(name = "images")  // Column name remains the same
+    private byte[] images;  // Store the image as a byte array
 
-    @Column(name = "Images")
-    private String images;
-
-    @Column(name = "created_at", updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date createdAt; // Timestamp when the tour was created
-
-    // Automatically set the created_at field before persisting the entity
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new java.util.Date();
+    // Constructor with fields
+    public Tour(int tourID, String tourName, String description, String location, int duration, double price,
+                String tourType, int availableSeats, Date startDate, Date endDate, byte[] images) {
+        this.tourID = tourID;
+        this.tourName = tourName;
+        this.description = description;
+        this.location = location;
+        this.duration = duration;
+        this.price = price;
+        this.tourType = tourType;
+        this.availableSeats = availableSeats;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.images = images;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TourOperatorID", referencedColumnName = "uid", insertable = false, updatable = false)
-    private User tourOperator;
+    // Default constructor
+    public Tour() {
+    }
 
+    // Getters and Setters
+    public int getTourID() {
+        return tourID;
+    }
+
+    public void setTourID(int tourID) {
+        this.tourID = tourID;
+    }
+
+    public String getTourName() {
+        return tourName;
+    }
+
+    public void setTourName(String tourName) {
+        this.tourName = tourName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getTourType() {
+        return tourType;
+    }
+
+    public void setTourType(String tourType) {
+        this.tourType = tourType;
+    }
+
+    public int getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public byte[] getImages() {
+        return images;
+    }
+
+    public void setImages(byte[] images) {
+        this.images = images;
+    }
 }

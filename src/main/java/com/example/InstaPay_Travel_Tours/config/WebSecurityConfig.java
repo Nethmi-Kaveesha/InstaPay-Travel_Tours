@@ -56,7 +56,7 @@ public class WebSecurityConfig {
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/user/register",   // Endpoint to register a new user
                                 "/api/v1/user/getAll",     // Endpoint to get all users
-                                "/api/v1/user/register",       // Endpoint to save a user
+                                "/api/v1/user/register",   // Endpoint to save a user
                                 "/api/v1/user/update",     // Endpoint to update user data
                                 "/api/v1/user/delete/**",  // Endpoint to delete a user by email
                                 "/api/v1/auth/refreshToken",
@@ -64,11 +64,17 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/v1/tourguide/save",  // Tour guide endpoints
-                                "api/v1/tourguide/getAll",
-                                "/api/v1/tourguide/update",
-                                "/api/v1/tourguide/delete/**",
+                                "/api/v1/tourguide/getAll", // Get all tour guides
+                                "/api/v1/tourguide/update", // Update a tour guide
+                                "/api/v1/tourguide/delete/**", // Delete a tour guide by ID
                                 "/api/v1/tours/save",      // Endpoint to save a new tour
-                                "/api/v1/tours/getAll"     // Endpoint to get all tours
+                                "/api/v1/tours/getAll",    // Endpoint to get all tours
+
+                                // Additional endpoints can be added below
+                                "/api/v1/tourguide/**",     // Permit all tour guide related endpoints
+                                "/api/v1/tours/**",         // Permit all tours related endpoints
+                                "/api/v1/booking/**",       // Example: Permit all booking-related endpoints
+                                "/api/v1/reviews/**"        // Example: Permit all reviews-related endpoints
                         ).permitAll() // Allow public access to the above endpoints
                         .anyRequest().authenticated()  // Require authentication for other endpoints
                 )
@@ -76,4 +82,5 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 }

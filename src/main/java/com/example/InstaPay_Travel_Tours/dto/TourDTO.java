@@ -1,7 +1,7 @@
 package com.example.InstaPay_Travel_Tours.dto;
 
-import java.util.UUID;
 import java.util.Date;
+import java.util.UUID;
 
 public class TourDTO {
 
@@ -13,11 +13,10 @@ public class TourDTO {
     private Double price;
     private String tourType;
     private Integer availableSeats;
-    private Date startDate;  // Use Date type for better handling of dates
-    private Date endDate;    // Use Date type for better handling of dates
+    private Date startDate;  // Date type for datetime fields
+    private Date endDate;    // Date type for datetime fields
     private String images;
-    private Date createdAt;  // Use Date type for better handling of dates
-    private UUID tourOperatorID; // Use UUID for referencing the tour operator
+    private UUID tourOperatorID; // UUID for referencing the tour operator (UUID from binary(16))
 
     // No-arg constructor
     public TourDTO() {}
@@ -25,7 +24,7 @@ public class TourDTO {
     // Constructor with all fields
     public TourDTO(Integer tourID, String tourName, String description, String location,
                    Integer duration, Double price, String tourType, Integer availableSeats,
-                   Date startDate, Date endDate, String images, Date createdAt, UUID tourOperatorID) {
+                   Date startDate, Date endDate, String images, UUID tourOperatorID) {
         this.tourID = tourID;
         this.tourName = tourName;
         this.description = description;
@@ -37,7 +36,6 @@ public class TourDTO {
         this.startDate = startDate;
         this.endDate = endDate;
         this.images = images;
-        this.createdAt = createdAt;
         this.tourOperatorID = tourOperatorID;
     }
 
@@ -130,19 +128,69 @@ public class TourDTO {
         this.images = images;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public UUID getTourOperatorID() {
         return tourOperatorID;
     }
 
     public void setTourOperatorID(UUID tourOperatorID) {
         this.tourOperatorID = tourOperatorID;
+    }
+
+    // Override toString for better logging and debugging
+    @Override
+    public String toString() {
+        return "TourDTO{" +
+                "tourID=" + tourID +
+                ", tourName='" + tourName + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", duration=" + duration +
+                ", price=" + price +
+                ", tourType='" + tourType + '\'' +
+                ", availableSeats=" + availableSeats +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", images='" + images + '\'' +
+                ", tourOperatorID=" + tourOperatorID +
+                '}';
+    }
+
+    // Override equals and hashCode to ensure correct comparisons
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TourDTO tourDTO = (TourDTO) o;
+
+        if (!tourID.equals(tourDTO.tourID)) return false;
+        if (!tourName.equals(tourDTO.tourName)) return false;
+        if (!description.equals(tourDTO.description)) return false;
+        if (!location.equals(tourDTO.location)) return false;
+        if (!duration.equals(tourDTO.duration)) return false;
+        if (!price.equals(tourDTO.price)) return false;
+        if (!tourType.equals(tourDTO.tourType)) return false;
+        if (!availableSeats.equals(tourDTO.availableSeats)) return false;
+        if (!startDate.equals(tourDTO.startDate)) return false;
+        if (!endDate.equals(tourDTO.endDate)) return false;
+        if (!images.equals(tourDTO.images)) return false;
+        return tourOperatorID.equals(tourDTO.tourOperatorID);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = tourID.hashCode();
+        result = 31 * result + tourName.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + location.hashCode();
+        result = 31 * result + duration.hashCode();
+        result = 31 * result + price.hashCode();
+        result = 31 * result + tourType.hashCode();
+        result = 31 * result + availableSeats.hashCode();
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + images.hashCode();
+        result = 31 * result + tourOperatorID.hashCode();
+        return result;
     }
 }

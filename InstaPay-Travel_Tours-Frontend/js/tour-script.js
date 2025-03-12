@@ -1,55 +1,45 @@
-const URL = 'http://localhost:8080/api/v1/tours';  // Set the correct API URL
+// URL to the API that communicates with your backend (adjust according to your server)
+const apiUrl = "http://localhost:8080/api/v1/tours";
 
-// Function to get all tours and populate the table
-function getAllTours() {
-    $.ajax({
-        url: `${URL}/getAll`,  // Ensure this URL is correct
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            console.log('API Response:', response);  // Log the response
-            if (Array.isArray(response) && response.length > 0) {
-                let tourTableBody = $('#tourTableBody');
-                tourTableBody.empty();  // Clear any existing rows
-                response.forEach(function(tour) {
-                    // Append rows dynamically to the table
-                    tourTableBody.append(`
-                        <tr>
-                            <td>${tour.tourID}</td>
-                            <td>${tour.tourName}</td>
-                            <td>${tour.location}</td>
-                            <td>${tour.duration}</td>
-                            <td>${tour.price}</td>
-                            <td>${tour.tourType}</td>
-                            <td>${tour.availableSeats}</td>
-                            <td>${tour.startDate}</td>
-                            <td>${tour.endDate}</td>
-                            <td>
-                                <button class="btn btn-sm btn-info" onclick="editTour(${tour.tourID})">Edit</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteTour(${tour.tourID})">Delete</button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            } else {
-                console.error('Response is not an array or is empty');
-                alert('No tours found!');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching tours:', error);
-            alert('Error fetching tours!');
-        }
+// Variable to store selected tourID for Update/Delete operations
+let selectedTourID = null;
+
+// Load tours into the table
+function loadTours() {
+    $.get(apiUrl + "/getAll", function(tours) {
+        const tableBody = $("#tourTableBody");
+        tableBody.empty();
+        tours.forEach(tour => {
+            tableBody.append(`
+                <tr>
+                    <td>${tour.tourID || ''}</td>
+                    <td>${tour.tourName || ''}</td>
+                    <td>${tour.location || ''}</td>
+                    <td>${tour.duration || ''}</td>
+                    <td>${tour.price || ''}</td>
+                    <td>${tour.tourType || ''}</td>
+                    <td>${tour.availableSeats || ''}</td>
+                    <td>${tour.startDate || ''}</td>
+                    <td>${tour.endDate || ''}</td>
+                    <td>${tour.description || ''}</td>
+                    <td><img src="${tour.images || 'default-image.jpg'}" alt="Tour Image" style="width: 80px; height: 60px;"></td>
+                    <td>
+                        <button class="btn btn-info" onclick="editTour(${tour.tourID})">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteTour(${tour.tourID})">Delete</button>
+                    </td>
+                </tr>
+            `);
+        });
     });
 }
 
-// Function to handle form submission (Save new tour)
+// Save a new tour
 $("#tourForm").submit(function(event) {
-    event.preventDefault();  // Prevent form from submitting the traditional way
+    event.preventDefault();
 
+    // Capture form data
     const tourData = {
         tourName: $("#tourName").val(),
-        description: $("#description").val(),
         location: $("#location").val(),
         duration: $("#duration").val(),
         price: $("#price").val(),
@@ -57,70 +47,80 @@ $("#tourForm").submit(function(event) {
         availableSeats: $("#availableSeats").val(),
         startDate: $("#startDate").val(),
         endDate: $("#endDate").val(),
-        images: $("#images").val()
+        description: $("#description").val() // Ensure this is consistent
     };
 
-    // Send the data to your backend to save it
-    $.ajax({
-        url: `${URL}/create`,  // Replace with the correct URL for creating the tour
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(tourData),  // Ensure this is the correct structure
-        success: function (response) {
-            console.log("Tour added response:", response);
-            if (response) {
-                alert("Tour added successfully!");
-                getAllTours();  // Reload the table after adding
-                $('#tourForm')[0].reset();  // Reset form
-            } else {
-                alert("Failed to add tour!");
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error adding tour:", error);
-            alert("Error adding tour!");
-        }
-    });
-});
-// Function to handle the Edit button (populate form with the tour data)
-function editTour(tourID) {
-    $.ajax({
-        url: `${URL}/get/${tourID}`,  // Replace with correct URL for getting tour by ID
-        type: "GET",
-        dataType: "json",
-        success: function(tour) {
-            console.log("Tour to edit:", tour);  // Log the fetched tour for debugging
-            // Populate the form with the tour data
-            $("#tourID").val(tour.tourID);  // Set the Tour ID as read-only
-            $("#tourName").val(tour.tourName);
-            $("#location").val(tour.location);
-            $("#duration").val(tour.duration);
-            $("#price").val(tour.price);
-            $("#tourType").val(tour.tourType);
-            $("#availableSeats").val(tour.availableSeats);
-            $("#startDate").val(tour.startDate);
-            $("#endDate").val(tour.endDate);
-            $("#images").val(tour.images);
+    // Handle image file input
+    const imageFile = $("#images")[0].files[0]; // Capture the selected image file
 
-            // Show the update and delete buttons, hide the save button
-            $("#saveButton").hide();
-            $("#updateButton").show();
-            $("#deleteButton").show();
+    // If an image file is selected, handle it
+    if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Capture the base64 image data
+            tourData.images = e.target.result; // Store the base64 string in tourData
+            console.log("Base64 Image Data:", tourData.images); // Debugging
+            submitTourData(tourData); // Submit the form with the base64 image data
+        };
+        reader.readAsDataURL(imageFile); // Read the file as base64 string
+    } else {
+        // If no image file is selected, submit with an empty string or default value
+        tourData.images = ""; // Optional: Set a default value for no image
+        submitTourData(tourData); // Submit the form without the image
+    }
+});
+
+// Function to send tour data to the server for saving
+function submitTourData(tourData) {
+    console.log("Submitting Tour Data: ", tourData);
+
+    // Send data to the server using AJAX POST request
+    $.ajax({
+        url: apiUrl + "/save",
+        type: "POST",
+        contentType: "application/json", // Ensure the content type is JSON
+        data: JSON.stringify(tourData), // Convert tourData object to JSON string
+        success: function(response) {
+            alert(response.message); // Show success message
+            loadTours(); // Reload tours after saving
+            resetForm(); // Reset the form
         },
-        error: function(xhr, status, error) {
-            console.error("Error fetching tour details:", error);
-            alert("Error fetching tour details!");
+        error: function(response) {
+            alert("Error: " + response.responseJSON.message); // Show error message
         }
     });
 }
 
-// Function to update an existing tour
+// Edit a tour
+function editTour(tourID) {
+    $.get(apiUrl + "/get/" + tourID, function(tour) {
+        // Populate the form with the current tour's data
+        $("#tourID").val(tour.tourID);
+        $("#tourName").val(tour.tourName);
+        $("#location").val(tour.location);
+        $("#duration").val(tour.duration);
+        $("#price").val(tour.price);
+        $("#tourType").val(tour.tourType);
+        $("#availableSeats").val(tour.availableSeats);
+        $("#startDate").val(tour.startDate);
+        $("#endDate").val(tour.endDate);
+        $("#description").val(tour.description);
+        $("#images").val(tour.images);
+
+        selectedTourID = tour.tourID;
+
+        // Switch the buttons based on editing mode
+        $("#saveButton").hide();
+        $("#updateButton").show();
+        $("#deleteButton").show();
+    });
+}
+
+// Update the selected tour
 function updateTour() {
     const tourData = {
-        tourID: $("#tourID").val(),
+        tourID: selectedTourID,
         tourName: $("#tourName").val(),
-        description: $("#description").val(),
         location: $("#location").val(),
         duration: $("#duration").val(),
         price: $("#price").val(),
@@ -128,57 +128,51 @@ function updateTour() {
         availableSeats: $("#availableSeats").val(),
         startDate: $("#startDate").val(),
         endDate: $("#endDate").val(),
+        description: $("#description").val(),
         images: $("#images").val()
     };
 
+    // Send the updated data to the server using AJAX PUT request
     $.ajax({
-        url: `${URL}/update`,  // Replace with the correct URL for updating the tour
+        url: apiUrl + "/update",
         type: "PUT",
-        dataType: "json",
         contentType: "application/json",
         data: JSON.stringify(tourData),
         success: function(response) {
-            console.log("Tour updated response:", response);  // Log the response for debugging
-            if (response) {
-                alert("Tour updated successfully!");
-                getAllTours();  // Reload the table after updating
-                $('#tourForm')[0].reset();  // Reset form
-                $("#saveButton").show();
-                $("#updateButton").hide();
-                $("#deleteButton").hide();
-            } else {
-                alert("Failed to update tour!");
-            }
+            alert(response.message); // Show success message
+            loadTours(); // Reload tours after updating
+            resetForm(); // Reset the form
         },
-        error: function(xhr, status, error) {
-            console.error("Error updating tour:", error);
-            alert("Error updating tour!");
+        error: function(response) {
+            alert("Error: " + response.responseJSON.message); // Show error message
         }
     });
 }
 
-// Function to delete a tour
+// Delete a selected tour
 function deleteTour(tourID) {
     $.ajax({
-        url: `${URL}/delete/${tourID}`,  // Replace with correct URL for deleting the tour
+        url: apiUrl + "/delete/" + tourID,
         type: "DELETE",
         success: function(response) {
-            console.log("Tour deleted response:", response);  // Log the response for debugging
-            if (response) {
-                alert("Tour deleted successfully!");
-                getAllTours();  // Reload the table after deletion
-            } else {
-                alert("Failed to delete tour!");
-            }
+            alert(response.message); // Show success message
+            loadTours(); // Reload tours after deleting
+            resetForm(); // Reset the form
         },
-        error: function(xhr, status, error) {
-            console.error("Error deleting tour:", error);
-            alert("Error deleting tour!");
+        error: function(response) {
+            alert("Error: " + response.responseJSON.message); // Show error message
         }
     });
 }
 
-// Initialize the page by loading all tours
-$(document).ready(function() {
-    getAllTours();
-});
+// Reset the form and buttons
+function resetForm() {
+    $("#tourForm")[0].reset(); // Reset form fields
+    selectedTourID = null; // Clear selectedTourID
+    $("#saveButton").show(); // Show save button
+    $("#updateButton").hide(); // Hide update button
+    $("#deleteButton").hide(); // Hide delete button
+}
+
+// Initial load of tours
+loadTours();
