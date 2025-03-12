@@ -35,7 +35,7 @@ public class ExpenseController {
     public String showAddExpensePage(Model model) {
         Expense expense = new Expense();
         model.addAttribute("expense",expense);
-        return "add-expense.html";
+        return "add-expense";
     }
 
     @PostMapping("/saveExpense")

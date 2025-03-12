@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class TourServiceImpl implements TourService {
 
     @Autowired
-    private TourRepository tourRepo;
+    private TourRepository tourRepository; // Standardized variable name
 
     @Autowired
     private ModelMapper modelMapper;
@@ -33,19 +34,19 @@ public class TourServiceImpl implements TourService {
         }
 
         // Check if tour already exists
-        if (tourRepo.existsById(tourDTO.getTourID())) {
+        if (tourRepository.existsById(tourDTO.getTourID())) {
             throw new RuntimeException("Tour already exists");
         }
 
         // Map TourDTO to Tour entity
         Tour tour = modelMapper.map(tourDTO, Tour.class);
-        tourRepo.save(tour);
+        tourRepository.save(tour);
     }
 
     @Override
     public List<TourDTO> getAllTours() {
         // Retrieve all tours from the repository
-        List<Tour> tours = tourRepo.findAll();
+        List<Tour> tours = tourRepository.findAll();
         // Map the list of Tour entities to TourDTOs
         return modelMapper.map(tours, new TypeToken<List<TourDTO>>() {}.getType());
     }
@@ -58,11 +59,11 @@ public class TourServiceImpl implements TourService {
         }
 
         // Check if the tour exists
-        Optional<Tour> existingTour = tourRepo.findById(tourDTO.getTourID());
+        Optional<Tour> existingTour = tourRepository.findById(tourDTO.getTourID());
         if (existingTour.isPresent()) {
             // Map the updated TourDTO to a Tour entity
             Tour tour = modelMapper.map(tourDTO, Tour.class);
-            tourRepo.save(tour);
+            tourRepository.save(tour);
         } else {
             throw new RuntimeException("Tour does not exist");
         }
@@ -71,15 +72,21 @@ public class TourServiceImpl implements TourService {
     @Override
     public void deleteTour(int tourID) {
         // Check if the tour exists before deletion
-        if (tourRepo.existsById(tourID)) {
-            tourRepo.deleteById(tourID);
+        if (tourRepository.existsById(tourID)) {
+            tourRepository.deleteById(tourID);
         } else {
             throw new RuntimeException("Tour does not exist");
         }
     }
 
     public Tour getTourById(int tourId) {
-        return tourRepo.findById(tourId).orElse(null);
+        return tourRepository.findById(tourId).orElse(null);
+    }
+
+    // Utility method for date parsing
+    private java.util.Date parseDate(String dateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(dateStr);
     }
 
     // Modified method to handle image uploading and tour creation
@@ -123,12 +130,17 @@ public class TourServiceImpl implements TourService {
         tour.setPrice(price);
         tour.setTourType(tourType);
         tour.setAvailableSeats(availableSeats);
-        tour.setStartDate(new java.text.SimpleDateFormat("yyyy-MM-dd").parse(startDate));
-        tour.setEndDate(new java.text.SimpleDateFormat("yyyy-MM-dd").parse(endDate));
+        tour.setStartDate(parseDate(startDate)); // Reusing the parseDate utility method
+        tour.setEndDate(parseDate(endDate));     // Reusing the parseDate utility method
         tour.setDescription(description);
 
         // Handle image upload (convert to base64 if present)
         if (imageFile != null && !imageFile.isEmpty()) {
+            // Validate image file (e.g., size or type if needed)
+            if (!imageFile.getContentType().startsWith("image")) {
+                throw new IllegalArgumentException("Uploaded file is not an image");
+            }
+
             byte[] imageBytes = imageFile.getBytes();
             // Convert byte array to Base64 string
             String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
@@ -136,6 +148,6 @@ public class TourServiceImpl implements TourService {
         }
 
         // Save the tour to the repository
-        tourRepo.save(tour);
+        tourRepository.save(tour);
     }
 }

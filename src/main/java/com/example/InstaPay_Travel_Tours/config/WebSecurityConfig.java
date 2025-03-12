@@ -64,17 +64,14 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/v1/tourguide/save",  // Tour guide endpoints
+                                "/api/v1/tours/**",
                                 "/api/v1/tourguide/getAll", // Get all tour guides
                                 "/api/v1/tourguide/update", // Update a tour guide
                                 "/api/v1/tourguide/delete/**", // Delete a tour guide by ID
                                 "/api/v1/tours/save",      // Endpoint to save a new tour
                                 "/api/v1/tours/getAll",    // Endpoint to get all tours
-                                "/api/v1/tours/1",
-                                // Additional endpoints can be added below
-                                "/api/v1/tourguide/**",     // Permit all tour guide related endpoints
-                                "/api/v1/tours/**",         // Permit all tours related endpoints
-                                "/api/v1/booking/**",       // Example: Permit all booking-related endpoints
-                                "/api/v1/reviews/**"        // Example: Permit all reviews-related endpoints
+                                "/api/v1/tours/edit",
+                                "/api/v1/tours/1"
                         ).permitAll() // Allow public access to the above endpoints
                         .anyRequest().authenticated()  // Require authentication for other endpoints
                 )

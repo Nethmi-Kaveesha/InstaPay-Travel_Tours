@@ -4,7 +4,8 @@ import com.example.InstaPay_Travel_Tours.entity.TourGuide;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 @Repository
 public interface TourGuideRepository extends JpaRepository<TourGuide, Integer> {
-    // You can add custom queries here if necessary
+    Optional<TourGuide> findByFullName(String fullName); // Ensure method matches the entity property 'name'
 }
