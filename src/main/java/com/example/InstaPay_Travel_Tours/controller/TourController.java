@@ -1,6 +1,7 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.dto.TourDTO;
+import com.example.InstaPay_Travel_Tours.entity.Tour;
 import com.example.InstaPay_Travel_Tours.service.impl.TourServiceImpl;
 import com.example.InstaPay_Travel_Tours.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ public class TourController {
             return new ResponseEntity<>(new ResponseUtil(500, "Internal Server Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     // Endpoint to update a tour with the returned TourDTO
     @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)

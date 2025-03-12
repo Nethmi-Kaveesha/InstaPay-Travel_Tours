@@ -1,8 +1,20 @@
 // URL to the API that communicates with your backend (adjust according to your server)
 const apiUrl = "http://localhost:8080/api/v1/tours";
-
+let imageData = "";
 // Variable to store selected tourID for Update/Delete operations
 let selectedTourID = null;
+
+function convertToBase64(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imageData = e.target.result;
+            $("#imagePreview").attr("src", imageData).show();
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
 // Load tours into the table
 function loadTours() {
@@ -22,7 +34,7 @@ function loadTours() {
                     <td>${tour.startDate || ''}</td>
                     <td>${tour.endDate || ''}</td>
                     <td>${tour.description || ''}</td>
-                    <td><img src="${tour.images || 'default-image.jpg'}" alt="Tour Image" style="width: 80px; height: 60px;"></td>
+                    <td><img src="${tour.images}" alt="Tour Image" style="max-width: 50px;"></td>
                     <td>
                         <button class="btn btn-info" onclick="editTour(${tour.tourID})">Edit</button>
                         <button class="btn btn-danger" onclick="deleteTour(${tour.tourID})">Delete</button>
@@ -47,7 +59,8 @@ $("#tourForm").submit(function(event) {
         availableSeats: $("#availableSeats").val(),
         startDate: $("#startDate").val(),
         endDate: $("#endDate").val(),
-        description: $("#description").val() // Ensure this is consistent
+        description: $("#description").val(), // Ensure this is consistent
+        image: $("#images").val()
     };
 
     // Handle image file input
@@ -59,7 +72,6 @@ $("#tourForm").submit(function(event) {
         reader.onload = function(e) {
             // Capture the base64 image data
             tourData.images = e.target.result; // Store the base64 string in tourData
-            console.log("Base64 Image Data:", tourData.images); // Debugging
             submitTourData(tourData); // Submit the form with the base64 image data
         };
         reader.readAsDataURL(imageFile); // Read the file as base64 string
@@ -86,6 +98,7 @@ function submitTourData(tourData) {
             resetForm(); // Reset the form
         },
         error: function(response) {
+            console.error("Error: ", response);
             alert("Error: " + response.responseJSON.message); // Show error message
         }
     });
@@ -106,6 +119,11 @@ function editTour(tourID) {
         $("#endDate").val(tour.endDate);
         $("#description").val(tour.description);
         $("#images").val(tour.images);
+
+        // If tour has an image, show it
+        if (tour.images) {
+            $("#imagePreview").attr("src", tour.images).show();
+        }
 
         selectedTourID = tour.tourID;
 
@@ -144,6 +162,7 @@ function updateTour() {
             resetForm(); // Reset the form
         },
         error: function(response) {
+            console.error("Error: ", response);
             alert("Error: " + response.responseJSON.message); // Show error message
         }
     });
@@ -160,6 +179,7 @@ function deleteTour(tourID) {
             resetForm(); // Reset the form
         },
         error: function(response) {
+            console.error("Error: ", response);
             alert("Error: " + response.responseJSON.message); // Show error message
         }
     });
@@ -168,6 +188,7 @@ function deleteTour(tourID) {
 // Reset the form and buttons
 function resetForm() {
     $("#tourForm")[0].reset(); // Reset form fields
+    $("#imagePreview").hide(); // Hide the image preview
     selectedTourID = null; // Clear selectedTourID
     $("#saveButton").show(); // Show save button
     $("#updateButton").hide(); // Hide update button

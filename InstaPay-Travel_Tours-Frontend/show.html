@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- External CSS -->
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Lora', serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        /* Tour Header Styles */
+        .tour-header {
+            text-align: center;
+            height: 80px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            background-color: #2c3e50;
+            border-radius: 20px;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tour-header h1 {
+            font-size: 38px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: -2px;
+        }
+
+        .tour-header p {
+            font-size: 18px;
+            color: #ecf0f1;
+            letter-spacing: 1px;
+        }
+
+        /* Tour Card Styles */
+        .card {
+            border-radius: 15px;
+        }
+
+        .tour-image {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-body {
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 15px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #34495e;
+            font-weight: 400;
+        }
+
+        .tour-info h2 {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+
+        .tour-info p {
+            font-size: 14px;
+            color: #34495e;
+            font-weight: 400;
+            margin: 0 10px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #e67e22;
+            letter-spacing: 1px;
+        }
+
+        .book-now-btn {
+            background-color: #e67e22;
+            color: #fff;
+            padding: 9px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            height: 50px;
+            width: 160px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .book-now-btn:hover {
+            background-color: #d35400;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #2c3e50;
+            color: #fff;
+            font-size: 16px;
+            border-top: 2px solid #34495e;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="tour-header">
+        <h1>Exclusive Tour Details</h1>
+        <p>Indulge in luxury experiences with our carefully curated tours. Discover destinations beyond imagination.</p>
+    </div>
+
+    <div id="tours" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"></div> <!-- Container for multiple tours -->
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("http://localhost:8080/api/v1/tours/getAll")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(tours => {
+                const toursContainer = document.getElementById("tours");
+                if (tours.length === 0) {
+                    toursContainer.innerHTML = "<p>No tours available at the moment.</p>";
+                }
+                tours.forEach(tour => {
+                    const tourSection = document.createElement("div");
+                    tourSection.classList.add("col");
+
+                    // Tour Card
+                    const imageUrl = tour.images ? tour.images : 'images/default-tour.jpg'; // Fallback to default image if no image exists
+                    tourSection.innerHTML = `
+                            <div class="card shadow-sm h-100">
+                                <img class="tour-image card-img-top" src="${imageUrl}" alt="Tour Image">
+                                <div class="card-body tour-details">
+                                    <h5 class="card-title">${tour.tourName}</h5>
+                                    <p class="card-text">${tour.location}</p>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>Description:</h2>
+                                            <p>${tour.description}</p>
+                                        </div>
+                                    </div>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>Duration:</h2>
+                                            <p>${tour.duration} days</p>
+                                        </div>
+                                    </div>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>Tour Type:</h2>
+                                            <p>${tour.tourType}</p>
+                                        </div>
+                                    </div>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>Price:</h2>
+                                            <p class="price">$${tour.price}</p>
+                                        </div>
+                                    </div>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>Available Seats:</h2>
+                                            <p>${tour.availableSeats}</p>
+                                        </div>
+                                    </div>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>Start Date:</h2>
+                                            <p>${new Date(tour.startDate).toLocaleDateString()}</p>
+                                        </div>
+                                    </div>
+                                    <div class="tour-info">
+                                        <div class="d-flex justify-content-between">
+                                            <h2>End Date:</h2>
+                                            <p>${new Date(tour.endDate).toLocaleDateString()}</p>
+                                        </div>
+                                    </div>
+                                    <button class="book-now-btn">Book Now</button>
+                                </div>
+                            </div>
+                        `;
+
+                    toursContainer.appendChild(tourSection);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching tour data:", error);
+                document.getElementById("tours").innerHTML = "<p>Sorry, we couldn't load the tour data. Please try again later.</p>";
+            });
+    });
+</script>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 Elite Travel | All Rights Reserved</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

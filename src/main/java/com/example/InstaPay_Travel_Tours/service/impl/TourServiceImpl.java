@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,6 +78,10 @@ public class TourServiceImpl implements TourService {
         }
     }
 
+    public Tour getTourById(int tourId) {
+        return tourRepo.findById(tourId).orElse(null);
+    }
+
     // Modified method to handle image uploading and tour creation
     public void addTourWithImage(String tourName, String location, String duration, double price, String tourType,
                                  int availableSeats, String startDate, String endDate, String description, MultipartFile imageFile) throws IOException, ParseException {
@@ -123,10 +127,12 @@ public class TourServiceImpl implements TourService {
         tour.setEndDate(new java.text.SimpleDateFormat("yyyy-MM-dd").parse(endDate));
         tour.setDescription(description);
 
-        // Handle image upload (convert to byte array if present)
+        // Handle image upload (convert to base64 if present)
         if (imageFile != null && !imageFile.isEmpty()) {
             byte[] imageBytes = imageFile.getBytes();
-            tour.setImages(imageBytes);  // Store the image as a byte array
+            // Convert byte array to Base64 string
+            String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
+            tour.setImages(encodedImage);  // Store the image as a Base64 string
         }
 
         // Save the tour to the repository

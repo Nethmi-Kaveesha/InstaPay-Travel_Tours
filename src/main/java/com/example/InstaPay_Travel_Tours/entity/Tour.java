@@ -43,11 +43,11 @@ public class Tour {
 
     @Lob  // Use @Lob to store large binary data (like images)
     @Column(name = "images")  // Column name remains the same
-    private byte[] images;  // Store the image as a byte array
+    private String images;  // Store the image as a byte array
 
     // Constructor with fields
     public Tour(int tourID, String tourName, String description, String location, int duration, double price,
-                String tourType, int availableSeats, Date startDate, Date endDate, byte[] images) {
+                String tourType, int availableSeats, Date startDate, Date endDate, String images) {
         this.tourID = tourID;
         this.tourName = tourName;
         this.description = description;
@@ -146,11 +146,11 @@ public class Tour {
         this.endDate = endDate;
     }
 
-    public byte[] getImages() {
+    public String getImages() {
         return images;
     }
 
-    public void setImages(byte[] images) {
+    public void setImages(String images) {
         this.images = images;
     }
 }

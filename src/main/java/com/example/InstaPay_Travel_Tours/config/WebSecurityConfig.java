@@ -69,7 +69,7 @@ public class WebSecurityConfig {
                                 "/api/v1/tourguide/delete/**", // Delete a tour guide by ID
                                 "/api/v1/tours/save",      // Endpoint to save a new tour
                                 "/api/v1/tours/getAll",    // Endpoint to get all tours
-
+                                "/api/v1/tours/1",
                                 // Additional endpoints can be added below
                                 "/api/v1/tourguide/**",     // Permit all tour guide related endpoints
                                 "/api/v1/tours/**",         // Permit all tours related endpoints
