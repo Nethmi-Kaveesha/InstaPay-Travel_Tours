@@ -2,6 +2,7 @@ package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.dto.AuthDTO;
 import com.example.InstaPay_Travel_Tours.dto.ResponseDTO;
+import com.example.InstaPay_Travel_Tours.dto.TourGuideDTO;
 import com.example.InstaPay_Travel_Tours.dto.UserDTO;
 import com.example.InstaPay_Travel_Tours.service.UserService;
 import com.example.InstaPay_Travel_Tours.util.JwtUtil;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/user")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private final UserService userService;
@@ -60,7 +61,8 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseDTO saveUser(@RequestBody UserDTO userDTO) {  // Fixed endpoint to /register and standardized response
         try {
             userService.addUser(userDTO);  // Use addUser
@@ -76,17 +78,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
-    @PutMapping(value = "update")
-    public ResponseEntity<ResponseDTO> updateUser(@RequestBody UserDTO userDTO) {
-        try {
-            userService.updateUser(userDTO);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseDTO(200, "User Updated", null));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseDTO(400, "Failed to update user", null));
-        }
+    @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil updateTourGuide(@RequestBody UserDTO userDTO) {
+        userService.updateUser(userDTO);
+        return new ResponseUtil(200, "Tour Guide Updated", null);
     }
+
 
     @DeleteMapping("delete/{uid}")
     public ResponseEntity<ResponseDTO> deleteUser(@PathVariable("uid") UUID uid) {  // Handle UUID properly

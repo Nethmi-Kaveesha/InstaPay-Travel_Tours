@@ -5,124 +5,36 @@ import com.example.InstaPay_Travel_Tours.entity.Tour;
 import com.example.InstaPay_Travel_Tours.repo.TourRepository;
 import com.example.InstaPay_Travel_Tours.service.TourService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TourServiceImpl implements TourService {
 
-    @Autowired
-    private TourRepository tourRepository; // Standardized variable name
+    private final TourRepository tourRepository;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Override
-    public void addTour(TourDTO tourDTO) {
-        // Validate the DTO
-        if (tourDTO == null || tourDTO.getTourName() == null || tourDTO.getTourName().isEmpty()) {
-            throw new IllegalArgumentException("Tour name is required");
-        }
-
-        // Check if tour already exists
-        if (tourRepository.existsById(tourDTO.getTourID())) {
-            throw new RuntimeException("Tour already exists");
-        }
-
-        // Map TourDTO to Tour entity
-        Tour tour = modelMapper.map(tourDTO, Tour.class);
-        tourRepository.save(tour);
+    public TourServiceImpl(TourRepository tourRepository, ModelMapper modelMapper) {
+        this.tourRepository = tourRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<TourDTO> getAllTours() {
-        // Retrieve all tours from the repository
-        List<Tour> tours = tourRepository.findAll();
-        // Map the list of Tour entities to TourDTOs
-        return modelMapper.map(tours, new TypeToken<List<TourDTO>>() {}.getType());
-    }
-
-    @Override
-    public void updateTour(TourDTO tourDTO) {
-        // Validate the DTO
-        if (tourDTO == null || tourDTO.getTourID() == null || tourDTO.getTourID() <= 0) {
-            throw new IllegalArgumentException("Invalid tour details");
-        }
-
-        // Check if the tour exists
-        Optional<Tour> existingTour = tourRepository.findById(tourDTO.getTourID());
-        if (existingTour.isPresent()) {
-            // Map the updated TourDTO to a Tour entity
-            Tour tour = modelMapper.map(tourDTO, Tour.class);
-            tourRepository.save(tour);
-        } else {
-            throw new RuntimeException("Tour does not exist");
-        }
-    }
-
-    @Override
-    public void deleteTour(int tourID) {
-        // Check if the tour exists before deletion
-        if (tourRepository.existsById(tourID)) {
-            tourRepository.deleteById(tourID);
-        } else {
-            throw new RuntimeException("Tour does not exist");
-        }
-    }
-
-    public Tour getTourById(int tourId) {
-        return tourRepository.findById(tourId).orElse(null);
-    }
-
-    // Utility method for date parsing
-    private java.util.Date parseDate(String dateStr) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        return sdf.parse(dateStr);
-    }
-
-    // Modified method to handle image uploading and tour creation
     public void addTourWithImage(String tourName, String location, String duration, double price, String tourType,
-                                 int availableSeats, String startDate, String endDate, String description, MultipartFile imageFile) throws IOException, ParseException {
+                                 int availableSeats, String startDate, String endDate, String description, MultipartFile imageFile) throws IOException {
 
-        // Validate fields
-        if (tourName == null || tourName.isEmpty()) {
-            throw new IllegalArgumentException("Tour name is required");
-        }
-        if (location == null || location.isEmpty()) {
-            throw new IllegalArgumentException("Location is required");
-        }
-        if (duration == null || duration.isEmpty()) {
-            throw new IllegalArgumentException("Duration is required");
-        }
-        if (price <= 0) {
-            throw new IllegalArgumentException("Price must be greater than 0");
-        }
-        if (tourType == null || tourType.isEmpty()) {
-            throw new IllegalArgumentException("Tour type is required");
-        }
-        if (availableSeats <= 0) {
-            throw new IllegalArgumentException("Available seats must be greater than 0");
-        }
-        if (startDate == null || startDate.isEmpty()) {
-            throw new IllegalArgumentException("Start date is required");
-        }
-        if (endDate == null || endDate.isEmpty()) {
-            throw new IllegalArgumentException("End date is required");
-        }
-        if (description == null || description.isEmpty()) {
-            throw new IllegalArgumentException("Description is required");
-        }
+        validateTourFields(tourName, location, duration, price, tourType, availableSeats, startDate, endDate, description);
 
-        // Create a new Tour entity
         Tour tour = new Tour();
         tour.setTourName(tourName);
         tour.setLocation(location);
@@ -130,24 +42,75 @@ public class TourServiceImpl implements TourService {
         tour.setPrice(price);
         tour.setTourType(tourType);
         tour.setAvailableSeats(availableSeats);
-        tour.setStartDate(parseDate(startDate)); // Reusing the parseDate utility method
-        tour.setEndDate(parseDate(endDate));     // Reusing the parseDate utility method
+        tour.setStartDate(parseDate(startDate));
+        tour.setEndDate(parseDate(endDate));
         tour.setDescription(description);
+        tour.setImages(encodeImage(imageFile));
 
-        // Handle image upload (convert to base64 if present)
+        tourRepository.save(tour);
+    }
+
+    @Override
+    public void addTour(TourDTO tourDTO) {
+        Tour tour = modelMapper.map(tourDTO, Tour.class);
+        tourRepository.save(tour);
+    }
+
+    @Override
+    public List<TourDTO> getAllTours() {
+        return tourRepository.findAll().stream()
+                .map(tour -> modelMapper.map(tour, TourDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<TourDTO> getTourById(int tourId) {
+        return tourRepository.findById(tourId)
+                .map(tour -> modelMapper.map(tour, TourDTO.class));
+    }
+
+    @Override
+    public void updateTour(TourDTO tourDTO) {
+        Tour existingTour = tourRepository.findById(tourDTO.getTourID())
+                .orElseThrow(() -> new RuntimeException("Tour not found"));
+
+        modelMapper.map(tourDTO, existingTour);
+        tourRepository.save(existingTour);
+    }
+
+    @Override
+    public void deleteTour(int tourId) {
+        if (!tourRepository.existsById(tourId)) {
+            throw new RuntimeException("Tour not found");
+        }
+        tourRepository.deleteById(tourId);
+    }
+
+    private void validateTourFields(String tourName, String location, String duration, double price, String tourType,
+                                    int availableSeats, String startDate, String endDate, String description) {
+        if (tourName == null || tourName.isEmpty()) throw new IllegalArgumentException("Tour name is required");
+        if (location == null || location.isEmpty()) throw new IllegalArgumentException("Location is required");
+        if (duration == null || duration.isEmpty()) throw new IllegalArgumentException("Duration is required");
+        if (price <= 0) throw new IllegalArgumentException("Price must be greater than 0");
+        if (tourType == null || tourType.isEmpty()) throw new IllegalArgumentException("Tour type is required");
+        if (availableSeats <= 0) throw new IllegalArgumentException("Available seats must be greater than 0");
+        if (startDate == null || startDate.isEmpty()) throw new IllegalArgumentException("Start date is required");
+        if (endDate == null || endDate.isEmpty()) throw new IllegalArgumentException("End date is required");
+        if (description == null || description.isEmpty()) throw new IllegalArgumentException("Description is required");
+    }
+
+    private Date parseDate(String dateStr) {
+        LocalDate localDate = LocalDate.parse(dateStr, DateTimeFormatter.ISO_DATE);
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    private String encodeImage(MultipartFile imageFile) throws IOException {
         if (imageFile != null && !imageFile.isEmpty()) {
-            // Validate image file (e.g., size or type if needed)
             if (!imageFile.getContentType().startsWith("image")) {
                 throw new IllegalArgumentException("Uploaded file is not an image");
             }
-
-            byte[] imageBytes = imageFile.getBytes();
-            // Convert byte array to Base64 string
-            String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
-            tour.setImages(encodedImage);  // Store the image as a Base64 string
+            return Base64.getEncoder().encodeToString(imageFile.getBytes());
         }
-
-        // Save the tour to the repository
-        tourRepository.save(tour);
+        return null;
     }
 }

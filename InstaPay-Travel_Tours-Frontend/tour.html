@@ -14,6 +14,9 @@
         <h2 class="text-center mb-4">Tour Form</h2>
         <form id="tourForm">
             <div class="mb-3">
+                <label for="tourID" class="form-label">Guide ID:</label>
+                <input type="text" class="form-control" id="tourID" name="tourID" placeholder="Tour ID (Auto-generated)" disabled>
+
                 <label for="tourName" class="form-label">Tour Name:</label>
                 <input type="text" class="form-control" id="tourName" name="tourName" placeholder="Enter tour name" required>
 
@@ -41,7 +44,6 @@
                 <label for="description" class="form-label">Tour Description:</label>
                 <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter a brief description of the tour"></textarea>
 
-                <!-- Add this within the form section for Image Preview -->
                 <div class="mb-3">
                     <label for="images" class="form-label">Image:</label>
                     <input type="file" class="form-control" id="images" name="images" accept="image/*" onchange="convertToBase64(event)">
@@ -58,7 +60,7 @@
         </form>
 
         <!-- Tour Table -->
-        <table class="table table-striped table-hover mt-5">
+        <table>
             <thead>
             <tr>
                 <th>Tour ID</th>
@@ -70,15 +72,16 @@
                 <th>Available Seats</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Tour Description</th>
-                <th>Images</th>
+                <th>Description</th>
+                <th>Image</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody id="tourTableBody">
-            <!-- Dynamic rows will be inserted here -->
+            <!-- Data will be injected here -->
             </tbody>
         </table>
+
     </div>
 </div>
 

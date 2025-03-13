@@ -1,7 +1,6 @@
 const URL = "http://localhost:8080/api/v1/user";
 let selectedUserId = null;
 
-// Form submit handler
 $("#userForm").submit(function (event) {
     event.preventDefault();
     if (selectedUserId) {
@@ -11,16 +10,18 @@ $("#userForm").submit(function (event) {
     }
 });
 
-// Save new user data
 function saveData() {
     let user = {
         email: $("#email").val(),
         password: $("#password").val(),
         name: $("#name").val(),
         role: $("#role").val(),
-        phoneNumber: $("#phoneNumber").val(),
+        phone_number: $("#phone_number").val(),
         gender: $("#gender").val()
     };
+
+    // Log user data for debugging
+    console.log(user);
 
     // Basic email validation
     let email = $("#email").val();
@@ -30,8 +31,16 @@ function saveData() {
         return;
     }
 
-    // Ensure all required fields are filled
-    if (!user.name || !user.role || !user.phoneNumber || !user.gender) {
+    // Phone number validation (10 digits)
+    let phoneNumber = $("#phone_number").val();
+    let phonePattern = /^\d{10}$/; // Adjust pattern based on your requirements
+    if (!phonePattern.test(phoneNumber)) {
+        alert("Please enter a valid 10-digit phone number!");
+        return;
+    }
+
+    // Validate all fields
+    if (!user.name || !user.role || !user.phone_number || !user.gender || !user.email || !user.password) {
         alert("Please fill all fields!");
         return;
     }
@@ -43,7 +52,8 @@ function saveData() {
         data: JSON.stringify(user),
         success: function () {
             alert("User saved successfully!");
-            getAll();  // Refresh the user table
+            window.location.href = "user.html"; // Redirect to user page
+            getAll(); // Refresh the user list
             clearForm();
         },
         error: function (xhr, status, error) {
@@ -53,12 +63,11 @@ function saveData() {
     });
 }
 
-// Fetch all users and display them in the table
 function getAll() {
     $.ajax({
         url: `${URL}/getAll`,
         type: "GET",
-        dataType: "json", // Ensures response is parsed as JSON
+        dataType: "json",
         success: function (response) {
             console.log("Full Response:", response);
 
@@ -76,10 +85,10 @@ function getAll() {
                         <td>${user.email}</td>
                         <td>${user.name}</td>
                         <td>${user.role}</td>
-                        <td>${user.phoneNumber}</td>
+                        <td>${user.phone_number}</td>
                         <td>${user.gender}</td>
                         <td>
-                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.email}', '${user.name}', '${user.role}', '${user.phoneNumber}', '${user.gender}')">Edit</button>
+                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.email}', '${user.name}', '${user.role}', '${user.phone_number}', '${user.gender}')">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.email}')">Delete</button>
                         </td>
                     </tr>`);
@@ -92,15 +101,12 @@ function getAll() {
     });
 }
 
-// Fill the form for editing a selected user
-// Fill the form for editing a selected user
-function fillTextFields(email, name, role, phoneNumber, gender, password) {
+function fillTextFields(email, name, role, phone_number, gender) {
     $("#email").val(email);
     $("#name").val(name);
     $("#role").val(role);
-    $("#phoneNumber").val(phoneNumber);
+    $("#phone_number").val(phone_number);
     $("#gender").val(gender);
-    $("#password").val(password); // Fill the password field
 
     selectedUserId = email;
 
@@ -108,20 +114,28 @@ function fillTextFields(email, name, role, phoneNumber, gender, password) {
     $("#updateButton").show();
     $("#deleteButton").show();
 }
-
-// Update existing user data
 function updateUser() {
+    console.log("Updating user with email:", selectedUserId);  // Debugging log
     let updatedUser = {
         email: selectedUserId,
         name: $("#name").val(),
         role: $("#role").val(),
-        phoneNumber: $("#phoneNumber").val(),
+        phone_number: $("#phone_number").val(),
         gender: $("#gender").val()
     };
 
-    // Ensure all fields are filled before updating
-    if (!updatedUser.name || !updatedUser.role || !updatedUser.phoneNumber || !updatedUser.gender) {
+    // Continue with validation and AJAX...
+
+    // Validate all fields
+    if (!updatedUser.name || !updatedUser.role || !updatedUser.phone_number || !updatedUser.gender) {
         alert("Please fill all fields!");
+        return;
+    }
+
+    // Phone number validation (10 digits)
+    let phonePattern = /^\d{10}$/; // Adjust pattern based on your requirements
+    if (!phonePattern.test(updatedUser.phone_number)) {
+        alert("Please enter a valid 10-digit phone number!");
         return;
     }
 
@@ -132,6 +146,7 @@ function updateUser() {
         data: JSON.stringify(updatedUser),
         success: function () {
             alert("User updated successfully!");
+            window.location.href = "user.html";
             getAll();  // Refresh the user table
             clearForm();
         },
@@ -142,7 +157,6 @@ function updateUser() {
     });
 }
 
-// Delete user based on email
 function deleteUser(email) {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
@@ -151,7 +165,7 @@ function deleteUser(email) {
         type: "DELETE",
         success: function () {
             alert("User deleted successfully!");
-            getAll();  // Refresh the user table
+            getAll();
             clearForm();
         },
         error: function (xhr, status, error) {
@@ -161,7 +175,6 @@ function deleteUser(email) {
     });
 }
 
-// Clear form and reset button visibility
 function clearForm() {
     $("#userForm")[0].reset();
     $("#updateButton").hide();
@@ -170,7 +183,6 @@ function clearForm() {
     selectedUserId = null;
 }
 
-// Load all users when the page is ready
 $(document).ready(function () {
-    getAll();
+    getAll(); // Load all users on page load
 });

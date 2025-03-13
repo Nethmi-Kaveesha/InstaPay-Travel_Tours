@@ -16,10 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -33,12 +30,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthority(user));
     }
 
     public UserDTO loadUserDetailsByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username);
+        Optional<User> userOptional = userRepository.findByEmail(username);
+        User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
         return modelMapper.map(user, UserDTO.class);
     }
 
@@ -50,12 +49,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDTO searchUser(String username) {
-        if (userRepository.existsByEmail(username)) {
-            User user = userRepository.findByEmail(username);
-            return modelMapper.map(user, UserDTO.class);
-        } else {
-            return null;
-        }
+        Optional<User> userOptional = userRepository.findByEmail(username);
+        return userOptional.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
 
     @Override
@@ -66,43 +61,46 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-            // ✅ Set default role ONLY if none is provided
+            // Set default role ONLY if none is provided
             if (userDTO.getRole() == null || userDTO.getRole().isEmpty()) {
                 userDTO.setRole("USER");
             }
 
-            // Map DTO to Entity and include gender and phoneNumber fields (address removed)
+            // Map DTO to Entity and include gender and phoneNumber fields
             User user = modelMapper.map(userDTO, User.class);
             user.setGender(userDTO.getGender()); // Ensure gender is mapped properly
             userRepository.save(user);
             return VarList.Created;
         }
     }
+
     @Override
-    public void addUser(UserDTO userDTO) { // Change to addUser
-        if (userRepository.existsById(String.valueOf(userDTO.getUid()))) { // Change to check for UID
+    public void addUser(UserDTO userDTO) {
+        if (userRepository.existsById(userDTO.getUid())) { // Check using UUID directly
             throw new RuntimeException("User already exists");
         }
-        userRepository.save(modelMapper.map(userDTO, User.class)); // Change to User
+        userRepository.save(modelMapper.map(userDTO, User.class)); // Mapping to User entity
     }
 
     @Override
-    public List<UserDTO> getAllUsers() { // Change to getAllUsers
+    public List<UserDTO> getAllUsers() {
         return modelMapper.map(userRepository.findAll(),
-                new TypeToken<List<UserDTO>>() {}.getType()); // Change to UserDTO
+                new TypeToken<List<UserDTO>>() {}.getType()); // Map User entities to UserDTO list
     }
 
     @Override
-    public void updateUser(UserDTO userDTO) { // Change to updateUser
-        if (userRepository.existsById(String.valueOf(userDTO.getUid()))) { // Change to check for UID
-            userRepository.save(modelMapper.map(userDTO, User.class)); // Change to User
+    public void updateUser(UserDTO userDTO) {
+        if (userRepository.existsById(userDTO.getUid())) { // Check using UUID directly
+            userRepository.save(modelMapper.map(userDTO, User.class)); // Mapping to User entity
+        } else {
+            throw new RuntimeException("User does not exist");
         }
-        throw new RuntimeException("User does not exist");
     }
 
+
     @Override
-    public void deleteUser(UUID uid) { // Change to use UUID for deletion
-        userRepository.deleteById(String.valueOf(uid)); // Change to UserRepo and UUID
+    public void deleteUser(UUID uid) { // Directly use UUID for deletion
+        userRepository.deleteById(uid); // Use UUID directly
     }
 
 }
