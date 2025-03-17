@@ -147,9 +147,38 @@
     });
 
     function bookTour(tour) {
-        localStorage.setItem("selectedTour", JSON.stringify(tour));
+        // Get existing bookings from localStorage or initialize an empty array
+        let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
+
+        // Add the new tour to the bookings array
+        bookings.push(tour);
+
+        // Save the updated bookings array back to localStorage
+        localStorage.setItem("selectedTours", JSON.stringify(bookings));
+
+        // Redirect to the booking page
         window.location.href = "TourBooking.html";
     }
+    function addToBookings(selectedTour) {
+        let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
+
+        // Check if the tour is already booked
+        const existingTour = bookings.find(tour => tour.tourName === selectedTour.tourName);
+
+        if (existingTour) {
+            alert("This tour is already booked! Redirecting to your booked tours...");
+            window.location.href = "TourBooking.html"; // Redirect to Tour Booking table
+            return;
+        }
+
+        // If not booked, add the tour and redirect
+        bookings.push(selectedTour);
+        localStorage.setItem("selectedTours", JSON.stringify(bookings));
+        alert("Tour added successfully! Redirecting to your booked tours...");
+        window.location.href = "TourBooking.html";
+    }
+
+
 </script>
 
 <footer>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tour Schedule Form</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4">Tour Schedule Form</h2>
+        <form id="tourScheduleForm">
+            <div class="mb-3">
+                <label for="scheduleId" class="form-label">Schedule ID:</label>
+                <input type="text" class="form-control" id="scheduleId" name="scheduleId" placeholder="Schedule ID (Auto-generated)" disabled>
+
+                <label for="tourid" class="form-label">Tour ID:</label>
+                <input type="text" class="form-control" id="tourid" name="tourid" placeholder="Enter tour ID" required>
+
+                <label for="startDate" class="form-label">Start Date:</label>
+                <input type="datetime-local" class="form-control" id="startDate" name="startDate" required>
+
+                <label for="endDate" class="form-label">End Date:</label>
+                <input type="datetime-local" class="form-control" id="endDate" name="endDate" required>
+
+                <label for="meetingPoint" class="form-label">Meeting Point:</label>
+                <input type="text" class="form-control" id="meetingPoint" name="meetingPoint" placeholder="Enter meeting point" required>
+
+                <label for="guideid" class="form-label">Guide ID:</label>
+                <input type="text" class="form-control" id="guideid" name="guideid" placeholder="Enter guide's ID" required>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTourSchedule()">Update</button>
+                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTourSchedule(selectedTourScheduleId)">Delete</button>
+            </div>
+        </form>
+
+        <table class="table table-striped table-hover mt-5">
+            <thead>
+            <tr>
+                <th>Schedule ID</th>
+                <th>Tour ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Meeting Point</th>
+                <th>Guide ID</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="tourScheduleTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="js/bootstrap.js"></script>
+<script src="js/tourShedule-script.js"></script>
+</body>
+</html>

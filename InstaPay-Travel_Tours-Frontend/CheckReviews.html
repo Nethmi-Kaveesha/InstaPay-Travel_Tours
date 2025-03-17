@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Reviews</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lora', serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .tour-header {
+            text-align: center;
+            height: 80px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            background-color: #2c3e50;
+            border-radius: 20px;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tour-header h1 {
+            font-size: 38px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: -2px;
+        }
+
+        .tour-header p {
+            font-size: 18px;
+            color: #ecf0f1;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .review-image {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-body {
+            background-color: #ecf0f1;
+            border-radius: 15px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .card-text, .review-info p {
+            font-size: 16px;
+            color: #34495e;
+        }
+
+        .rating {
+            font-size: 18px;
+            color: #e67e22;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="tour-header">
+        <h1>Tour Reviews</h1>
+        <p>Read the reviews from our travelers about each tour.</p>
+    </div>
+    <div id="reviews" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"></div>
+</div>
+
+<script>
+    fetch("http://localhost:8080/api/v1/reviews/getAll")
+        .then(response => {
+            if (!response.ok) {
+                console.error("Error loading reviews: Status code", response.status);
+                return Promise.reject("Failed to load");
+            }
+            return response.json();
+        })
+        .then(reviews => {
+            console.log(reviews);  // Log reviews to the console
+            const reviewsContainer = document.getElementById("reviews");
+            reviewsContainer.innerHTML = reviews.length ? "" : "<p>No reviews available.</p>";
+            reviews.forEach(review => {
+                const reviewSection = document.createElement("div");
+                reviewSection.classList.add("col");
+                reviewSection.innerHTML = `
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Username: ${review.userid.username}</h5>
+                        <p class="card-text">${review.reviewText}</p>
+                        <p><strong>Rating:</strong> ${review.rating}</p>
+                        <p><strong>Reviewed At:</strong> ${new Date(review.createdAt).toLocaleDateString()}</p>
+                    </div>
+                </div>`;
+                reviewsContainer.appendChild(reviewSection);
+            });
+        })
+        .catch(error => {
+            document.getElementById("reviews").innerHTML = "<p>Error loading reviews.</p>";
+            console.error("Error fetching reviews data:", error);
+        });
+
+</script>
+
+<footer>
+    <p>&copy; 2025 Elite Travel | All Rights Reserved</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

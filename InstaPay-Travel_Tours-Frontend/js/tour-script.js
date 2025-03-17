@@ -1,31 +1,29 @@
-// URL to the API that communicates with your backend (adjust according to your server)
+
 const apiUrl = "http://localhost:8080/api/v1/tours";
 let imageData = "";
-let selectedTourID = null; // Stores selected tourID for Update/Delete
+let selectedTourID = null;
 
-// Convert image to Base64
 function convertToBase64(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function (e) {
-            imageData = e.target.result; // Store globally for reuse
+            imageData = e.target.result;
             $("#imagePreview").attr("src", imageData).show();
         };
         reader.readAsDataURL(file);
     }
 }
 
-// Load the list of tours
 function loadTours() {
-    console.log("Loading tours..."); // Debugging log
+    console.log("Loading tours...");
 
     $.get(apiUrl + "/getAll")
         .done(function (tours) {
-            console.log("Tours Loaded:", tours);  // Log the data received from the API
+            console.log("Tours Loaded:", tours);
 
             const tableBody = $("#tourTableBody");
-            tableBody.empty(); // Clear the table before adding new rows
+            tableBody.empty();
 
             if (tours && tours.length > 0) {
                 tours.forEach(tour => {
@@ -56,17 +54,15 @@ function loadTours() {
             }
         })
         .fail(function (error) {
-            console.error("Error loading tours from API", error);  // Log the error for debugging
+            console.error("Error loading tours from API", error);
             alert("Error loading tours.");
         });
 }
 
 
-// Save a new tour
 $("#tourForm").submit(function (event) {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
-    // Validate form fields
     const tourName = $("#tourName").val();
     const location = $("#location").val();
     const duration = $("#duration").val();
@@ -77,13 +73,11 @@ $("#tourForm").submit(function (event) {
     const endDate = $("#endDate").val();
     const description = $("#description").val();
 
-    // Validate if required fields are filled
     if (!tourName || !location || !duration || !price || !tourType || !availableSeats || !startDate || !endDate) {
         alert("Please fill all required fields.");
         return;
     }
 
-    // Ensure imageData is set
     if (!imageData) {
         alert("Please upload an image.");
         return;
@@ -99,27 +93,25 @@ $("#tourForm").submit(function (event) {
         startDate: startDate,
         endDate: endDate,
         description: description,
-        images: imageData // Use globally stored Base64 image data
+        images: imageData
     };
 
     console.log("Submitting Tour Data:", tourData);
 
-    saveTourAPI(tourData); // Move the call to saveTourAPI outside of the form submit function
+    saveTourAPI(tourData);
 });
 
-// Function to save tour via API
 function saveTourAPI(tourData) {
     $.ajax({
-        url: apiUrl + "/save",  // API endpoint to save tour data
+        url: apiUrl + "/save",
         method: 'POST',
         data: JSON.stringify(tourData),
         contentType: 'application/json',
         success: function (response) {
-            console.log('Tour saved successfully:', response); // Log the response from the server
+            console.log('Tour saved successfully:', response);
             alert('Tour saved successfully');
             window.location.href = "tour.html";
-            // After saving, reload the list of tours
-            loadTours(); // Reload the tours list after saving
+            loadTours();
             resetForm();
         },
         error: function (error) {
@@ -221,7 +213,7 @@ function deleteTour(tourID) {
 function resetForm() {
     $("#tourForm")[0].reset();
     $("#imagePreview").hide();
-    imageData = ""; // Clear global image data
+    imageData = "";
     selectedTourID = null;
     $("#saveButton").show();
     $("#updateButton").hide();

@@ -3,96 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Details</title>
+    <title>Tour Bookings</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Lora', serif;
             background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
             color: #333;
+            padding: 20px;
         }
         .table-container {
-            margin-top: 50px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
-        .booked-tour-table th, .booked-tour-table td {
+        .table th, .table td {
             text-align: center;
+            vertical-align: middle;
         }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 30px;
-            background-color: #2c3e50;
+        .remove-btn, .clear-btn, .seat-btn {
             color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
+        .remove-btn { background-color: #e74c3c; }
+        .remove-btn:hover { background-color: #c0392b; }
+        .clear-btn { background-color: #e67e22; padding: 10px 20px; margin-top: 20px; }
+        .clear-btn:hover { background-color: #d35400; }
+        .seat-btn { background-color: #3498db; font-size: 18px; margin: 0 5px; }
+        .seat-btn:hover { background-color: #2980b9; }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="tour-header">
-        <h1>Booking Details</h1>
-        <p>Review your selected tours and bookings.</p>
-    </div>
 
+<div class="container">
+    <h2 class="text-center mb-4">Your Booked Tours</h2>
     <div class="table-container">
-        <table class="table table-bordered booked-tour-table">
-            <thead>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
             <tr>
                 <th>Tour Name</th>
                 <th>Location</th>
-                <th>Description</th>
-                <th>Duration</th>
+                <th>Duration (Days)</th>
+                <th>Tour Type</th>
                 <th>Price</th>
-                <th>Seats</th>
+                <th>Available Seats</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Action</th>
             </tr>
             </thead>
-            <tbody id="booking-table-body"></tbody>
+            <tbody id="bookingsTableBody">
+            <!-- Booked tours will be inserted here -->
+            </tbody>
         </table>
-        <button class="btn btn-success" onclick="addBooking()">Add Booking</button>
+        <button class="clear-btn" onclick="clearBookings()">Clear All Bookings</button>
     </div>
 </div>
 
 <script>
+    // Sample data initialization for the original tour list
+    const allTours = [
+        { tourName: 'Tour 1', location: 'Paris', duration: 5, tourType: 'Adventure', price: 500, availableSeats: 20, totalSeats: 20, startDate: '2025-05-01', endDate: '2025-05-06' },
+        { tourName: 'Tour 2', location: 'Rome', duration: 7, tourType: 'Cultural', price: 600, availableSeats: 15, totalSeats: 15, startDate: '2025-06-01', endDate: '2025-06-08' },
+        { tourName: 'Tour 3', location: 'New York', duration: 6, tourType: 'City', price: 700, availableSeats: 30, totalSeats: 30, startDate: '2025-07-01', endDate: '2025-07-07' },
+    ];
+
+    localStorage.setItem("allTours", JSON.stringify(allTours)); // Store tours initially
+
     document.addEventListener("DOMContentLoaded", function () {
-        const selectedTour = JSON.parse(localStorage.getItem("selectedTour"));
-        if (selectedTour) {
-            addBookingToTable(selectedTour);
-        }
+        displayBookedTours();
+        updateTourSeats(); // Update available seats in the original tour table
     });
 
-    function addBookingToTable(tour) {
-        const tableBody = document.getElementById("booking-table-body");
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${tour.tourName}</td>
-            <td>${tour.location}</td>
-            <td>${tour.description}</td>
-            <td>${tour.duration} days</td>
-            <td>$${tour.price}</td>
-            <td>${tour.availableSeats}</td>
-            <td>${new Date(tour.startDate).toLocaleDateString()}</td>
-            <td>${new Date(tour.endDate).toLocaleDateString()}</td>
-        `;
-        tableBody.appendChild(row);
+    // Display booked tours
+    function displayBookedTours() {
+        let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
+        const tableBody = document.getElementById("bookingsTableBody");
+
+        if (bookings.length === 0) {
+            tableBody.innerHTML = "<tr><td colspan='9'>No tours booked yet.</td></tr>";
+            return;
+        }
+
+        tableBody.innerHTML = "";
+        bookings.forEach((tour, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${tour.tourName}</td>
+                <td>${tour.location}</td>
+                <td>${tour.duration}</td>
+                <td>${tour.tourType}</td>
+                <td>$${tour.price}</td>
+                <td>
+                    <button class="seat-btn" onclick="updateSeats(${index}, -1)">-</button>
+                    <span id="seats-${index}">${tour.availableSeats}</span>
+                    <button class="seat-btn" onclick="updateSeats(${index}, 1)">+</button>
+                </td>
+                <td>${new Date(tour.startDate).toLocaleDateString()}</td>
+                <td>${new Date(tour.endDate).toLocaleDateString()}</td>
+                <td><button class="remove-btn" onclick="removeBooking(${index})">Remove</button></td>
+            `;
+            tableBody.appendChild(row);
+        });
     }
 
-    function addBooking() {
-        const selectedTour = JSON.parse(localStorage.getItem("selectedTour"));
-        if (selectedTour) {
-            addBookingToTable(selectedTour);
-        } else {
-            alert("No tour selected.");
+    // Update seats in the booking table and in the original tour data
+    function updateSeats(index, change) {
+        let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
+        let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
+
+        if (bookings[index]) {
+            let newSeats = bookings[index].availableSeats + change;
+            if (newSeats >= 0) {
+                bookings[index].availableSeats = newSeats;
+                localStorage.setItem("selectedTours", JSON.stringify(bookings));
+                document.getElementById(`seats-${index}`).textContent = newSeats;
+
+                // Also update the available seats in the original tours table
+                for (let i = 0; i < originalTours.length; i++) {
+                    if (originalTours[i].tourName === bookings[index].tourName) {
+                        originalTours[i].availableSeats = newSeats;
+                        break;
+                    }
+                }
+                localStorage.setItem("allTours", JSON.stringify(originalTours));
+            }
         }
     }
-</script>
 
-<footer>
-    <p>&copy; 2025 Elite Travel | All Rights Reserved</p>
-</footer>
+    // Remove a booking and update the available seats in the original tour data
+    function removeBooking(index) {
+        let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
+        let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
+
+        // Get the removed booking's tour name and available seats
+        let removedTour = bookings[index];
+
+        // Remove the booking
+        bookings.splice(index, 1);
+        localStorage.setItem("selectedTours", JSON.stringify(bookings));
+
+        // Update the original tours' available seats
+        for (let i = 0; i < originalTours.length; i++) {
+            if (originalTours[i].tourName === removedTour.tourName) {
+                originalTours[i].availableSeats += removedTour.availableSeats; // Add the seats back
+                break;
+            }
+        }
+        localStorage.setItem("allTours", JSON.stringify(originalTours));
+
+        displayBookedTours();
+    }
+
+    // Clear all bookings and reset the available seats in the original tours data
+    function clearBookings() {
+        let bookings = [];
+        let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
+
+        // Restore all available seats to the original tours
+        for (let i = 0; i < originalTours.length; i++) {
+            originalTours[i].availableSeats = originalTours[i].totalSeats; // Restore to the original total seats
+        }
+
+        localStorage.setItem("selectedTours", JSON.stringify(bookings));
+        localStorage.setItem("allTours", JSON.stringify(originalTours));
+
+        displayBookedTours();
+    }
+
+    // Update the available seats for each tour in the original table (for when adding/removing seats)
+    function updateTourSeats() {
+        let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
+
+        // Update the available seats for all tours
+        originalTours.forEach((tour) => {
+            // You can add logic here to update the available seats based on bookings, if necessary
+            // For simplicity, I’m assuming `availableSeats` is initialized properly
+        });
+
+        localStorage.setItem("allTours", JSON.stringify(originalTours));
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

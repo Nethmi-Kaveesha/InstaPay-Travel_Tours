@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Review Form</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center mb-4">Review Form</h2>
+        <form id="reviewForm">
+            <div class="mb-3">
+                <label for="reviewid" class="form-label">Review ID:</label>
+                <input type="text" class="form-control" id="reviewid" name="reviewid" placeholder="Review ID (Auto-generated)" disabled>
+
+                <label for="userid" class="form-label">User ID:</label>
+                <input type="text" class="form-control" id="userid" name="userid" placeholder="User ID" disabled>
+
+                <label for="tourid" class="form-label">Tour ID:</label>
+                <input type="text" class="form-control" id="tourid" name="tourid" placeholder="Enter Tour ID" required>
+
+                <label for="rating" class="form-label">Rating:</label>
+                <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" placeholder="Enter rating (1-5)" required>
+
+                <label for="reviewText" class="form-label">Review Text:</label>
+                <textarea class="form-control" id="reviewText" name="reviewText" placeholder="Enter your review" required></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateReview()">Update</button>
+                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteReview(selectedReviewId)">Delete</button>
+            </div>
+        </form>
+
+        <table class="table table-striped table-hover mt-5">
+            <thead>
+            <tr>
+                <th>Review ID</th>
+                <th>User ID</th>
+                <th>Tour ID</th>
+                <th>Rating</th>
+                <th>Review Text</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="reviewTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="js/bootstrap.js"></script>
+<script src="js/review-script.js"></script>
+</body>
+</html>

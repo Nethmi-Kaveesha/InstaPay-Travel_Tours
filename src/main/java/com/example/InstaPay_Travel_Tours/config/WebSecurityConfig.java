@@ -71,13 +71,20 @@ public class WebSecurityConfig {
                                 "/api/v1/tourguide/delete/**",      // Public endpoint for deleting a tour guide
                                 "/api/v1/tours/save",              // Public endpoint to save tours
                                 "/api/v1/tours/getAll",            // Public endpoint to get all tours
+                                "/api/v1/reviews",
                                 "/api/v1/tours/edit",              // Public endpoint to edit tours
                                 "/api/v1/tours/1",                 // Public endpoint for a specific tour
                                 "/api/v1/payment/**",              // Public payment-related endpoints
                                 "/api/v1/booking/**",              // Public booking-related endpoints
-                                "/api/v1/review/save",             // Public endpoint to save reviews
-                                "/api/v1/review/getAll",           // Public endpoint to get all reviews
-                                "/api/v1/review/update"            // Public endpoint to update reviews
+                                "/api/v1/reviews/save",             // Public endpoint to save reviews
+                                "/api/v1/reviews/getAll",           // Public endpoint to get all reviews
+                                "/api/v1/reviews/update",           // Public endpoint to update reviews
+                                "/api/v1/reviews/delete/**",        // Public endpoint to delete reviews
+                                "/api/v1/reviews/getById/**" ,       // Public endpoint to get a review by ID
+                                "/api/v1/tourschedule/save",       // Public endpoint for saving a tour schedule
+                                "/api/v1/tourschedule/getAll",     // Public endpoint to get all tour schedules
+                                "/api/v1/tourschedule/update",     // Public endpoint for updating a tour schedule
+                                "/api/v1/tourschedule/delete/**"   // Public endpoint for deleting a tour schedule
                         ).permitAll() // Allow public access to the above endpoints
                         .anyRequest().authenticated()  // Require authentication for other endpoints
                 )

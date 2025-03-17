@@ -302,18 +302,16 @@
                     contentType: 'application/json',
                     success: function (response) {
                         if (response.code === 201) {
-                            let role = response.role;
-
-                            let dashboardUrl = role === "ADMIN" ? "admin-dashboard.html" : "user-dashboard.html";
+                            let userId = response.userId;  // Assuming the user ID is returned in the response
 
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Login successful!',
-                                text: `Welcome, User. Redirecting to your dashboard.`,
-                                confirmButtonText: 'Go to Dashboard'
+                                text: 'Redirecting to Review Form...',
+                                confirmButtonText: 'Go to Review Form'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = dashboardUrl; // Redirect user
+                                    window.location.href = `ReviewForm.html?userId=${userId}`;  // Redirect to ReviewForm with userId as a query parameter
                                 }
                             });
                         } else {
@@ -342,6 +340,7 @@
             return re.test(email);
         }
     });
+
 </script>
 </body>
 </html>
