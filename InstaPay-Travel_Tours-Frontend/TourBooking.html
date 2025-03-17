@@ -23,7 +23,7 @@
             text-align: center;
             vertical-align: middle;
         }
-        .remove-btn, .clear-btn, .seat-btn {
+        .remove-btn, .clear-btn, .seat-btn, .book-btn {
             color: #fff;
             border: none;
             padding: 5px 10px;
@@ -36,6 +36,8 @@
         .clear-btn:hover { background-color: #d35400; }
         .seat-btn { background-color: #3498db; font-size: 18px; margin: 0 5px; }
         .seat-btn:hover { background-color: #2980b9; }
+        .book-btn { background-color: #2ecc71; padding: 5px 15px; }
+        .book-btn:hover { background-color: #27ae60; }
     </style>
 </head>
 <body>
@@ -54,6 +56,7 @@
                 <th>Available Seats</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Book</th>
                 <th>Action</th>
             </tr>
             </thead>
@@ -66,14 +69,6 @@
 </div>
 
 <script>
-    // Sample data initialization for the original tour list
-    const allTours = [
-        { tourName: 'Tour 1', location: 'Paris', duration: 5, tourType: 'Adventure', price: 500, availableSeats: 20, totalSeats: 20, startDate: '2025-05-01', endDate: '2025-05-06' },
-        { tourName: 'Tour 2', location: 'Rome', duration: 7, tourType: 'Cultural', price: 600, availableSeats: 15, totalSeats: 15, startDate: '2025-06-01', endDate: '2025-06-08' },
-        { tourName: 'Tour 3', location: 'New York', duration: 6, tourType: 'City', price: 700, availableSeats: 30, totalSeats: 30, startDate: '2025-07-01', endDate: '2025-07-07' },
-    ];
-
-    localStorage.setItem("allTours", JSON.stringify(allTours)); // Store tours initially
 
     document.addEventListener("DOMContentLoaded", function () {
         displayBookedTours();
@@ -86,7 +81,7 @@
         const tableBody = document.getElementById("bookingsTableBody");
 
         if (bookings.length === 0) {
-            tableBody.innerHTML = "<tr><td colspan='9'>No tours booked yet.</td></tr>";
+            tableBody.innerHTML = "<tr><td colspan='10'>No tours booked yet.</td></tr>";
             return;
         }
 
@@ -106,6 +101,7 @@
                 </td>
                 <td>${new Date(tour.startDate).toLocaleDateString()}</td>
                 <td>${new Date(tour.endDate).toLocaleDateString()}</td>
+                <td><button class="book-btn" onclick="bookTour(${index})">Book</button></td>
                 <td><button class="remove-btn" onclick="removeBooking(${index})">Remove</button></td>
             `;
             tableBody.appendChild(row);
@@ -124,7 +120,6 @@
                 localStorage.setItem("selectedTours", JSON.stringify(bookings));
                 document.getElementById(`seats-${index}`).textContent = newSeats;
 
-                // Also update the available seats in the original tours table
                 for (let i = 0; i < originalTours.length; i++) {
                     if (originalTours[i].tourName === bookings[index].tourName) {
                         originalTours[i].availableSeats = newSeats;
@@ -136,22 +131,29 @@
         }
     }
 
+    // Book a tour (Redirect to login if not logged in)
+    function bookTour(index) {
+        let isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+        if (!isLoggedIn) {
+            window.location.href = "log.html"; // Redirect to login page
+        } else {
+            alert("Tour booked successfully!"); // Placeholder for actual booking functionality
+        }
+    }
+
     // Remove a booking and update the available seats in the original tour data
     function removeBooking(index) {
         let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
         let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
 
-        // Get the removed booking's tour name and available seats
         let removedTour = bookings[index];
 
-        // Remove the booking
         bookings.splice(index, 1);
         localStorage.setItem("selectedTours", JSON.stringify(bookings));
 
-        // Update the original tours' available seats
         for (let i = 0; i < originalTours.length; i++) {
             if (originalTours[i].tourName === removedTour.tourName) {
-                originalTours[i].availableSeats += removedTour.availableSeats; // Add the seats back
+                originalTours[i].availableSeats += removedTour.availableSeats;
                 break;
             }
         }
@@ -160,33 +162,18 @@
         displayBookedTours();
     }
 
-    // Clear all bookings and reset the available seats in the original tours data
     function clearBookings() {
         let bookings = [];
         let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
 
-        // Restore all available seats to the original tours
         for (let i = 0; i < originalTours.length; i++) {
-            originalTours[i].availableSeats = originalTours[i].totalSeats; // Restore to the original total seats
+            originalTours[i].availableSeats = originalTours[i].totalSeats;
         }
 
         localStorage.setItem("selectedTours", JSON.stringify(bookings));
         localStorage.setItem("allTours", JSON.stringify(originalTours));
 
         displayBookedTours();
-    }
-
-    // Update the available seats for each tour in the original table (for when adding/removing seats)
-    function updateTourSeats() {
-        let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
-
-        // Update the available seats for all tours
-        originalTours.forEach((tour) => {
-            // You can add logic here to update the available seats based on bookings, if necessary
-            // For simplicity, I’m assuming `availableSeats` is initialized properly
-        });
-
-        localStorage.setItem("allTours", JSON.stringify(originalTours));
     }
 </script>
 
