@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Tour Management</title>
     <style>
@@ -94,10 +96,55 @@
                 align-items: center;
             }
         }
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+
     </style>
 </head>
 <body>
-
+<nav>
+    <ul>
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
+    </ul>
+</nav>
 <div class="header">
     <h1>Admin Dashboard - Tour Management</h1>
 </div>
@@ -107,28 +154,28 @@
         <div class="icon">🗺️</div>
         <h2>Manage Tours</h2>
         <p>Add, update, and manage tour packages and destinations.</p>
-        <a href="#">Manage Tours</a>
+        <a href="tour.html">Manage Tours</a>
     </div>
 
     <div class="dashboard-card">
         <div class="icon">📅</div>
         <h2>Tour Schedule</h2>
         <p>Set and modify schedules for each tour package.</p>
-        <a href="#">View Schedule</a>
+        <a href="TourShedule.html">View Schedule</a>
     </div>
 
     <div class="dashboard-card">
         <div class="icon">💬</div>
         <h2>Reviews</h2>
         <p>Manage and approve reviews from customers.</p>
-        <a href="#">Manage Reviews</a>
+        <a href="ReviewForm.html">Manage Reviews</a>
     </div>
 
     <div class="dashboard-card">
         <div class="icon">📝</div>
         <h2>Booking</h2>
         <p>View and manage customer bookings.</p>
-        <a href="#">View Bookings</a>
+        <a href="TourBooking.html">View Bookings</a>
     </div>
 
 
@@ -136,28 +183,28 @@
         <div class="icon">🧑‍💼</div>
         <h2>Tour Guides</h2>
         <p>Assign and manage tour guides for different packages.</p>
-        <a href="#">Manage Guides</a>
+        <a href="tourGuide.html">Manage Guides</a>
     </div>
 
     <div class="dashboard-card">
         <div class="icon">💸</div>
         <h2>Add Expense</h2>
         <p>Track and add expenses for each tour package.</p>
-        <a href="#">Add Expense</a>
+        <a href="add-expense.html">Add Expense</a>
     </div>
 
     <div class="dashboard-card">
         <div class="icon">🌍</div>
         <h2>Show Tours</h2>
         <p>Display available tours and their details to customers.</p>
-        <a href="#">Show Tours</a>
+        <a href="show.html">Show Tours</a>
     </div>
 
     <div class="dashboard-card">
         <div class="icon">👥</div>
         <h2>Manage Users</h2>
         <p>View and manage users, edit details, and deactivate accounts.</p>
-        <a href="#">Manage Users</a>
+        <a href="user.html">Manage Users</a>
     </div>
 </div>
 

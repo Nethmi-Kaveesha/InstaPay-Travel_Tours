@@ -5,59 +5,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tour Schedule Form</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link href="css/bootstrap.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-top: 100px;
+            border-radius: 15px;
+        }
+        .form-control {
+            border-radius: 10px;
+        }
+        .btn {
+            border-radius: 8px;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+        td {
+            text-align: center;
+        }
+        .btn-group button {
+            margin: 2px;
+        }
 
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
+    </ul>
+</nav>
 <div class="container mt-5">
     <div class="card shadow-lg p-4">
-        <h2 class="text-center mb-4">Tour Schedule Form</h2>
+        <h2 class="text-center mb-4 text-primary">Tour Schedule Form</h2>
         <form id="tourScheduleForm">
-            <div class="mb-3">
-                <label for="scheduleId" class="form-label">Schedule ID:</label>
-                <input type="text" class="form-control" id="scheduleId" name="scheduleId" placeholder="Schedule ID (Auto-generated)" disabled>
-
-                <label for="tourid" class="form-label">Tour ID:</label>
-                <input type="text" class="form-control" id="tourid" name="tourid" placeholder="Enter tour ID" required>
-
-                <label for="startDate" class="form-label">Start Date:</label>
-                <input type="datetime-local" class="form-control" id="startDate" name="startDate" required>
-
-                <label for="endDate" class="form-label">End Date:</label>
-                <input type="datetime-local" class="form-control" id="endDate" name="endDate" required>
-
-                <label for="meetingPoint" class="form-label">Meeting Point:</label>
-                <input type="text" class="form-control" id="meetingPoint" name="meetingPoint" placeholder="Enter meeting point" required>
-
-                <label for="guideid" class="form-label">Guide ID:</label>
-                <input type="text" class="form-control" id="guideid" name="guideid" placeholder="Enter guide's ID" required>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="scheduleId" class="form-label">Schedule ID:</label>
+                    <input type="text" class="form-control" id="scheduleId" placeholder="Auto-generated" disabled>
+                </div>
+                <div class="col-md-6">
+                    <label for="tourid" class="form-label">Tour ID:</label>
+                    <input type="text" class="form-control" id="tourid" placeholder="Enter tour ID" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="startDate" class="form-label">Start Date:</label>
+                    <input type="datetime-local" class="form-control" id="startDate" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="endDate" class="form-label">End Date:</label>
+                    <input type="datetime-local" class="form-control" id="endDate" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="meetingPoint" class="form-label">Meeting Point:</label>
+                    <input type="text" class="form-control" id="meetingPoint" placeholder="Enter meeting point" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="guideid" class="form-label">Guide ID:</label>
+                    <input type="text" class="form-control" id="guideid" placeholder="Enter guide's ID" required>
+                </div>
             </div>
-
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTourSchedule()">Update</button>
-                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTourSchedule(selectedTourScheduleId)">Delete</button>
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary px-4 me-2">Save</button>
+                <button type="button" class="btn btn-warning px-4 me-2" style="display: none;" id="updateButton">Update</button>
+                <button type="button" class="btn btn-danger px-4" style="display: none;" id="deleteButton">Delete</button>
             </div>
         </form>
+    </div>
 
-        <table class="table table-striped table-hover mt-5">
-            <thead>
-            <tr>
-                <th>Schedule ID</th>
-                <th>Tour ID</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Meeting Point</th>
-                <th>Guide ID</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="tourScheduleTableBody"></tbody>
-        </table>
+    <div class="card mt-5 shadow-lg">
+        <div class="card-body">
+            <h4 class="text-center text-secondary">Tour Schedules</h4>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th>Schedule ID</th>
+                    <th>Tour ID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Meeting Point</th>
+                    <th>Guide ID</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tourScheduleTableBody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-<script src="js/bootstrap.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/tourShedule-script.js"></script>
 </body>
 </html>

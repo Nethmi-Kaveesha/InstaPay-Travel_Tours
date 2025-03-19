@@ -5,81 +5,193 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tour Form</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ece9e6, #ffffff);
+            min-height: 100vh;
+        }
+        .card {
+            border-radius: 12px;
+            background: white;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .btn {
+            border-radius: 8px;
+            transition: 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+        .btn-danger:hover {
+            background: #b30000;
+        }
+        .table-container {
+            overflow-x: auto;
+            max-height: 400px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th {
+            background: lightseagreen;
+            color: black;
+            text-align: center;
+            padding: 10px;
+        }
+        td {
+            color: black;
+            padding: 10px;
+            text-align: center;
+        }
+        tr:nth-child(even) {
+            color: black;
+            background: #f2f2f2;
+        }
 
+        tr:hover {
+            background: #d4eaff;
+        }
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .card{
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
+    </ul>
+</nav>
 <div class="container mt-5">
     <div class="card shadow-lg p-4">
-        <h2 class="text-center mb-4">Tour Form</h2>
+        <h2 class="text-center mb-4 text-primary">Tour Form</h2>
         <form id="tourForm">
-            <div class="mb-3">
-                <label for="tourID" class="form-label">Guide ID:</label>
-                <input type="text" class="form-control" id="tourID" name="tourID" placeholder="Tour ID (Auto-generated)" disabled>
-
-                <label for="tourName" class="form-label">Tour Name:</label>
-                <input type="text" class="form-control" id="tourName" name="tourName" placeholder="Enter tour name" required>
-
-                <label for="location" class="form-label">Location:</label>
-                <input type="text" class="form-control" id="location" name="location" placeholder="Enter tour location" required>
-
-                <label for="duration" class="form-label">Duration (Days):</label>
-                <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter tour duration" required>
-
-                <label for="price" class="form-label">Price:</label>
-                <input type="number" class="form-control" id="price" name="price" placeholder="Enter tour price" required>
-
-                <label for="tourType" class="form-label">Tour Type:</label>
-                <input type="text" class="form-control" id="tourType" name="tourType" placeholder="Enter tour type" required>
-
-                <label for="availableSeats" class="form-label">Available Seats:</label>
-                <input type="number" class="form-control" id="availableSeats" name="availableSeats" placeholder="Enter available seats" required>
-
-                <label for="startDate" class="form-label">Start Date:</label>
-                <input type="date" class="form-control" id="startDate" name="startDate" required>
-
-                <label for="endDate" class="form-label">End Date:</label>
-                <input type="date" class="form-control" id="endDate" name="endDate" required>
-
-                <label for="description" class="form-label">Tour Description:</label>
-                <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter a brief description of the tour"></textarea>
-
-                <label>
-                    <input type="file" accept="image/*" multiple required id="images" name="images"/>
-                    </label>
-
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="tourID" class="form-label">Guide ID:</label>
+                    <input type="text" class="form-control" id="tourID" name="tourID" placeholder="Auto-generated" disabled>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="tourName" class="form-label">Tour Name:</label>
+                    <input type="text" class="form-control" id="tourName" name="tourName" placeholder="Enter tour name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="location" class="form-label">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter tour location" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="duration" class="form-label">Duration (Days):</label>
+                    <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter duration" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="tourType" class="form-label">Tour Type:</label>
+                    <input type="text" class="form-control" id="tourType" name="tourType" placeholder="Enter type" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="availableSeats" class="form-label">Available Seats:</label>
+                    <input type="number" class="form-control" id="availableSeats" name="availableSeats" placeholder="Enter seats" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="startDate" class="form-label">Start Date:</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="endDate" class="form-label">End Date:</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="description" class="form-label">Tour Description:</label>
+                    <textarea id="description" name="description" class="form-control" rows="3" placeholder="Enter a brief description"></textarea>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Upload Image:</label>
+                    <input type="file" accept="image/*" multiple required id="images" name="images" class="form-control">
+                </div>
             </div>
 
-            <div class="d-flex justify-content-between">
-                <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTour()">Update</button>
-                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTour(selectedTourID)">Delete</button>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <button type="submit" id="saveButton" class="btn btn-primary px-4">Save</button>
+                <button type="button" class="btn btn-warning px-4" id="updateButton" style="display: none;">Update</button>
+                <button type="button" class="btn btn-danger px-4" id="deleteButton" style="display: none;">Delete</button>
             </div>
         </form>
 
-        <!-- Tour Table -->
-        <table>
-            <thead>
-            <tr>
-                <th>Tour ID</th>
-                <th>Tour Name</th>
-                <th>Location</th>
-                <th>Duration</th>
-                <th>Price</th>
-                <th>Tour Type</th>
-                <th>Available Seats</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="tourTableBody">
-            <!-- Data will be injected here -->
-            </tbody>
-        </table>
+        <hr class="my-4">
 
+        <!-- Tour Table -->
+        <h3 class="text-center text-primary">Tour Details</h3>
+        <div class="table-container">
+            <table class="table table-striped table-bordered mt-3">
+                <thead>
+                <tr>
+                    <th>Tour ID</th>
+                    <th>Tour Name</th>
+                    <th>Location</th>
+                    <th>Duration</th>
+                    <th>Price</th>
+                    <th>Tour Type</th>
+                    <th>Available Seats</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tourTableBody">
+                <!-- Data will be injected here -->
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
