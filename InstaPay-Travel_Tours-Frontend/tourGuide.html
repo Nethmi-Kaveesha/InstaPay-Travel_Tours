@@ -3,57 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Tour Guide Form</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+        .card {
+            margin-top: 100px;
+            border-radius: 12px;
+            padding: 30px;
+            background: #ffffff;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease-in-out;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 10px 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: #212529;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        table {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
 
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
+    </ul>
+</nav>
 <div class="container mt-5">
-    <div class="card shadow-lg p-4">
+    <div class="card">
         <h2 class="text-center mb-4">Tour Guide Form</h2>
         <form id="tourGuideForm">
             <div class="mb-3">
                 <label for="guideID" class="form-label">Guide ID:</label>
-                <input type="text" class="form-control" id="guideID" name="guideID" placeholder="Guide ID (Auto-generated)" disabled>
+                <input type="text" class="form-control" id="guideID" name="guideID" placeholder="Auto-generated" disabled>
 
-                <label for="fullName" class="form-label">Full Name:</label>
-                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter guide's full name" required>
+                <label for="fullName" class="form-label mt-2">Full Name:</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter full name" required>
 
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter guide's email" required>
+                <label for="email" class="form-label mt-2">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
 
-                <label for="phoneNumber" class="form-label">Phone Number:</label>
-                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter guide's phone number" required>
+                <label for="phoneNumber" class="form-label mt-2">Phone Number:</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" required>
 
-                <label for="experience" class="form-label">Experience:</label>
-                <input type="text" class="form-control" id="experience" name="experience" placeholder="Enter guide's experience" required>
+                <label for="experience" class="form-label mt-2">Experience:</label>
+                <input type="text" class="form-control" id="experience" name="experience" placeholder="Enter experience in years" required>
 
-                <label for="languagesSpoken" class="form-label">Languages Spoken:</label>
-                <input type="text" class="form-control" id="languagesSpoken" name="languagesSpoken" placeholder="Enter languages spoken by the guide" required>
+                <label for="languagesSpoken" class="form-label mt-2">Languages Spoken:</label>
+                <input type="text" class="form-control" id="languagesSpoken" name="languagesSpoken" placeholder="Enter languages" required>
             </div>
 
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateTourGuide()">Update</button>
-                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteTourGuide(selectedTourGuideId)">Delete</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-warning d-none" id="updateButton">Update</button>
+                <button type="button" class="btn btn-danger d-none" id="deleteButton">Delete</button>
             </div>
         </form>
 
-        <table class="table table-striped table-hover mt-5">
-            <thead>
-            <tr>
-                <th>Guide ID</th>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Experience</th>
-                <th>Languages Spoken</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="tourGuideTableBody"></tbody>
-        </table>
+        <div class="mt-5">
+            <h4 class="text-center">Tour Guides List</h4>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th>Guide ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Experience</th>
+                    <th>Languages Spoken</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="tourGuideTableBody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
