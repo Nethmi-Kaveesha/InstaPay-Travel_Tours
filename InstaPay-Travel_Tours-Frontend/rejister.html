@@ -10,42 +10,31 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f7f7f7;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            display: flex;
-            margin-top: 30px;
-            height: 90vh;
-            padding: 10px;
-        }
-        .login-link-container {
+            background-image: url('images/beach_tour.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            margin: 120px;
+            padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 45%;
-            background-color: #003366;
-            color: white;
-            height: 87vh;
-            text-align: center;
-            padding: 20px;
+            color: #333;
         }
-        .login-link {
-            color: #ffcc00;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .login-link:hover {
-            text-decoration: underline;
-        }
+
         .form-container {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-width: 500px;
-            width: 45%;
+            width: 100%;
+            border: 1px solid #00A1E6;
         }
+
+
         .form-title {
             text-align: center;
             margin-bottom: 30px;
@@ -53,55 +42,72 @@
             font-weight: bold;
             color: #333;
         }
+
+
         .form-control {
             margin-bottom: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #F9F9F9;
+            color: #333;
         }
+
+        .form-control:focus {
+            border-color: #00A1E6;
+            background-color: #fff;
+        }
+
         .btn-register {
-            background-color: #4CAF50;
+            background-color: #00A1E6;
             color: white;
             font-size: 16px;
+            border-radius: 5px;
+            width: 100%;
         }
+
         .btn-register:hover {
-            background-color: #45a049;
+            background-color: #017B98;
         }
+
         .icon-input {
             position: relative;
         }
+
         .icon-input i {
             position: absolute;
             left: 15px;
             top: 70%;
             transform: translateY(-50%);
-            color: #999;
+            color: #99A9B5;
         }
+
         .input-with-icon {
             padding-left: 35px;
         }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+
+        select.form-control {
+            background-color: #F1F8FF;
         }
 
-        nav {
-            background: #333;
-            padding: 10px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 333310;
+        select.form-control:focus {
+            border-color: #00A1E6;
         }
 
-        nav ul {
-            list-style-type: none;
-            display: flex;
-            justify-content: space-around;
-            padding: 0;
-            margin: 0;
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
         }
 
-        /* Navigation Styling */
+        .login-link a {
+            color: #00A1E6;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
         nav {
             background: #333;
             padding: 10px;
@@ -130,55 +136,10 @@
             font-size: 18px;
         }
 
-        /* Logo Styling */
         nav .logo {
-            width: 150px; /* Adjust logo size */
+            width: 150px;
             height: auto;
-            margin-right: 20px; /* Space between logo and the navigation links */
-        }
-
-        /* Responsive Media Queries for Navigation */
-        @media (max-width: 1024px) {
-            nav ul {
-                flex-direction: column; /* Stack links vertically on smaller screens */
-                align-items: center; /* Center align the links */
-            }
-
-            nav ul li {
-                padding: 8px 0; /* Adjust padding for smaller screens */
-            }
-
-            nav ul li a {
-                font-size: 16px; /* Adjust font size for smaller screens */
-            }
-
-            nav .logo {
-                width: 120px; /* Adjust logo size for smaller screens */
-            }
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                flex-direction: column; /* Stack links vertically for tablet screens */
-            }
-
-            nav ul li a {
-                font-size: 15px; /* Adjust font size further for smaller screens */
-            }
-
-            nav .logo {
-                width: 100px; /* Adjust logo size for tablet screens */
-            }
-        }
-
-        @media (max-width: 480px) {
-            nav ul li a {
-                font-size: 14px; /* Adjust font size for mobile screens */
-            }
-
-            nav .logo {
-                width: 90px; /* Adjust logo size for very small screens */
-            }
+            margin-right: 20px;
         }
 
     </style>
@@ -186,22 +147,16 @@
 <body>
 <nav>
     <ul>
-        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li> <!-- Logo added here -->
-        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li> <!-- Home Icon -->
-        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li> <!-- Services Icon -->
-        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li> <!-- About Icon -->
-        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li> <!-- Team Icon -->
-        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li> <!-- Contact Icon -->
-        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li> <!-- Booking Icon -->
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
     </ul>
 </nav>
-<div class="container">
-    <div class="login-link-container">
-        <div>
-            <p>Already have an account? <a href="login.html" class="login-link">Login here</a></p>
-        </div>
-    </div>
-
+<div class="container d-flex justify-content-center align-items-center">
     <div class="form-container">
         <h2 class="form-title">Register</h2>
         <form id="registerForm" onsubmit="return handleFormSubmit(event)">
@@ -244,6 +199,9 @@
             </div>
             <button type="submit" class="btn btn-register w-100">Register</button>
         </form>
+        <div class="login-link">
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
     </div>
 </div>
 

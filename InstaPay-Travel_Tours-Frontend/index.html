@@ -5,7 +5,6 @@
     <title>Responsive Navigation with Image Slider</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Navigation Bar Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -40,10 +39,10 @@
             font-size: 18px;
         }
 
-        /* Image Slider Styles */
+
         .container {
             position: absolute;
-            top: 65px; /* Adjusted for navbar */
+            top: 65px;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
@@ -182,14 +181,13 @@
             color: #fff;
         }
 
-        /* Services Section */
         .services {
             display: flex;
             justify-content: space-around;
-            margin-top: 550px; /* Adjust as needed */
+            margin-top: 550px;
             padding: 40px 0;
             z-index: 2000;
-            flex-wrap: wrap; /* Ensure items wrap correctly on smaller screens */
+            flex-wrap: wrap;
         }
 
         .service-item {
@@ -206,7 +204,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px; /* Ensure space between items */
+            margin-bottom: 20px;
         }
 
         .service-item:hover {
@@ -247,11 +245,11 @@
             }
         }
 
-        /* Logo styling */
+
         nav .logo {
-            width: 150px; /* Adjust logo size */
+            width: 150px;
             height: auto;
-            margin-right: 20px; /* Space between logo and the navigation links */
+            margin-right: 20px;
         }
 
         header {
@@ -345,12 +343,12 @@
             padding: 40px;
             max-width: 1200px;
             margin: 0 auto;
-            flex-wrap: wrap; /* Ensures responsiveness for smaller screens */
+            flex-wrap: wrap;
         }
 
         .contact-info, .contact-form {
             width: 48%;
-            margin-bottom: 20px; /* Adds spacing between sections for smaller screens */
+            margin-bottom: 20px;
         }
 
         .contact-info h2, .contact-form h2 {
@@ -359,7 +357,7 @@
             color: #3e4a89;
         }
 
-        /* Contact Info */
+
         .contact-info p {
             font-size: 1.1rem;
             margin-bottom: 10px;
@@ -370,7 +368,7 @@
             color: #3e4a89;
         }
 
-        /* Contact Form */
+
         .contact-form form {
             background-color: #fff;
             padding: 20px;
@@ -402,7 +400,6 @@
             background-color: #2c3e6b;
         }
 
-        /* Responsive Design */
         @media (max-width: 1024px) {
             .contact-info, .contact-form {
                 width: 100%;
@@ -410,15 +407,14 @@
             }
         }
 
-        /* Mobile Design */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2rem; /* Smaller header on mobile */
+                font-size: 2rem;
             }
 
             .contact-container {
                 flex-direction: column;
-                padding: 20px; /* Less padding on smaller screens */
+                padding: 20px;
             }
 
             .contact-info, .contact-form {
@@ -431,25 +427,25 @@
             }
 
             .contact-form button {
-                font-size: 1rem; /* Adjusted font size for mobile */
+                font-size: 1rem;
                 padding: 12px;
             }
         }
 
-        /* Small mobile screens */
+
         @media (max-width: 480px) {
             header h1 {
-                font-size: 1.8rem; /* Even smaller font for small screens */
+                font-size: 1.8rem;
             }
 
             .contact-form button {
-                padding: 10px; /* Smaller button on very small screens */
+                padding: 10px;
             }
         }
 
         .team-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 columns by default */
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
             padding: 20px;
             max-width: 1200px;
@@ -483,22 +479,21 @@
             color: #666;
         }
 
-        /* Responsive Design */
         @media (max-width: 1024px) {
             .team-container {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets */
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         @media (max-width: 768px) {
             .team-container {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller devices */
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 480px) {
             .team-container {
-                grid-template-columns: 1fr; /* 1 column for mobile devices */
+                grid-template-columns: 1fr;
             }
         }
         footer {
@@ -573,7 +568,7 @@
             color: #ccc;
         }
 
-        /* Responsive Design for smaller screens */
+
         @media (max-width: 768px) {
             .footer-container {
                 flex-direction: column;
@@ -597,23 +592,23 @@
             width: 100%;
             height: 100vh;
             display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
+            justify-content: center;
+            align-items: center;
         }
 
         .gallery-container {
-            height: 700px; /* Increased height for better visibility */
+            height: 700px;
             display: flex;
             flex-wrap: nowrap;
-            justify-content: center; /* Center the gallery */
-            align-items: center; /* Align items in the center */
-            gap: 15px; /* Add spacing between images */
-            overflow-x: auto; /* Allow horizontal scrolling for small screens */
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            overflow-x: auto;
         }
 
         .card {
-            width: 106px; /* Increased width */
-            height: 650px; /* Increase height for a larger view */
+            width: 106px;
+            height: 650px;
             border-radius: 1rem;
             background-size: cover;
             background-position: center;
@@ -637,15 +632,15 @@
             background: #223;
             color: white;
             border-radius: 50%;
-            width: 50px; /* Fixed width */
-            height: 50px; /* Fixed height */
+            width: 50px;
+            height: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px; /* Ensure number is clearly visible */
+            font-size: 18px;
             font-weight: bold;
             text-align: center;
-            margin: 15px; /* Maintain spacing */
+            margin: 15px;
         }
 
         .card > .row > .description {
@@ -670,7 +665,7 @@
         }
 
         input:checked + label {
-            width: 700px; /* Increase expanded image width */
+            width: 700px;
         }
 
         input:checked + label .description {
@@ -702,7 +697,7 @@
             background-image: url("images/99.jpg");
         }
 
-        /* Responsive Design */
+
         @media (max-width: 1200px) {
             .gallery-container {
                 gap: 10px;
@@ -767,19 +762,17 @@
     </style>
 </head>
 <body>
-<!-- Navigation Bar -->
 <nav>
     <ul>
-        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li> <!-- Logo added here -->
-        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li> <!-- Home Icon -->
-        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li> <!-- Services Icon -->
-        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li> <!-- About Icon -->
-        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li> <!-- Team Icon -->
-        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li> <!-- Contact Icon -->
-        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li> <!-- Booking Icon -->
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
     </ul>
 </nav>
-<!-- Font Awesome Icons CDN -->
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 
@@ -806,7 +799,6 @@
                 <button>See more</button>
             </div>
         </div>
-        <!-- Add more items as needed -->
     </div>
     <div class="button">
         <button class="prev"><i class="fa-solid fa-arrow-left"></i></button>
@@ -838,7 +830,6 @@
         <p>Rent a car for your travels. We offer a wide range of vehicles at affordable rates.</p>
     </div>
 
-    <!-- Add New Services Here -->
     <div class="service-item">
         <i class="fa-solid fa-wifi"></i>
         <h3>Wi-Fi Connectivity</h3>
@@ -970,28 +961,24 @@
     <h1>Our Team</h1>
 </header>
 <div class="team-container">
-    <!-- Team Member 1 -->
     <div class="team-member">
         <img src="images/profile-1.jpg" alt="Team Member 1">
         <h3>John Doe</h3>
         <p>CEO</p>
     </div>
 
-    <!-- Team Member 2 -->
     <div class="team-member">
         <img src="images/profile-2.jpg" alt="Team Member 2">
         <h3>Jane Smith</h3>
         <p>Marketing Head</p>
     </div>
 
-    <!-- Team Member 3 -->
     <div class="team-member">
         <img src="images/profile-3.jpg" alt="Team Member 3">
         <h3>Emily Davis</h3>
         <p>Developer</p>
     </div>
 
-    <!-- Team Member 4 -->
     <div class="team-member">
         <img src="images/profile-4.avif" alt="Team Member 4">
         <h3>Michael Brown</h3>
@@ -1003,10 +990,8 @@
     <h1>Contact Us - Instapay Travel and Tours</h1>
 </header>
 
-<!-- Contact Section -->
 <div class="contact-container">
 
-    <!-- Contact Info -->
     <div class="contact-info">
         <h2>Our Contact Details</h2>
         <p><i class="fas fa-map-marker-alt"></i> Address: 1234 Adventure Street, Colombo, Sri Lanka</p>
@@ -1015,7 +1000,6 @@
         <p><i class="fas fa-globe"></i> Website: <a href="http://www.instapaytours.lk" target="_blank">www.instapaytours.lk</a></p>
     </div>
 
-    <!-- Contact Form -->
     <div class="contact-form">
         <h2>Send Us a Message</h2>
         <form action="your_php_script.php" method="POST">
@@ -1028,7 +1012,7 @@
     </div>
 
 </div>
-<!-- Footer Section -->
+
 <footer>
     <div class="footer-container">
         <div class="footer-left">
