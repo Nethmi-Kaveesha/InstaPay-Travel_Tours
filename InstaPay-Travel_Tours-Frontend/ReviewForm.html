@@ -2,38 +2,110 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Review Form</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-top: 100px;
+            border-radius: 12px;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-control {
+            border-radius: 8px;
+        }
+        .btn {
+            border-radius: 8px;
+            padding: 10px 15px;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
+        }
 
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<nav>
+    <ul>
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
+    </ul>
+</nav>
 <div class="container mt-5">
-    <div class="card shadow-lg p-4">
+    <div class="card shadow-lg">
         <h2 class="text-center mb-4">Review Form</h2>
         <form id="reviewForm">
             <div class="mb-3">
                 <label for="reviewid" class="form-label">Review ID:</label>
-                <input type="text" class="form-control" id="reviewid" name="reviewid" placeholder="Review ID (Auto-generated)" disabled>
+                <input type="text" class="form-control" id="reviewid" placeholder="Auto-generated" disabled>
 
-                <label for="userid" class="form-label">User ID:</label>
-                <input type="text" class="form-control" id="userid" name="userid" placeholder="User ID" disabled>
+                <label for="userid" class="form-label mt-2">User ID:</label>
+                <input type="text" class="form-control" id="userid" placeholder="User ID" disabled>
 
-                <label for="tourid" class="form-label">Tour ID:</label>
-                <input type="text" class="form-control" id="tourid" name="tourid" placeholder="Enter Tour ID" required>
+                <label for="tourid" class="form-label mt-2">Tour ID:</label>
+                <input type="text" class="form-control" id="tourid" placeholder="Enter Tour ID" required>
 
-                <label for="rating" class="form-label">Rating:</label>
-                <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" placeholder="Enter rating (1-5)" required>
+                <label for="rating" class="form-label mt-2">Rating:</label>
+                <input type="number" class="form-control" id="rating" min="1" max="5" placeholder="Enter rating (1-5)" required>
 
-                <label for="reviewText" class="form-label">Review Text:</label>
-                <textarea class="form-control" id="reviewText" name="reviewText" placeholder="Enter your review" required></textarea>
+                <label for="reviewText" class="form-label mt-2">Review:</label>
+                <textarea class="form-control" id="reviewText" placeholder="Enter your review" required></textarea>
             </div>
 
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
-                <button type="button" class="btn btn-warning" id="updateButton" style="display: none;" onclick="updateReview()">Update</button>
-                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;" onclick="deleteReview(selectedReviewId)">Delete</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-warning" style="display: none;" onclick="updateReview()">Update</button>
+                <button type="button" class="btn btn-danger" style="display: none;" onclick="deleteReview(selectedReviewId)">Delete</button>
             </div>
         </form>
 
