@@ -94,38 +94,78 @@
                 align-items: center;
             }
         }
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
 
     </style>
 </head>
 <body>
-
+<nav>
+    <ul>
+        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
+        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
+        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
+    </ul>
+</nav>
 <div class="header">
     <h1>Tour and Travel Dashboard</h1>
 </div>
 
 <div class="dashboard-container">
-    <!-- Tour Package Card -->
     <div class="dashboard-card">
         <div class="icon">✈️</div>
         <h2>Tour Packages</h2>
         <p>Explore a variety of exciting tour packages to your dream destinations.</p>
-        <a href="#">View Packages</a>
+        <a href="show.html">View Packages</a>
     </div>
 
-    <!-- Review Card -->
     <div class="dashboard-card">
         <div class="icon">💬</div>
         <h2>Reviews</h2>
         <p>Check out reviews from fellow travelers about your chosen destinations.</p>
-        <a href="#">Read Reviews</a>
+        <a href="CheckReviews.html">Read Reviews</a>
     </div>
 
-    <!-- Expense Tracker Card -->
     <div class="dashboard-card">
         <div class="icon">💸</div>
         <h2>Expense Tracker</h2>
         <p>Track your travel expenses to manage your budget effectively.</p>
-        <a href="#">Start Tracking</a>
+        <a href="add-expense.html">Start Tracking</a>
     </div>
 </div>
 
