@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour and Travel Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('images/olympic-national-park-washington-SCENICCAMP0118-c5e8558166fa4bd9a8ff9bf41417cc5d.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .header {
+            background: linear-gradient(to right, #2a2a72, #009ffd);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 36px;
+        }
+
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .dashboard-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 280px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: linear-gradient(to right, #ffffff, #f8f9fa);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card .icon {
+            font-size: 40px;
+            color: #2a2a72;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-card p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #2a2a72;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dashboard-card a:hover {
+            background-color: #009ffd;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: #fff;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Tour and Travel Dashboard</h1>
+</div>
+
+<div class="dashboard-container">
+    <!-- Tour Package Card -->
+    <div class="dashboard-card">
+        <div class="icon">✈️</div>
+        <h2>Tour Packages</h2>
+        <p>Explore a variety of exciting tour packages to your dream destinations.</p>
+        <a href="#">View Packages</a>
+    </div>
+
+    <!-- Review Card -->
+    <div class="dashboard-card">
+        <div class="icon">💬</div>
+        <h2>Reviews</h2>
+        <p>Check out reviews from fellow travelers about your chosen destinations.</p>
+        <a href="#">Read Reviews</a>
+    </div>
+
+    <!-- Expense Tracker Card -->
+    <div class="dashboard-card">
+        <div class="icon">💸</div>
+        <h2>Expense Tracker</h2>
+        <p>Track your travel expenses to manage your budget effectively.</p>
+        <a href="#">Start Tracking</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2025 Tour and Travel. All rights reserved.</p>
+</div>
+
+</body>
+</html>
