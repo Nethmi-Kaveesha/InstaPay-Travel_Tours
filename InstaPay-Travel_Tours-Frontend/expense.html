@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Income/Expense</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('body').addClass('loaded');
+
+            // Load the table on page load (expenses and incomes)
+            loadEntries();
+
+            // Form submission with validation for adding new entries
+            $('form').submit(function(e) {
+                e.preventDefault();  // Prevent form from submitting default
+                let description = $('#description').val();
+                let amount = $('#amount').val();
+                let type = $('#entryType').val();  // Get the type of entry (income/expense)
+
+                if (description === '' || amount === '') {
+                    alert('Both fields are required!');
+                    return;
+                }
+
+                // Submit the form via AJAX for either expense or income
+                let url = 'http://localhost:8080/api/v1/income/' + type + '/save'; // Adjust the backend endpoint
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify({
+                        description: description,
+                        amount: amount
+                    }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert(`${type.charAt(0).toUpperCase() + type.slice(1)} Added Successfully!`);
+                        loadEntries();  // Reload the table after adding an entry
+                        $('#description').val('');
+                        $('#amount').val('');
+                    },
+                    error: function(error) {
+                        alert(`Error saving ${type}!`);
+                    }
+                });
+            });
+
+            // Function to load expenses and incomes from the backend and display them in the table
+            function loadEntries() {
+                $.ajax({
+                    url: 'http://localhost:8080/api/v1/income/',  // Backend endpoint to fetch both expenses and incomes
+                    type: 'GET',
+                    success: function(response) {
+                        let entriesTableBody = $('#entriesTable tbody');
+                        entriesTableBody.empty();  // Clear existing data
+
+                        response.forEach(function(entry) {
+                            entriesTableBody.append(`
+                                <tr data-id="${entry.id}">
+                                    <td>${entry.description}</td>
+                                    <td>${entry.amount}</td>
+                                    <td>${entry.type.charAt(0).toUpperCase() + entry.type.slice(1)}</td>
+                                    <td>
+                                        <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                        <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+
+                        // Edit button functionality
+                        $('.edit-btn').click(function() {
+                            let row = $(this).closest('tr');
+                            let description = row.find('td').eq(0).text();
+                            let amount = row.find('td').eq(1).text();
+                            let type = row.find('td').eq(2).text().toLowerCase(); // Extract the type (income or expense)
+                            let id = row.data('id');
+
+                            $('#description').val(description);
+                            $('#amount').val(amount);
+                            $('#entryType').val(type); // Set the type in the form
+
+                            // Change the submit button to update
+                            $('form').unbind('submit').submit(function(e) {
+                                e.preventDefault();
+                                let newDescription = $('#description').val();
+                                let newAmount = $('#amount').val();
+                                let newType = $('#entryType').val();
+
+                                if (newDescription === '' || newAmount === '') {
+                                    alert('Both fields are required!');
+                                    return;
+                                }
+
+                                // Submit the updated data via AJAX
+                                $.ajax({
+                                    url: 'http://localhost:8080/api/v1/income/' + newType + '/update/' + id, // Backend endpoint for update
+                                    type: 'PUT',
+                                    data: JSON.stringify({
+                                        description: newDescription,
+                                        amount: newAmount
+                                    }),
+                                    contentType: 'application/json',
+                                    success: function(response) {
+                                        alert(`${newType.charAt(0).toUpperCase() + newType.slice(1)} Updated Successfully!`);
+                                        loadEntries();  // Reload the table after updating
+                                        $('#description').val('');
+                                        $('#amount').val('');
+                                    },
+                                    error: function(error) {
+                                        alert(`Error updating ${newType}!`);
+                                    }
+                                });
+                            });
+                        });
+
+                        // Delete button functionality
+                        $('.delete-btn').click(function() {
+                            let row = $(this).closest('tr');
+                            let id = row.data('id');
+
+                            if (confirm('Are you sure you want to delete this entry?')) {
+                                // Send AJAX request to delete the entry
+                                $.ajax({
+                                    url: 'http://localhost:8080/api/v1/entries/delete/' + id,  // Backend endpoint for delete
+                                    type: 'DELETE',
+                                    success: function(response) {
+                                        alert('Entry Deleted Successfully!');
+                                        loadEntries();  // Reload the table after deleting
+                                    },
+                                    error: function(error) {
+                                        alert('Error deleting entry!');
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    error: function(error) {
+                        alert('Error loading entries!');
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5 form-heading text-center">Add Income/Expense</h1>
+    <form action="#" method="post" class="mt-3" style="max-width: 500px; margin: 0 auto;">
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" class="form-control" placeholder="Enter Description" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" class="form-control" placeholder="Enter Amount" required min="0">
+        </div>
+        <div class="form-group">
+            <label for="entryType">Type:</label>
+            <select id="entryType" name="entryType" class="form-control" required>
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+            </select>
+        </div>
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-success mt-3">Save</button>
+            <a href="/" class="btn btn-secondary mt-3">Cancel</a>
+        </div>
+    </form>
+
+    <h2 class="mt-5">Entries List</h2>
+    <table class="table mt-3" id="entriesTable">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Dynamic rows will be added here -->
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

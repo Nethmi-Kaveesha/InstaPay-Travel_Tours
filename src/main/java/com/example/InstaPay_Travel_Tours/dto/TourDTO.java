@@ -13,15 +13,15 @@ public class TourDTO {
     private Double price;
     private String tourType;
     private Integer availableSeats;
-    private Date startDate;  // Date type for datetime fields
-    private Date endDate;    // Date type for datetime fields
+    private Date startDate;
+    private Date endDate;
     private String images;
-    private UUID tourOperatorID; // UUID for referencing the tour operator (UUID from binary(16))
+    private UUID tourOperatorID;
 
     // No-arg constructor
     public TourDTO() {}
 
-    // Constructor with all fields
+
     public TourDTO(Integer tourID, String tourName, String description, String location,
                    Integer duration, Double price, String tourType, Integer availableSeats,
                    Date startDate, Date endDate, String images, UUID tourOperatorID) {
@@ -39,7 +39,7 @@ public class TourDTO {
         this.tourOperatorID = tourOperatorID;
     }
 
-    // Getters and Setters
+
     public Integer getTourID() {
         return tourID;
     }

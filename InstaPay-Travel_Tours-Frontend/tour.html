@@ -44,11 +44,9 @@
                 <label for="description" class="form-label">Tour Description:</label>
                 <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter a brief description of the tour"></textarea>
 
-                <div class="mb-3">
-                    <label for="images" class="form-label">Image:</label>
-                    <input type="file" class="form-control" id="images" name="images" accept="image/*" onchange="convertToBase64(event)">
-                    <img id="imagePreview" src="" alt="Image Preview" style="max-width: 200px; height: auto; display: none; margin-top: 10px;">
-                </div>
+                <label>
+                    <input type="file" accept="image/*" multiple required id="images" name="images"/>
+                    </label>
 
             </div>
 

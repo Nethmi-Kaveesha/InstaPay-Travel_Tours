@@ -10,18 +10,14 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * Security Configuration class for InstaPay_Travel_Tours application.
- */
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
@@ -52,41 +48,64 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless sessions
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless sessions
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/auth/authenticate",        // Public endpoint for authentication
-                                "/api/v1/user/register",            // Public user registration
-                                "/api/v1/user/save",                // User save (public endpoint)
+                                // Existing public endpoints
+                                "/api/v1/auth/authenticate",
+                                "/api/v1/user/register",
+                                "/api/v1/user/save",
                                 "/api/v1/user/update",
-                                "/api/v1/user/getAll",              // Get all users (public endpoint)
-                                "/api/v1/auth/refreshToken",        // Public endpoint to refresh token
-                                "/v3/api-docs/**",                  // Swagger documentation
-                                "/swagger-ui/**",                   // Swagger UI
-                                "/swagger-ui.html",                 // Swagger HTML page
-                                "/api/v1/tourguide/save",           // Public endpoint for saving a tour guide
-                                "/api/v1/tours/**",                 // Public tour endpoints
-                                "/api/v1/tourguide/getAll",         // Public endpoint to get all tour guides
-                                "/api/v1/tourguide/update",         // Public endpoint for updating a tour guide
-                                "/api/v1/tourguide/delete/**",      // Public endpoint for deleting a tour guide
-                                "/api/v1/tours/save",              // Public endpoint to save tours
-                                "/api/v1/tours/getAll",            // Public endpoint to get all tours
+                                "/api/v1/user/getAll",
+                                "/api/v1/auth/refreshToken",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/api/v1/tourguide/save",
+                                "/api/v1/tours/**",
+                                "/api/v1/tourguide/getAll",
+                                "/api/v1/tourguide/update",
+                                "/api/v1/tourguide/delete/**",
+                                "/api/v1/tours/save",
+                                "/api/v1/tours/getAll",
                                 "/api/v1/reviews",
-                                "/api/v1/tours/edit",              // Public endpoint to edit tours
-                                "/api/v1/tours/1",                 // Public endpoint for a specific tour
-                                "/api/v1/payment/**",              // Public payment-related endpoints
-                                "/api/v1/booking/**",              // Public booking-related endpoints
-                                "/api/v1/reviews/save",             // Public endpoint to save reviews
-                                "/api/v1/reviews/getAll",           // Public endpoint to get all reviews
-                                "/api/v1/reviews/update",           // Public endpoint to update reviews
-                                "/api/v1/reviews/delete/**",        // Public endpoint to delete reviews
-                                "/api/v1/reviews/getById/**" ,       // Public endpoint to get a review by ID
-                                "/api/v1/tourschedule/save",       // Public endpoint for saving a tour schedule
-                                "/api/v1/tourschedule/getAll",     // Public endpoint to get all tour schedules
-                                "/api/v1/tourschedule/update",     // Public endpoint for updating a tour schedule
-                                "/api/v1/tourschedule/delete/**"   // Public endpoint for deleting a tour schedule
+                                "/api/v1/tours/edit",
+                                "/api/v1/tours/1",
+                                "/api/v1/payment/**",
+                                "/api/v1/booking/**",
+                                "/api/v1/reviews/save",
+                                "/api/v1/reviews/getAll",
+                                "/api/v1/reviews/update",
+                                "/api/v1/reviews/delete/**",
+                                "/api/v1/reviews/getById/**",
+                                "/api/v1/tourschedule/save",
+                                "/api/v1/tourschedule/getAll",
+                                "/api/v1/tourschedule/update",
+                                "/api/v1/tourschedule/delete/**",
+                                "/addExpense",
+                                "/api/v1/expense/save",
+                                "/api/v1/endPath",  // New endpoint added
+
+                                // Image-related endpoints
+                                "/api/v1/img/upload",   // Image upload endpoint
+                                "/api/v1/img/**",        // Any other image-related endpoints
+                                "/images/**",
+                                "/api/v1/expense/","/api/v1/expense/saveExpense","api/v1/expense/deleteExpense","api/v1/expense/updateExpense", // Expense API Endpoints
+
+                                // Add new public endpoints here
+                                "/new/api/endpoint1",    // Add new public endpoint 1
+                                "/new/api/endpoint2",    // Add new public endpoint 2
+
+                                // Income API Endpoints
+                                "/api/v1/income/saveIncome",   // Save income endpoint
+                                "/api/v1/income/update", // Update income endpoint
+                                "/api/v1/income/delete", // Delete income endpoint
+                                "/api/v1/income/getAll", // Get all incomes endpoint
+                                "/api/v1/income/entries", // Entries of income
+                                "/api/v1/income/"        // General income endpoint
+
                         ).permitAll() // Allow public access to the above endpoints
-                        .anyRequest().authenticated()  // Require authentication for other endpoints
+                        .anyRequest().authenticated() // Require authentication for other endpoints
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter before UsernamePasswordAuthenticationFilter

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense and Income Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        header {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3e50;
+            margin-bottom: 40px;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            width: 48%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h3 {
+            color: #2d3e50;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #4caf50;
+            border-color: #4caf50;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+        }
+
+        .table-container {
+            margin-top: 30px;
+        }
+
+        .table-container h3 {
+            color: #2d3e50;
+            margin-bottom: 20px;
+        }
+
+        .totals-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .totals-container h3 {
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .totals-container span {
+            font-weight: bold;
+            color: #4caf50;
+        }
+
+        #charts-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        #pieChartContainer,
+        #barChartContainer {
+            width: 40%; /* Adjust the width to make the charts smaller */
+            height: 250px; /* Adjust the height */
+            margin: 10px;
+            border: 1px solid #ddd; /* Optional: border for better visualization */
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+
+        .table {
+            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: center;
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 6px;
+        }
+
+        .table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .btn-sm {
+            margin-right: 10px;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+            border-color: #f44336;
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+        }
+        .charts-header {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px; /* Adds spacing below the header */
+            border-radius: 10px;
+        }
+
+        .charts-header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .charts-header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-style: italic;
+            opacity: 0.8; /* Slight transparency for a softer look */
+        }
+
+
+    </style>
+</head>
+<body>
+<header class="charts-header">
+    <h1>Data Visualization</h1>
+    <p>Pie Chart & Bar Chart - Analysis of Key Metrics</p>
+</header>
+
+<!-- Inline Charts Container -->
+<div id="charts-container" class="text-center">
+    <!-- Pie Chart for Income vs Expense -->
+    <div id="pieChartContainer">
+        <h3>Income vs Expense</h3>
+        <canvas id="incomeExpensePieChart" width="20" height="20"></canvas>
+    </div>
+
+    <!-- Bar Chart for Income vs Expense -->
+    <div id="barChartContainer">
+        <h3>Income vs Expense Bar Chart</h3>
+        <canvas id="incomeExpenseBarChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+
+    <!-- Income and Expense Totals -->
+    <div class="totals-container">
+        <div>
+            <h3>Total Income: <span id="totalIncome">0</span></h3>
+        </div>
+        <div>
+            <h3>Total Expense: <span id="totalExpense">0</span></h3>
+        </div>
+        <div>
+            <h3>Income - Expense Difference: <span id="incomeExpenseDiff">0</span></h3>
+        </div>
+    </div>
+
+    <!-- Income and Expense Form Layout -->
+    <div class="form-container">
+        <!-- Income Form Section -->
+        <div class="form-section">
+            <h3>Income Form</h3>
+            <form id="incomeForm">
+                <div class="form-group">
+                    <label for="incomeDescription">Description</label>
+                    <input type="text" class="form-control" id="incomeDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="incomeAmount">Amount</label>
+                    <input type="number" class="form-control" id="incomeAmount" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Income</button>
+            </form>
+        </div>
+
+        <!-- Expense Form Section -->
+        <div class="form-section">
+            <h3>Expense Form</h3>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label for="expenseDescription">Description</label>
+                    <input type="text" class="form-control" id="expenseDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="expenseAmount">Amount</label>
+                    <input type="number" class="form-control" id="expenseAmount" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Expense</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tables for Expenses and Incomes -->
+    <div class="table-container">
+        <div class="row">
+            <!-- Income Table -->
+            <div class="col-md-6">
+                <h3>Incomes</h3>
+                <table id="incomesTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Expense Table -->
+            <div class="col-md-6">
+                <h3>Expenses</h3>
+                <table id="expensesTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie Chart for Income vs Expense -->
+
+
+</div>
+
+<!-- Include jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        let totalIncome = 0;
+        let totalExpense = 0;
+        let pieChart, barChart; // Declare global variables for the chart instances
+
+        // Load the expense and income tables on page load
+        loadExpenses();
+        loadIncomes();
+
+        // Function to load expenses and display them in the table
+        function loadExpenses() {
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/expense/',  // Backend endpoint to fetch expenses
+                type: 'GET',
+                success: function(response) {
+                    let expensesTableBody = $('#expensesTable tbody');
+                    expensesTableBody.empty();  // Clear existing data
+                    totalExpense = 0;
+
+                    response.forEach(function(expense) {
+                        totalExpense += expense.amount;
+                        expensesTableBody.append(`
+                            <tr data-id="${expense.id}">
+                                <td>${expense.description}</td>
+                                <td>${expense.amount}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+
+                    // Update total expense
+                    $('#totalExpense').text(totalExpense);
+
+                    // Update Income - Expense result
+                    updateIncomeExpenseDifference();
+                    updatePieChart(); // Update pie chart when expenses are updated
+                    updateBarChart(); // Update bar chart when expenses are updated
+                },
+                error: function() {
+                    alert('Error loading expenses!');
+                }
+            });
+        }
+
+        // Function to load incomes and display them in the table
+        function loadIncomes() {
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/income/',  // Backend endpoint to fetch incomes
+                type: 'GET',
+                success: function(response) {
+                    let incomesTableBody = $('#incomesTable tbody');
+                    incomesTableBody.empty();  // Clear existing data
+                    totalIncome = 0;
+
+                    response.forEach(function(income) {
+                        totalIncome += income.amount;
+                        incomesTableBody.append(`
+                            <tr data-id="${income.id}">
+                                <td>${income.description}</td>
+                                <td>${income.amount}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+
+                    // Update total income
+                    $('#totalIncome').text(totalIncome);
+
+                    // Update Income - Expense result
+                    updateIncomeExpenseDifference();
+                    updatePieChart(); // Update pie chart when incomes are updated
+                    updateBarChart(); // Update bar chart when incomes are updated
+                },
+                error: function() {
+                    alert('Error loading incomes!');
+                }
+            });
+        }
+
+        // Function to update the income - expense difference
+        function updateIncomeExpenseDifference() {
+            const incomeExpenseDiff = totalIncome - totalExpense;
+            $('#incomeExpenseDiff').text(incomeExpenseDiff);
+        }
+
+        // Function to update the pie chart
+        function updatePieChart() {
+            const ctx = document.getElementById('incomeExpensePieChart').getContext('2d');
+            if (pieChart) {
+                // Update the existing pie chart data
+                pieChart.data.datasets[0].data = [totalIncome, totalExpense];
+                pieChart.update(); // Update the chart
+            } else {
+                // Create a new pie chart if not exists
+                pieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Income', 'Expense'],
+                        datasets: [{
+                            data: [totalIncome, totalExpense],
+                            backgroundColor: ['#4CAF50', '#F44336'], // Green for income, red for expense
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    }
+                });
+            }
+        }
+
+
+        function updateBarChart() {
+            const ctx = document.getElementById('incomeExpenseBarChart').getContext('2d');
+            if (barChart) {
+                // Update the existing bar chart data
+                barChart.data.datasets[0].data = [totalIncome, totalExpense];
+                barChart.update(); // Update the chart
+            } else {
+                // Create a new bar chart if not exists
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Income', 'Expense'],
+                        datasets: [{
+                            label: 'Amount',
+                            data: [totalIncome, totalExpense],
+                            backgroundColor: ['#4CAF50', '#F44336'], // Green for income, red for expense
+                            borderColor: ['#388E3C', '#D32F2F'], // Darker shades for border
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    }
+                });
+            }
+        }
+
+
+        // Handle expense form submission
+        $('#expenseForm').on('submit', function(event) {
+            event.preventDefault();  // Prevent the form from submitting normally
+
+            const expenseData = {
+                description: $('#expenseDescription').val(),
+                amount: parseFloat($('#expenseAmount').val())
+            };
+
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/expense/saveExpense',  // Backend endpoint to save expense
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(expenseData),
+                success: function() {
+                    loadExpenses();  // Reload expenses
+                    $('#expenseForm')[0].reset();  // Reset the form fields
+                },
+                error: function() {
+                    alert('Error saving expense!');
+                }
+            });
+        });
+
+        // Handle income form submission
+        $('#incomeForm').on('submit', function(event) {
+            event.preventDefault();  // Prevent the form from submitting normally
+
+            const incomeData = {
+                description: $('#incomeDescription').val(),
+                amount: parseFloat($('#incomeAmount').val())
+            };
+
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/income/saveIncome',  // Backend endpoint to save income
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(incomeData),
+                success: function() {
+                    loadIncomes();  // Reload incomes
+                    $('#incomeForm')[0].reset();  // Reset the form fields
+                },
+                error: function() {
+                    alert('Error saving income!');
+                }
+            });
+        });
+    });
+
+</script>
+
+</body>
+</html>

@@ -9,43 +9,42 @@ public class Tour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tourid")  // Matching the column name in the database
+    @Column(name = "tourid")
     private int tourID;
 
-    @Column(name = "tour_name")  // Matching the column name in the database
+    @Column(name = "tour_name")
     private String tourName;
 
-    @Column(name = "description")  // Column name remains the same
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "location")  // Column name remains the same
+    @Column(name = "location")
     private String location;
 
-    @Column(name = "duration")  // Column name remains the same
+    @Column(name = "duration")
     private int duration;
 
-    @Column(name = "price")  // Column name remains the same
+    @Column(name = "price")
     private double price;
 
-    @Column(name = "tour_type")  // Matching the column name in the database
+    @Column(name = "tour_type")
     private String tourType;
 
-    @Column(name = "available_seats")  // Matching the column name in the database
+    @Column(name = "available_seats")
     private int availableSeats;
 
-    @Column(name = "start_date")  // Matching the column name in the database
-    @Temporal(TemporalType.TIMESTAMP)  // Ensures correct date-time handling
+    @Column(name = "start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
-    @Column(name = "end_date")  // Matching the column name in the database
-    @Temporal(TemporalType.TIMESTAMP)  // Ensures correct date-time handling
+    @Column(name = "end_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    @Lob  // Use @Lob to store large binary data (like images)
-    @Column(name = "images")  // Column name remains the same
-    private String images;  // Store the image as a byte array
+    @Column(name = "images")
+    private String images;
 
-    // Constructor with fields
+
     public Tour(int tourID, String tourName, String description, String location, int duration, double price,
                 String tourType, int availableSeats, Date startDate, Date endDate, String images) {
         this.tourID = tourID;

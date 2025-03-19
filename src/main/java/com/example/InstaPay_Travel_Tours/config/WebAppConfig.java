@@ -16,9 +16,10 @@ public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")  // Replace with your frontend URL
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+        registry.addMapping("/**") // Allow all endpoints to be accessed
+                .allowedOrigins("/**") // Allow only the frontend origin
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific methods
+                .allowedHeaders("*") // Allow all headers
+                .allowCredentials(true); // Allow cookies and credentials if necessary
     }
 }
