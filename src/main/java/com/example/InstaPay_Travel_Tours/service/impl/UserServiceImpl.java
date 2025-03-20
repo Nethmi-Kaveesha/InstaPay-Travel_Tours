@@ -61,14 +61,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-            // Set default role ONLY if none is provided
             if (userDTO.getRole() == null || userDTO.getRole().isEmpty()) {
                 userDTO.setRole("USER");
             }
 
-            // Map DTO to Entity and include gender and phoneNumber fields
             User user = modelMapper.map(userDTO, User.class);
-            user.setGender(userDTO.getGender()); // Ensure gender is mapped properly
+            user.setGender(userDTO.getGender());
             userRepository.save(user);
             return VarList.Created;
         }
@@ -76,22 +74,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void addUser(UserDTO userDTO) {
-        if (userRepository.existsById(userDTO.getUid())) { // Check using UUID directly
+        if (userRepository.existsById(userDTO.getUid())) {
             throw new RuntimeException("User already exists");
         }
-        userRepository.save(modelMapper.map(userDTO, User.class)); // Mapping to User entity
+        userRepository.save(modelMapper.map(userDTO, User.class));
     }
 
     @Override
     public List<UserDTO> getAllUsers() {
         return modelMapper.map(userRepository.findAll(),
-                new TypeToken<List<UserDTO>>() {}.getType()); // Map User entities to UserDTO list
+                new TypeToken<List<UserDTO>>() {}.getType());
     }
 
     @Override
     public void updateUser(UserDTO userDTO) {
-        if (userRepository.existsById(userDTO.getUid())) { // Check using UUID directly
-            userRepository.save(modelMapper.map(userDTO, User.class)); // Mapping to User entity
+        if (userRepository.existsById(userDTO.getUid())) {
+            userRepository.save(modelMapper.map(userDTO, User.class));
         } else {
             throw new RuntimeException("User does not exist");
         }
@@ -99,8 +97,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
 
     @Override
-    public void deleteUser(UUID uid) { // Directly use UUID for deletion
-        userRepository.deleteById(uid); // Use UUID directly
+    public void deleteUser(UUID uid) {
+        userRepository.deleteById(uid);
     }
 
 }

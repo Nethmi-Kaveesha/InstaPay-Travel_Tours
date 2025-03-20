@@ -13,17 +13,14 @@ public class IncomeService {
     @Autowired
     private IncomeRepository incomeRepository;
 
-    // Method to get all income records
     public List<Income> getAllIncomes() {
         return incomeRepository.findAll();
     }
 
-    // Method to save an income record
     public Income saveIncome(Income income) {
         return incomeRepository.save(income);
     }
 
-    // Method to delete an income record by its ID
     public boolean deleteIncome(Long id) {
         if (incomeRepository.existsById(id)) {
             incomeRepository.deleteById(id);

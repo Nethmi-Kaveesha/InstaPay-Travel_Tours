@@ -25,7 +25,7 @@ public class User implements Serializable {
     private String password;
     private String name;
     private String role;
-    private String phone_number; // Added phone number field
+    private String phone_number;
 
-    private String gender; // Added gender field
+    private String gender;
 }

@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class BookingDTO {
-    private int bookingId;       // Booking ID
-    private String userId;       // User ID (SystemUser)
-    private double totalAmount;  // Total Amount for the booking
-    private LocalDateTime bookingDate;  // Date of the booking
-    private List<PaymentDTO> payments; // List of payment details associated with the booking
+    private int bookingId;
+    private String userId;
+    private double totalAmount;
+    private LocalDateTime bookingDate;
+    private List<PaymentDTO> payments;
 
     public BookingDTO() {
     }
@@ -45,9 +45,9 @@ public class BookingDTO {
         this.totalAmount = totalAmount;
     }
 
-    // Change the return type to LocalDateTime
+
     public LocalDateTime getBookingDate() {
-        return bookingDate;  // Return LocalDateTime directly
+        return bookingDate;
     }
 
     public void setBookingDate(LocalDateTime bookingDate) {

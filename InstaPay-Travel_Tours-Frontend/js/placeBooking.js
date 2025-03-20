@@ -2,7 +2,7 @@ document.getElementById("orderForm").addEventListener("submit", function(event) 
     event.preventDefault();
 
     let customerId = document.getElementById("customerId").value;
-    let total = document.getElementById("totalAmount").textContent; // Get total from the displayed total amount
+    let total = document.getElementById("totalAmount").textContent;
     let orderDetails = [];
 
     document.querySelectorAll(".orderDetail").forEach(detail => {
@@ -41,7 +41,6 @@ function addOrderDetail() {
     `;
     container.appendChild(newDetail);
 
-    // Add event listeners to dynamically update total when quantity or price changes
     newDetail.querySelector(".quantity").addEventListener("input", updateTotal);
     newDetail.querySelector(".price").addEventListener("input", updateTotal);
 }

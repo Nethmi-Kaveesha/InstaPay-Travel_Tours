@@ -11,19 +11,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/expense")
-@CrossOrigin(origins = "http://localhost:63342")  // Update with the correct frontend URL
+@CrossOrigin(origins = "http://localhost:63342")
 public class ExpenseController {
 
     @Autowired
     private ExpenseService expenseService;
 
-    // Fetch all expenses
     @GetMapping("/")
     public List<Expense> getAllExpenses() {
         return expenseService.getAllExpenses();
     }
 
-    // Save a new expense
     @PostMapping("/saveExpense")
     public Expense saveExpense(@RequestBody Expense expense) {
         return expenseService.saveExpense(expense);

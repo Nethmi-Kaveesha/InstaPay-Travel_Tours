@@ -1,12 +1,11 @@
 const URL = "http://localhost:8080/api/v1/reviews";
 let selectedReviewId = null;
-let loggedInUserId = "user_id_here"; // Replace this with actual user ID retrieval logic
+let loggedInUserId = "user_id_here";
 
 $(document).ready(function () {
     getAllReviews();
 });
 
-// Handle form submission
 $("#reviewForm").submit(function (event) {
     event.preventDefault();
     if (selectedReviewId) {
@@ -16,16 +15,15 @@ $("#reviewForm").submit(function (event) {
     }
 });
 
-// Save a new review
 function saveReview() {
     let review = {
-        userid: loggedInUserId, // Use logged-in user ID
+        userid: loggedInUserId,
         tourId: $("#tourid").val(),
         rating: $("#rating").val(),
         reviewText: $("#reviewText").val(),
     };
 
-    console.log("Saving Review:", review); // Debugging
+    console.log("Saving Review:", review);
 
     $.ajax({
         url: `${URL}/save`,
@@ -43,17 +41,17 @@ function saveReview() {
     });
 }
 
-// Update an existing review
+
 function updateReview() {
     let updatedReview = {
         reviewid: selectedReviewId,
-        userid: loggedInUserId, // Use logged-in user ID
+        userid: loggedInUserId,
         tourId: $("#tourid").val(),
         rating: $("#rating").val(),
         reviewText: $("#reviewText").val(),
     };
 
-    console.log("Updating Review:", updatedReview); // Debugging
+    console.log("Updating Review:", updatedReview);
 
     $.ajax({
         url: `${URL}/update`,
@@ -71,7 +69,6 @@ function updateReview() {
     });
 }
 
-// Delete a review
 function deleteReview(id) {
     if (!confirm("Are you sure you want to delete this review?")) return;
 
@@ -89,18 +86,18 @@ function deleteReview(id) {
     });
 }
 
-// Fetch and display all reviews
+
 function getAllReviews() {
     $.ajax({
         url: `${URL}/getAll`,
         type: "GET",
         dataType: "json",
         success: function (response) {
-            console.log("Fetched Reviews:", response); // Debugging
+            console.log("Fetched Reviews:", response);
             $("#reviewTableBody").empty();
 
             response.forEach(review => {
-                let userId = review.userid ? review.userid : "Unknown"; // Handle undefined user ID
+                let userId = review.userid ? review.userid : "Unknown";
                 $("#reviewTableBody").append(`
                     <tr>
                         <td>${review.reviewid}</td>
@@ -121,10 +118,10 @@ function getAllReviews() {
     });
 }
 
-// Fill form fields for editing a review
+
 function fillReviewFields(id, userId, tourId, rating, reviewText) {
     $("#reviewid").val(id);
-    $("#userid").val(userId || "Unknown"); // Handle undefined user ID
+    $("#userid").val(userId || "Unknown");
     $("#tourid").val(tourId);
     $("#rating").val(rating);
     $("#reviewText").val(reviewText);
@@ -135,7 +132,7 @@ function fillReviewFields(id, userId, tourId, rating, reviewText) {
     $("#deleteButton").show();
 }
 
-// Clear form fields
+
 function clearForm() {
     $("#reviewForm")[0].reset();
     $("#updateButton").hide();

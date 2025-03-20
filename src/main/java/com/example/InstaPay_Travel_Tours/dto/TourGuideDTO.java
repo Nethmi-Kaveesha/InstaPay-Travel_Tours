@@ -12,7 +12,7 @@ public class TourGuideDTO {
     private String languagesSpoken;
     private Timestamp createdAt;
 
-    // Getters and Setters
+
     public int getGuideID() {
         return guideID;
     }

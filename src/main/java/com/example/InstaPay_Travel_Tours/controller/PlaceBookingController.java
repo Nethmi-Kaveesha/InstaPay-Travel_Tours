@@ -5,7 +5,6 @@ import com.example.InstaPay_Travel_Tours.dto.PaymentDTO;
 import com.example.InstaPay_Travel_Tours.service.PlaceBookingService;
 import com.example.InstaPay_Travel_Tours.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

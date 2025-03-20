@@ -18,7 +18,7 @@ public class TourDTO {
     private String images;
     private UUID tourOperatorID;
 
-    // No-arg constructor
+
     public TourDTO() {}
 
 
@@ -155,7 +155,7 @@ public class TourDTO {
                 '}';
     }
 
-    // Override equals and hashCode to ensure correct comparisons
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -41,7 +41,7 @@ public class Tour {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    @Column(name = "images")
+    @Column(name = "images" , nullable = true,length = 64)
     private String images;
 
 
@@ -60,11 +60,9 @@ public class Tour {
         this.images = images;
     }
 
-    // Default constructor
     public Tour() {
     }
 
-    // Getters and Setters
     public int getTourID() {
         return tourID;
     }
@@ -148,6 +146,12 @@ public class Tour {
     public String getImages() {
         return images;
     }
+
+//    @Transient
+//    public String getImages() {
+//        if (images == null) return null;
+//        return "/images/" + tourID + "/" + images;
+//    }
 
     public void setImages(String images) {
         this.images = images;

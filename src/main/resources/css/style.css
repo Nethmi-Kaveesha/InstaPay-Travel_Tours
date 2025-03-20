@@ -1,4 +1,4 @@
-/* Style the search box */
+
 #searchBox {
     width: 100%;
     height: 40px;
@@ -9,7 +9,7 @@
     border: 1px solid #ccc;
 }
 
-/* Optional: Add some space between the search bar and the map */
+
 #map {
     height: 500px;
 }

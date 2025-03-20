@@ -11,7 +11,6 @@ public class TourScheduleDTO {
     private Integer guideId; // Nullable field
     private LocalDateTime createdAt;
 
-    // Constructors
     public TourScheduleDTO() {
     }
 
@@ -25,7 +24,6 @@ public class TourScheduleDTO {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
     public int getScheduleId() {
         return scheduleId;
     }

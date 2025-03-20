@@ -35,36 +35,28 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
     @Transactional
     public boolean addBooking(BookingDTO bookingDTO, PaymentDTO paymentDTO) {
         try {
-            // Find user by UUID
-            UUID userId = UUID.fromString(bookingDTO.getUserId());  // Assuming userId is a UUID string in the DTO
+            UUID userId = UUID.fromString(bookingDTO.getUserId());
             User systemUser = systemUserRepo.findById(userId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            // Create Booking entity and set values
             Booking booking = new Booking();
 
-            // Convert bookingDate from String to LocalDateTime if necessary
-            LocalDateTime bookingDate = bookingDTO.getBookingDate();  // If it's already LocalDateTime, you can keep it.
+            LocalDateTime bookingDate = bookingDTO.getBookingDate();
             if (bookingDate == null) {
-                // In case the date is null or needs to be formatted, handle it
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // Example format
-                bookingDate = LocalDateTime.parse(bookingDTO.getBookingDate().toString(), formatter); // Handle the conversion properly
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                bookingDate = LocalDateTime.parse(bookingDTO.getBookingDate().toString(), formatter);
             }
             booking.setBookingDate(String.valueOf(bookingDate));
 
-            // Set totalAmount as BigDecimal (to ensure precision)
             booking.setTotalAmount(new BigDecimal(bookingDTO.getTotalAmount()));
 
-            // Set system user (ensure this is correct)
             booking.setUser(systemUser);
 
-            // Save Booking
             Booking savedBooking = bookingRepo.save(booking);
 
-            // Create Payment entity and set values
             Payment payment = new Payment();
-            payment.setBooking(savedBooking);  // Set associated booking
-            payment.setSystemUser(systemUser); // Set associated user
+            payment.setBooking(savedBooking);
+            payment.setSystemUser(systemUser);
             payment.setAmountPaid(paymentDTO.getAmountPaid());
             payment.setPaymentMethod(paymentDTO.getPaymentMethod());
             payment.setTransactionId(paymentDTO.getTransactionId());
@@ -73,7 +65,6 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
             payment.setReceiptUrl(paymentDTO.getReceiptUrl());
             payment.setCreatedAt(paymentDTO.getCreatedAt());
 
-            // Save Payment
             paymentRepo.save(payment);
 
             return true;

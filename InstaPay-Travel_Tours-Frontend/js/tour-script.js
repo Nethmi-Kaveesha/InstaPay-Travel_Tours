@@ -45,45 +45,105 @@ function loadTours() {
         });
 }
 
-$("#tourForm").submit(function (event) {
-    event.preventDefault();
+$(document).ready(function () {
+    $("#tourForm").on("submit", function (e) {
+        e.preventDefault();
 
-    const tourData = new FormData();
-    tourData.append("tourName", $("#tourName").val());
-    tourData.append("location", $("#location").val());
-    tourData.append("duration", $("#duration").val());
-    tourData.append("price", $("#price").val());
-    tourData.append("tourType", $("#tourType").val());
-    tourData.append("availableSeats", $("#availableSeats").val());
-    tourData.append("startDate", $("#startDate").val());
-    tourData.append("endDate", $("#endDate").val());
-    tourData.append("description", $("#description").val());
+        const tourName = $("#tourName").val().trim();
+        const description = $("#description").val().trim();
+        const location = $("#location").val().trim();
+        const duration = $("#duration").val();
+        const price = $("#price").val();
+        const tourType = $("#tourType").val();
+        const availableSeats = $("#availableSeats").val();
+        const startDate = $("#startDate").val();
+        const endDate = $("#endDate").val();
+        const images = $("#images")[0].files;
 
-    var files = $("#images")[0].files;
-    if (files.length === 0) {
-        alert("Please select at least one image file.");
-        return;
-    }
-    for (var i = 0; i < files.length; i++) {
-        tourData.append("images", files[i]);
-    }
-
-    $.ajax({
-        url: apiUrl + "/save",
-        method: "POST",
-        data: tourData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-            console.log("Tour saved successfully:", response);
-            alert("Tour saved successfully");
-            loadTours();
-            resetForm();
-        },
-        error: function (error) {
-            console.error("Error saving tour:", error);
-            alert("There was an error saving the tour.");
+        if (!tourName || !description || !location || !duration || !price || !tourType || !availableSeats || !startDate || !endDate) {
+            alert("Please fill in all required fields.");
+            return;
         }
+
+        const formData = new FormData();
+        formData.append("tourName", tourName);
+        formData.append("description", description);
+        formData.append("location", location);
+        formData.append("duration", duration);
+        formData.append("price", price);
+        formData.append("tourType", tourType);
+        formData.append("availableSeats", availableSeats);
+        formData.append("startDate", startDate);
+        formData.append("endDate", endDate);
+
+
+        if (images.length > 0) {
+            for (let i = 0; i < images.length; i++) {
+                formData.append("images", images[i]);
+            }
+        }
+
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+
+        $.ajax({
+            url: `${apiUrl}/save`,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                alert("Tour added successfully!");
+
+
+                const newTour = {
+                    tourID: response.tourID,
+                    tourName: $("#tourName").val(),
+                    location: $("#location").val(),
+                    duration: $("#duration").val(),
+                    price: $("#price").val(),
+                    tourType: $("#tourType").val(),
+                    availableSeats: $("#availableSeats").val(),
+                    startDate: $("#startDate").val(),
+                    endDate: $("#endDate").val(),
+                    description: $("#description").val(),
+                    images: $("#images")[0].files[0].name // Or the appropriate image URL from backend
+                };
+
+                const tableBody = $("#tourTableBody");
+                tableBody.append(`
+            <tr>
+                <td>${newTour.tourID}</td>
+                <td>${newTour.tourName}</td>
+                <td>${newTour.location}</td>
+                <td>${newTour.duration}</td>
+                <td>${newTour.price}</td>
+                <td>${newTour.tourType}</td>
+                <td>${newTour.availableSeats}</td>
+                <td>${newTour.startDate}</td>
+                <td>${newTour.endDate}</td>
+                <td>${newTour.description}</td>
+                <td>
+                    <img src="${newTour.images}" alt="Tour Image" style="max-width: 80px; height: auto; border-radius: 5px;">
+                </td>
+                <td>
+                    <button class="btn btn-info" onclick="editTour(${newTour.tourID})">Edit</button>
+                    <button class="btn btn-danger" onclick="deleteTour(${newTour.tourID})">Delete</button>
+                </td>
+            </tr>
+        `);
+
+
+                $("#tourForm")[0].reset();
+                loadTours();
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert("Failed to add tour! Please try again.");
+            }
+        });
+
     });
 });
 
@@ -101,7 +161,6 @@ function editTour(tourID) {
             $("#endDate").val(tour.endDate);
             $("#description").val(tour.description);
 
-            // Set image preview if available
             if (tour.images) {
                 $("#imagePreview").attr("src", tour.images).show();
                 imageData = tour.images;
@@ -138,12 +197,10 @@ function updateTour() {
     tourData.append("endDate", $("#endDate").val());
     tourData.append("description", $("#description").val());
 
-    // Check if a new file is selected
     var file = $("#images")[0].files[0];
     if (file) {
         tourData.append("images", file);
     } else if (imageData) {
-        // Retain old image if no new file is selected
         tourData.append("images", imageData);
     }
 
@@ -163,7 +220,6 @@ function updateTour() {
         }
     });
 }
-
 
 function deleteTour(tourID) {
     if (!confirm("Are you sure you want to delete this tour?")) return;
@@ -190,7 +246,6 @@ function resetForm() {
     $("#saveButton").show();
     $("#updateButton, #deleteButton").hide();
 }
-
 
 $(document).ready(function() {
     loadTours();

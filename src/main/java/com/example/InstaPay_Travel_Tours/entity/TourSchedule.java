@@ -32,7 +32,6 @@ public class TourSchedule {
     @Column(name = "CreatedAt", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    // Constructors
     public TourSchedule() {
     }
 
@@ -45,7 +44,6 @@ public class TourSchedule {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public int getScheduleId() {
         return scheduleId;
     }
@@ -98,7 +96,6 @@ public class TourSchedule {
         return createdAt;
     }
 
-    // No setter for createdAt since it should be set automatically
 
     @Override
     public String toString() {

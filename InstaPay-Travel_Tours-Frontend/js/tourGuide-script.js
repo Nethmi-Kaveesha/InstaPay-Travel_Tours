@@ -40,7 +40,7 @@ function getAll() {
     $.ajax({
         url: `${URL}/getAll`,
         type: "GET",
-        dataType: "json", // Ensures response is parsed as JSON
+        dataType: "json",
         success: function (response) {
             console.log("Full Response:", response);
 

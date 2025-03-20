@@ -11,25 +11,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/income")
-@CrossOrigin(origins = "http://localhost:63342")  // Update with the correct frontend URL
+@CrossOrigin(origins = "http://localhost:63342")
 public class IncomeController {
 
     @Autowired
     private IncomeService incomeService;
 
-    // Fetch all income records
     @GetMapping("/")
     public List<Income> getAllIncomes() {
         return incomeService.getAllIncomes();
     }
 
-    // Save a new income record
     @PostMapping("/saveIncome")
     public Income saveIncome(@RequestBody Income income) {
         return incomeService.saveIncome(income);
     }
 
-    // Delete an income record by ID
     @DeleteMapping("/deleteIncome/{id}")
     public ResponseEntity<String> deleteIncome(@PathVariable("id") Long id) {
         try {

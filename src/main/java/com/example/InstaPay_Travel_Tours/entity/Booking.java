@@ -2,7 +2,7 @@ package com.example.InstaPay_Travel_Tours.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
+
 
 @Entity
 @Table(name = "Bookings")
@@ -15,11 +15,11 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
-    private User user;  // Assuming User is another entity representing the systemuser table
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "TourID", nullable = false)
-    private Tour tour;  // Assuming Tour is another entity representing the Tours table
+    private Tour tour;
 
     @Column(name = "BookingDate", nullable = false)
     private String bookingDate;
@@ -115,7 +115,7 @@ public class Booking {
         this.createdAt = createdAt;
     }
 
-    // Enum for BookingStatus
+
     public enum BookingStatus {
         PENDING,
         CONFIRMED,

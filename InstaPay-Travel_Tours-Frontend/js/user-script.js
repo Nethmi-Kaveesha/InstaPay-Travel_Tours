@@ -20,10 +20,8 @@ function saveData() {
         gender: $("#gender").val()
     };
 
-    // Log user data for debugging
     console.log(user);
 
-    // Basic email validation
     let email = $("#email").val();
     let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailPattern.test(email)) {
@@ -31,15 +29,14 @@ function saveData() {
         return;
     }
 
-    // Phone number validation (10 digits)
     let phoneNumber = $("#phone_number").val();
-    let phonePattern = /^\d{10}$/; // Adjust pattern based on your requirements
+    let phonePattern = /^\d{10}$/;
     if (!phonePattern.test(phoneNumber)) {
         alert("Please enter a valid 10-digit phone number!");
         return;
     }
 
-    // Validate all fields
+
     if (!user.name || !user.role || !user.phone_number || !user.gender || !user.email || !user.password) {
         alert("Please fill all fields!");
         return;
@@ -52,8 +49,8 @@ function saveData() {
         data: JSON.stringify(user),
         success: function () {
             alert("User saved successfully!");
-            window.location.href = "user.html"; // Redirect to user page
-            getAll(); // Refresh the user list
+            window.location.href = "user.html";
+            getAll();
             clearForm();
         },
         error: function (xhr, status, error) {
@@ -124,16 +121,13 @@ function updateUser() {
         gender: $("#gender").val()
     };
 
-    // Continue with validation and AJAX...
 
-    // Validate all fields
     if (!updatedUser.name || !updatedUser.role || !updatedUser.phone_number || !updatedUser.gender) {
         alert("Please fill all fields!");
         return;
     }
 
-    // Phone number validation (10 digits)
-    let phonePattern = /^\d{10}$/; // Adjust pattern based on your requirements
+    let phonePattern = /^\d{10}$/;
     if (!phonePattern.test(updatedUser.phone_number)) {
         alert("Please enter a valid 10-digit phone number!");
         return;
@@ -147,7 +141,7 @@ function updateUser() {
         success: function () {
             alert("User updated successfully!");
             window.location.href = "user.html";
-            getAll();  // Refresh the user table
+            getAll();
             clearForm();
         },
         error: function (xhr, status, error) {
@@ -184,5 +178,5 @@ function clearForm() {
 }
 
 $(document).ready(function () {
-    getAll(); // Load all users on page load
+    getAll();
 });

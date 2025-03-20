@@ -10,14 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TourRepository extends JpaRepository<Tour, Integer> {
+    //@Query("SELECT Tour from ")
 
-    // Get paginated list of tours by location
     Page<Tour> findByLocation(String location, Pageable pageable);
 
-    // Example: Get tours by name (partial match)
     Page<Tour> findByTourNameContainingIgnoreCase(String tourName, Pageable pageable);
 
-    // Example: Get tours by price range
-    @Query("SELECT t FROM Tour t WHERE t.price BETWEEN :minPrice AND :maxPrice")
-    Page<Tour> findByPriceRange(@Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice, Pageable pageable);
-}
+    }

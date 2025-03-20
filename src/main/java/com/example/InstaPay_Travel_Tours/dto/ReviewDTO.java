@@ -10,7 +10,7 @@ public class ReviewDTO {
     private String reviewText;
     private LocalDateTime createdAt;
 
-    // Constructors
+
     public ReviewDTO() {}
 
     public ReviewDTO(int reviewid, int userid, int tourId, int rating, String reviewText, LocalDateTime createdAt) {

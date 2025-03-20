@@ -10,11 +10,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class UserDTO {
-    private UUID uid; // Added uid for consistency with entity
+    private UUID uid;
     private String email;
     private String password;
     private String name;
     private String role;
-    private String phone_number; // Added phone number field
-    private String gender; // Added gender field
+    private String phone_number;
+    private String gender;
 }

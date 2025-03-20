@@ -16,13 +16,13 @@ public class WebAppConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Allow all endpoints to be accessed
-                .allowedOrigins("/**") // Allow only the frontend origin
+        registry.addMapping("/**")
+                .allowedOrigins("/**")
                 .allowedOrigins("*")
                 .allowedOrigins("http://localhost:3000")
                 .allowedOrigins("http://localhost:63342")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow specific methods
-                .allowedHeaders("*") // Allow all headers
-                .allowCredentials(true); // Allow cookies and credentials if necessary
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

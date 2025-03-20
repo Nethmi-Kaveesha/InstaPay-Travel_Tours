@@ -2,7 +2,6 @@ package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.dto.AuthDTO;
 import com.example.InstaPay_Travel_Tours.dto.ResponseDTO;
-import com.example.InstaPay_Travel_Tours.dto.TourGuideDTO;
 import com.example.InstaPay_Travel_Tours.dto.UserDTO;
 import com.example.InstaPay_Travel_Tours.service.UserService;
 import com.example.InstaPay_Travel_Tours.util.JwtUtil;
@@ -27,7 +26,6 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    // Constructor injection
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
@@ -63,9 +61,9 @@ public class UserController {
 
 
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseDTO saveUser(@RequestBody UserDTO userDTO) {  // Fixed endpoint to /register and standardized response
+    public ResponseDTO saveUser(@RequestBody UserDTO userDTO) {
         try {
-            userService.addUser(userDTO);  // Use addUser
+            userService.addUser(userDTO);
             return new ResponseDTO(201, "User Saved", null);
         } catch (Exception e) {
             return new ResponseDTO(500, "Error occurred: " + e.getMessage(), null);
@@ -73,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {  // Return ResponseEntity for better control
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
@@ -86,7 +84,7 @@ public class UserController {
 
 
     @DeleteMapping("delete/{uid}")
-    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable("uid") UUID uid) {  // Handle UUID properly
+    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable("uid") UUID uid) {
         try {
             userService.deleteUser(uid);
             return ResponseEntity.status(HttpStatus.OK)

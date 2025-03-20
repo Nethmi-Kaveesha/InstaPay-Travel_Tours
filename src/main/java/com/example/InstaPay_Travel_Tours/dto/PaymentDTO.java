@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public class PaymentDTO {
 
     private int paymentId;
-    private int bookingId;  // Represents the associated Booking ID
-    private int userId;     // Represents the associated System User ID
+    private int bookingId;
+    private int userId;
     private double amountPaid;
     private String paymentMethod;
     private String transactionId;

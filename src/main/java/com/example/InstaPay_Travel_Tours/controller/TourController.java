@@ -4,6 +4,7 @@ import com.example.InstaPay_Travel_Tours.dto.TourDTO;
 import com.example.InstaPay_Travel_Tours.service.impl.TourServiceImpl;
 import com.example.InstaPay_Travel_Tours.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +23,26 @@ public class TourController {
     @Autowired
     private TourServiceImpl tourService;
 
-    // Endpoint for saving the tour and images
+    @Value("${image.upload.path}")
+    private String imageUploadPath;
+
     @PostMapping(value = "save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveTour(@RequestPart("tour") TourDTO tourDTO, @RequestPart(value = "images", required = false) MultipartFile[] images) {
-        // Add tour to the service
+        // Validate TourDTO fields if needed
+        if (tourDTO == null || tourDTO.getTourName() == null || tourDTO.getTourName().isEmpty()) {
+            return new ResponseUtil(400, "Tour name is required", null);
+        }
+
+        // Add the tour
         tourService.addTour(tourDTO);
 
+        // Process and save images if provided
         List<String> imagePaths = new ArrayList<>();
-        if (images != null) {
+        if (images != null && images.length > 0) {
             for (MultipartFile image : images) {
                 String fileName = StringUtils.cleanPath(image.getOriginalFilename());
                 try {
+                    // Save the image and get the image path
                     String imagePath = saveImage(fileName, image);
                     imagePaths.add(imagePath);
                 } catch (IOException e) {
@@ -44,42 +54,34 @@ public class TourController {
         return new ResponseUtil(201, "Tour Saved", imagePaths);
     }
 
-    // Endpoint to get all tours
     @GetMapping("getAll")
     public List<TourDTO> getAllTours() {
         return tourService.getAllTours();
     }
 
-    // Endpoint for updating a tour
     @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil updateTour(@RequestBody TourDTO tourDTO) {
         tourService.updateTour(tourDTO);
         return new ResponseUtil(200, "Tour Updated", null);
     }
 
-    // Endpoint for deleting a tour by ID
     @DeleteMapping("delete/{tourID}")
     public ResponseUtil deleteTour(@PathVariable("tourID") String tourID) {
         tourService.deleteTour(Integer.parseInt(tourID));
         return new ResponseUtil(200, "Tour deleted", null);
     }
 
-    // Method for saving images to a specific directory
+    // Method to save images and return the file path
     private String saveImage(String fileName, MultipartFile image) throws IOException {
-        // Update the directory to be outside of the resources folder for better portability
-        String directoryPath = "D:/Users/kavee/IdeaProjects/InstaPay-Travel_Tours/InstaPay-Travel_Tours2/src/main/resources/static/images"; // Set to an appropriate directory
-
-        // Create the directory if it doesn't exist
-        File directory = new File(directoryPath);
+        // Use the injected path instead of hardcoding
+        File directory = new File(imageUploadPath);
         if (!directory.exists()) {
-            directory.mkdirs(); // Creates the directory if it doesn't exist
+            directory.mkdirs();  // Create directories if they don't exist
         }
 
-        // Save the file in the directory
         File file = new File(directory, fileName);
         image.transferTo(file);
 
-        // Return the URL path that can be accessed
-        return "/images/" + fileName;
+        return "/images/" + fileName;  // Return relative path to access images in the front end
     }
 }

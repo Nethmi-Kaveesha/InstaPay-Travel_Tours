@@ -15,11 +15,11 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;  // Link to Booking entity
+    private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User systemUser;  // Link to SystemUser entity
+    private User systemUser;
 
     private double amountPaid;
     private String paymentMethod;

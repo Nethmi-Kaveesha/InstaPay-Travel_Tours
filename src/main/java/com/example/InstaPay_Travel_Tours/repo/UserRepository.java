@@ -7,10 +7,10 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<User> findByEmail(String email);  // Use Optional to handle null safety
+    Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
 
-    void deleteByEmail(String email);  // Return type should be void
+    void deleteByEmail(String email);
 
 }

@@ -106,7 +106,6 @@
             </tr>
             </thead>
             <tbody id="bookingsTableBody">
-            <!-- Booked tours will be inserted here -->
             </tbody>
         </table>
         <button class="clear-btn" onclick="clearBookings()">Clear All Bookings</button>
@@ -117,10 +116,9 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         displayBookedTours();
-        updateTourSeats(); // Update available seats in the original tour table
+        updateTourSeats();
     });
 
-    // Display booked tours
     function displayBookedTours() {
         let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
         const tableBody = document.getElementById("bookingsTableBody");
@@ -153,7 +151,6 @@
         });
     }
 
-    // Update seats in the booking table and in the original tour data
     function updateSeats(index, change) {
         let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
         let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
@@ -176,17 +173,15 @@
         }
     }
 
-    // Book a tour (Redirect to login if not logged in)
     function bookTour(index) {
-        let isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+        let isLoggedIn = localStorage.getItem("isLoggedIn");
         if (!isLoggedIn) {
-            window.location.href = "log.html"; // Redirect to login page
+            window.location.href = "log.html";
         } else {
-            alert("Tour booked successfully!"); // Placeholder for actual booking functionality
+            alert("Tour booked successfully!");
         }
     }
 
-    // Remove a booking and update the available seats in the original tour data
     function removeBooking(index) {
         let bookings = JSON.parse(localStorage.getItem("selectedTours")) || [];
         let originalTours = JSON.parse(localStorage.getItem("allTours")) || [];
