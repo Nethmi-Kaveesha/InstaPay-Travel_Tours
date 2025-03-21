@@ -1,6 +1,9 @@
 package com.example.InstaPay_Travel_Tours.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.Date;
 
 @Entity
@@ -12,39 +15,45 @@ public class Tour {
     @Column(name = "tourid")
     private int tourID;
 
-    @Column(name = "tour_name")
+    @Column(name = "tour_name", nullable = false)
+    @NotEmpty(message = "Tour name cannot be empty")
     private String tourName;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name = "location")
+    @Column(name = "location", nullable = false)
+    @NotEmpty(message = "Location cannot be empty")
     private String location;
 
-    @Column(name = "duration")
+    @Column(name = "duration", nullable = false)
+    @Min(value = 1, message = "Duration must be at least 1 day")
     private int duration;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
+    @Min(value = 0, message = "Price cannot be negative")
     private double price;
 
-    @Column(name = "tour_type")
+    @Column(name = "tour_type", nullable = false)
+    @NotEmpty(message = "Tour type cannot be empty")
     private String tourType;
 
     @Column(name = "available_seats")
+    @Min(value = 0, message = "Available seats cannot be negative")
     private int availableSeats;
 
     @Column(name = "start_date")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date startDate;
 
     @Column(name = "end_date")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date endDate;
 
-    @Column(name = "images" , nullable = true,length = 64)
+    @Column(name = "images", length = 255, nullable = true)
     private String images;
 
-
+    // Constructors
     public Tour(int tourID, String tourName, String description, String location, int duration, double price,
                 String tourType, int availableSeats, Date startDate, Date endDate, String images) {
         this.tourID = tourID;
@@ -63,6 +72,7 @@ public class Tour {
     public Tour() {
     }
 
+    // Getters and setters
     public int getTourID() {
         return tourID;
     }
@@ -146,12 +156,6 @@ public class Tour {
     public String getImages() {
         return images;
     }
-
-//    @Transient
-//    public String getImages() {
-//        if (images == null) return null;
-//        return "/images/" + tourID + "/" + images;
-//    }
 
     public void setImages(String images) {
         this.images = images;

@@ -1,25 +1,26 @@
 package com.example.InstaPay_Travel_Tours.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class ReviewDTO {
-    private int reviewid;
-    private int userid;
-    private int tourId;
-    private int rating;
-    private String reviewText;
-    private LocalDateTime createdAt;
 
+    private int reviewid;           // Review ID
+    private LocalDateTime createdAt; // Created At timestamp
+    private int rating;             // Rating
+    private String reviewText;      // Review Text
+    private int tourid;             // Tour ID
+    private int userid;            // User ID (UUID format to represent binary(16) in DTO)
 
     public ReviewDTO() {}
 
-    public ReviewDTO(int reviewid, int userid, int tourId, int rating, String reviewText, LocalDateTime createdAt) {
+    public ReviewDTO(int reviewid, LocalDateTime createdAt, int rating, String reviewText, int tourid, int userid) {
         this.reviewid = reviewid;
-        this.userid = userid;
-        this.tourId = tourId;
+        this.createdAt = createdAt;
         this.rating = rating;
         this.reviewText = reviewText;
-        this.createdAt = createdAt;
+        this.tourid = tourid;
+        this.userid = userid;
     }
 
     // Getters and Setters
@@ -27,24 +28,16 @@ public class ReviewDTO {
         return reviewid;
     }
 
-    public void setReviewid(int reviewId) {
-        this.reviewid = reviewId;
+    public void setReviewid(int reviewid) {
+        this.reviewid = reviewid;
     }
 
-    public int getUserId() {
-        return userid;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUserId(int userId) {
-        this.userid = userId;
-    }
-
-    public int getTourId() {
-        return tourId;
-    }
-
-    public void setTourId(int tourId) {
-        this.tourId = tourId;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getRating() {
@@ -52,6 +45,9 @@ public class ReviewDTO {
     }
 
     public void setRating(int rating) {
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5");
+        }
         this.rating = rating;
     }
 
@@ -63,11 +59,19 @@ public class ReviewDTO {
         this.reviewText = reviewText;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public int getTourid() {
+        return tourid;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setTourid(int tourid) {
+        this.tourid = tourid;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 }

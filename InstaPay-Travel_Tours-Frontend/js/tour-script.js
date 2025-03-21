@@ -1,252 +1,200 @@
-const apiUrl = "http://localhost:8080/api/v1/tours";
-let imageData = "";
-let selectedTourID = null;
+const URL = "http://localhost:8080/api/v1/tours";
+let selectedTourId = null;
 
-function loadTours() {
-    console.log("Loading tours...");
-
-    $.get(apiUrl + "/getAll")
-        .done(function (tours) {
-            console.log("Tours Loaded:", tours);
-            const tableBody = $("#tourTableBody");
-            tableBody.empty();
-
-            if (tours && tours.length > 0) {
-                tours.forEach(tour => {
-                    tableBody.append(`
-                        <tr>
-                            <td>${tour.tourID || ''}</td>
-                            <td>${tour.tourName || ''}</td>
-                            <td>${tour.location || ''}</td>
-                            <td>${tour.duration || ''}</td>
-                            <td>${tour.price || ''}</td>
-                            <td>${tour.tourType || ''}</td>
-                            <td>${tour.availableSeats || ''}</td>
-                            <td>${tour.startDate || ''}</td>
-                            <td>${tour.endDate || ''}</td>
-                            <td>${tour.description || ''}</td>
-                            <td>
-                                <img src="${tour.images}" alt="Tour Image" style="max-width: 80px; height: auto; border-radius: 5px;">
-                            </td>
-                            <td>
-                                <button class="btn btn-info" onclick="editTour(${tour.tourID})">Edit</button>
-                                <button class="btn btn-danger" onclick="deleteTour(${tour.tourID})">Delete</button>
-                            </td>
-                        </tr>
-                    `);
-                });
-            } else {
-                tableBody.append("<tr><td colspan='11'>No tours available</td></tr>");
-            }
-        })
-        .fail(function (error) {
-            console.error("Error loading tours from API", error);
-            alert("Error loading tours.");
-        });
-}
-
-$(document).ready(function () {
-    $("#tourForm").on("submit", function (e) {
-        e.preventDefault();
-
-        const tourName = $("#tourName").val().trim();
-        const description = $("#description").val().trim();
-        const location = $("#location").val().trim();
-        const duration = $("#duration").val();
-        const price = $("#price").val();
-        const tourType = $("#tourType").val();
-        const availableSeats = $("#availableSeats").val();
-        const startDate = $("#startDate").val();
-        const endDate = $("#endDate").val();
-        const images = $("#images")[0].files;
-
-        if (!tourName || !description || !location || !duration || !price || !tourType || !availableSeats || !startDate || !endDate) {
-            alert("Please fill in all required fields.");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("tourName", tourName);
-        formData.append("description", description);
-        formData.append("location", location);
-        formData.append("duration", duration);
-        formData.append("price", price);
-        formData.append("tourType", tourType);
-        formData.append("availableSeats", availableSeats);
-        formData.append("startDate", startDate);
-        formData.append("endDate", endDate);
-
-
-        if (images.length > 0) {
-            for (let i = 0; i < images.length; i++) {
-                formData.append("images", images[i]);
-            }
-        }
-
-        for (let pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
-
-        $.ajax({
-            url: `${apiUrl}/save`,
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                alert("Tour added successfully!");
-
-
-                const newTour = {
-                    tourID: response.tourID,
-                    tourName: $("#tourName").val(),
-                    location: $("#location").val(),
-                    duration: $("#duration").val(),
-                    price: $("#price").val(),
-                    tourType: $("#tourType").val(),
-                    availableSeats: $("#availableSeats").val(),
-                    startDate: $("#startDate").val(),
-                    endDate: $("#endDate").val(),
-                    description: $("#description").val(),
-                    images: $("#images")[0].files[0].name // Or the appropriate image URL from backend
-                };
-
-                const tableBody = $("#tourTableBody");
-                tableBody.append(`
-            <tr>
-                <td>${newTour.tourID}</td>
-                <td>${newTour.tourName}</td>
-                <td>${newTour.location}</td>
-                <td>${newTour.duration}</td>
-                <td>${newTour.price}</td>
-                <td>${newTour.tourType}</td>
-                <td>${newTour.availableSeats}</td>
-                <td>${newTour.startDate}</td>
-                <td>${newTour.endDate}</td>
-                <td>${newTour.description}</td>
-                <td>
-                    <img src="${newTour.images}" alt="Tour Image" style="max-width: 80px; height: auto; border-radius: 5px;">
-                </td>
-                <td>
-                    <button class="btn btn-info" onclick="editTour(${newTour.tourID})">Edit</button>
-                    <button class="btn btn-danger" onclick="deleteTour(${newTour.tourID})">Delete</button>
-                </td>
-            </tr>
-        `);
-
-
-                $("#tourForm")[0].reset();
-                loadTours();
-            },
-            error: function (xhr, status, error) {
-                console.error("Error:", error);
-                alert("Failed to add tour! Please try again.");
-            }
-        });
-
-    });
+$("#tourForm").submit(function (event) {
+    event.preventDefault();
+    if (selectedTourId) {
+        updateTour();
+    } else {
+        saveTour();
+    }
 });
 
-function editTour(tourID) {
-    $.get(apiUrl + "/get/" + tourID)
-        .done(function (tour) {
-            $("#tourID").val(tour.tourID);
-            $("#tourName").val(tour.tourName);
-            $("#location").val(tour.location);
-            $("#duration").val(tour.duration);
-            $("#price").val(tour.price);
-            $("#tourType").val(tour.tourType);
-            $("#availableSeats").val(tour.availableSeats);
-            $("#startDate").val(tour.startDate);
-            $("#endDate").val(tour.endDate);
-            $("#description").val(tour.description);
+// Handle image upload and conversion to base64
+function handleImageUpload(files) {
+    const file = files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            // Here you can handle the uploaded image (e.g., save as base64 or upload to your server)
+            $("#images").val(reader.result);  // Set the image data as the value (Base64 encoded)
+        };
+        reader.readAsDataURL(file); // Convert the image to a base64 string
+    }
+}
 
-            if (tour.images) {
-                $("#imagePreview").attr("src", tour.images).show();
-                imageData = tour.images;
-            } else {
-                $("#imagePreview").hide();
-                imageData = "";
+// When a user selects an image
+$("#images").change(function (event) {
+    handleImageUpload(event.target.files);
+});
+
+function saveTour() {
+    let tour = {
+        tourID: $("#tourID").val(),
+        tourName: $("#tourName").val(),
+        description: $("#description").val(),
+        location: $("#location").val(),
+        duration: $("#duration").val(),
+        price: $("#price").val(),
+        tourType: $("#tourType").val(),
+        availableSeats: $("#availableSeats").val(),
+        startDate: $("#startDate").val(),
+        endDate: $("#endDate").val(),
+        images: $("#images").val()  // This will be a base64 string or an image URL
+    };
+
+    $.ajax({
+        url: `${URL}/save`,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(tour),
+        success: function () {
+            alert("Tour saved successfully!");
+            getAllTours();
+            clearForm();
+        },
+        error: function () {
+            alert("Error saving Tour!");
+        }
+    });
+}
+
+function getAllTours() {
+    $.ajax({
+        url: `${URL}/getAll`,
+        type: "GET",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
+        dataType: "json",
+        success: function (response) {
+            console.log("Full Response:", response);
+
+            if (!Array.isArray(response)) {
+                console.error("Error: Expected array, got", typeof response);
+                return;
             }
 
-            selectedTourID = tour.tourID;
-            $("#saveButton").hide();
-            $("#updateButton, #deleteButton").show();
-        })
-        .fail(function (error) {
-            console.error("Error loading tour:", error);
-            alert("Error loading tour details.");
-        });
+            let tours = response;
+
+            $("#tourTableBody").empty();
+            tours.forEach(tour => {
+                let imageHTML = '';
+                if (tour.images) {
+                    // If the image is stored as base64
+                    imageHTML = `<img src="${tour.images}" alt="${tour.tourName}" style="width: 100px; height: 100px; object-fit: cover;">`;
+                } else {
+                    imageHTML = '<p>No image available</p>';
+                }
+
+                $("#tourTableBody").append(`
+                    <tr>
+                        <td>${tour.tourID}</td>
+                        <td>${tour.tourName}</td>
+                        <td>${tour.description}</td>
+                        <td>${tour.location}</td>
+                        <td>${tour.duration}</td>
+                        <td>${tour.price}</td>
+                        <td>${tour.tourType}</td>
+                        <td>${tour.availableSeats}</td>
+                        <td>${tour.startDate}</td>
+                        <td>${tour.endDate}</td>
+                        <td>${imageHTML}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${tour.tourID}', '${tour.tourName}', '${tour.description}', '${tour.location}', '${tour.duration}', '${tour.price}', '${tour.tourType}', '${tour.availableSeats}', '${tour.startDate}', '${tour.endDate}', '${tour.images}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteTour('${tour.tourID}')">Delete</button>
+                        </td>
+                    </tr>`);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching tours:", error);
+            alert("Error fetching tours!");
+        }
+    });
+}
+
+function fillTextFields(id, tourName, description, location, duration, price, tourType, availableSeats, startDate, endDate, images) {
+    $("#tourID").val(id);
+    $("#tourName").val(tourName);
+    $("#description").val(description);
+    $("#location").val(location);
+    $("#duration").val(duration);
+    $("#price").val(price);
+    $("#tourType").val(tourType);
+    $("#availableSeats").val(availableSeats);
+    $("#startDate").val(startDate);
+    $("#endDate").val(endDate);
+    $("#images").val(images);
+
+    selectedTourId = id;
+
+    $("#saveButton").hide();
+    $("#updateButton").show();
+    $("#deleteButton").show();
 }
 
 function updateTour() {
-    if (!selectedTourID) {
-        alert("No tour selected for update.");
+    let updatedTour = {
+        tourID: selectedTourId,
+        tourName: $("#tourName").val(),
+        description: $("#description").val(),
+        location: $("#location").val(),
+        duration: $("#duration").val(),
+        price: $("#price").val(),
+        tourType: $("#tourType").val(),
+        availableSeats: $("#availableSeats").val(),
+        startDate: $("#startDate").val(),
+        endDate: $("#endDate").val(),
+        images: $("#images").val()  // This will be a base64 string or an image URL
+    };
+
+    if (!updatedTour.tourName || !updatedTour.location || !updatedTour.price) {
+        alert("Please fill all required fields!");
         return;
     }
 
-    const tourData = new FormData();
-    tourData.append("tourID", selectedTourID);
-    tourData.append("tourName", $("#tourName").val());
-    tourData.append("location", $("#location").val());
-    tourData.append("duration", $("#duration").val());
-    tourData.append("price", $("#price").val());
-    tourData.append("tourType", $("#tourType").val());
-    tourData.append("availableSeats", $("#availableSeats").val());
-    tourData.append("startDate", $("#startDate").val());
-    tourData.append("endDate", $("#endDate").val());
-    tourData.append("description", $("#description").val());
-
-    var file = $("#images")[0].files[0];
-    if (file) {
-        tourData.append("images", file);
-    } else if (imageData) {
-        tourData.append("images", imageData);
-    }
-
     $.ajax({
-        url: apiUrl + "/update",
-        method: "PUT",
-        data: tourData,
-        processData: false,
-        contentType: false,
+        url: `${URL}/update`,
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify(updatedTour),
         success: function () {
-            alert("Tour updated successfully");
-            loadTours();
-            resetForm();
+            alert("Tour updated successfully!");
+            getAllTours();
+            clearForm();
         },
-        error: function (xhr) {
-            alert("Error: " + xhr.responseText);
+        error: function () {
+            alert("Error updating Tour!");
         }
     });
 }
 
-function deleteTour(tourID) {
-    if (!confirm("Are you sure you want to delete this tour?")) return;
+function deleteTour(id) {
+    if (!confirm("Are you sure you want to delete this Tour?")) return;
 
     $.ajax({
-        url: apiUrl + "/delete/" + tourID,
+        url: `${URL}/delete/${id}`,
         type: "DELETE",
         success: function () {
-            alert("Tour deleted successfully");
-            loadTours();
-            resetForm();
+            alert("Tour deleted successfully!");
+            getAllTours();
+            clearForm();
         },
-        error: function (xhr) {
-            alert("Error: " + xhr.responseText);
+        error: function () {
+            alert("Error deleting Tour!");
         }
     });
 }
 
-function resetForm() {
+function clearForm() {
     $("#tourForm")[0].reset();
-    $("#imagePreview").hide();
-    imageData = "";
-    selectedTourID = null;
+    $("#updateButton").hide();
+    $("#deleteButton").hide();
     $("#saveButton").show();
-    $("#updateButton, #deleteButton").hide();
+    selectedTourId = null;
 }
 
-$(document).ready(function() {
-    loadTours();
+$(document).ready(function () {
+    getAllTours();
 });

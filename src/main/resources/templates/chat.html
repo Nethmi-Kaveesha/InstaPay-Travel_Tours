@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSockets Chat</title>
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-weight: 400;
+            font-family: "Helvetica Neue", Helvetica, sans-serif;
+            font-size: 1rem;
+            line-height: 1.58;
+        }
+
+        /* Username Page */
+        #username-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .username-page-container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .username-page-container .title {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .accent {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .accent:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chat Page */
+        #chat-page {
+            display: none;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        .chat-container {
+            text-align: center;
+            padding: 20px;
+            background: #007bff;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .connecting {
+            text-align: center;
+            font-style: italic;
+            color: #888;
+            margin: 10px 0;
+        }
+
+        #messageArea {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            height: 60vh;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .input-group {
+            display: flex;
+            padding: 10px;
+            background: #fff;
+            border-top: 1px solid #ccc;
+        }
+
+        .input-group .form-control {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .primary {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .primary:hover {
+            background-color: #218838;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div id="username-page">
+    <div class="username-page-container">
+        <h1 class="title">Type your username to enter the ChatRoom</h1>
+        <form id="usernameForm" name="userNameForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Username" autocomplete="off" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="accent username-submit">StartChatting</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="chat-page" class="hidden">
+    <div class="chat-container">
+        <h2>Spring WebSocket Chat Demo - By Kavee</h2>
+    </div>
+
+    <div class="connecting">
+        Connecting...
+    </div>
+    <ul id="messageArea">
+
+
+    </ul>
+    <form id="messageForm" name="messageForm">
+        <div class="form-group">
+            <div class="input-group clearfix">
+                <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control">
+                <button type="submit" class="primary">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="/js/chat.js"></script>
+</body>
+</html>

@@ -22,7 +22,11 @@ function saveData() {
     $.ajax({
         url: `${URL}/save`,
         type: "POST",
+
         contentType: "application/json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
         data: JSON.stringify(tourSchedule),
         success: function () {
             alert("Tour Schedule saved successfully!");
@@ -39,6 +43,9 @@ function getAll() {
     $.ajax({
         url: `${URL}/getAll`,
         type: "GET",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
         dataType: "json", // Ensures response is parsed as JSON
         success: function (response) {
             console.log("Full Response:", response);
@@ -107,6 +114,9 @@ function updateTourSchedule() {
     $.ajax({
         url: `${URL}/update`,
         type: "PUT",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
         contentType: "application/json",
         data: JSON.stringify(updatedTourSchedule),
         success: function () {
@@ -126,6 +136,9 @@ function deleteTourSchedule(id) {
     $.ajax({
         url: `${URL}/delete/${id}`,
         type: "DELETE",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
         success: function () {
             alert("Tour Schedule deleted successfully!");
             getAll();

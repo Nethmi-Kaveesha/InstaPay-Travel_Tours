@@ -196,6 +196,7 @@
                     data: JSON.stringify({ email: email, password: password }),
                     contentType: 'application/json',
                     success: function (response) {
+                        localStorage.setItem('token', response.data.token);
                         if (response.code === 201) {
                             let dashboardUrl = "dashboard.html";
 

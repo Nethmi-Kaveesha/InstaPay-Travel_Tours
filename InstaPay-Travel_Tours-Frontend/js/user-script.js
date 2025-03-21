@@ -65,6 +65,9 @@ function getAll() {
         url: `${URL}/getAll`,
         type: "GET",
         dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
         success: function (response) {
             console.log("Full Response:", response);
 
@@ -151,22 +154,24 @@ function updateUser() {
     });
 }
 
-function deleteUser(email) {
-    if (!confirm("Are you sure you want to delete this user?")) return;
-
-    $.ajax({
-        url: `${URL}/delete/${email}`,
-        type: "DELETE",
-        success: function () {
-            alert("User deleted successfully!");
-            getAll();
-            clearForm();
+function deleteUser(uid) {
+    fetch(`http://your-api-url/api/v1/user/delete/${uid}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
         },
-        error: function (xhr, status, error) {
-            console.error("Error deleting user:", error);
-            alert("Error deleting user!");
-        }
-    });
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                alert("User deleted successfully!");
+            } else {
+                alert("Failed to delete user: " + data.message);
+            }
+        })
+        .catch(error => console.error("Error deleting user:", error));
+
+
 }
 
 function clearForm() {

@@ -41,6 +41,9 @@ function getAll() {
         url: `${URL}/getAll`,
         type: "GET",
         dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
         success: function (response) {
             console.log("Full Response:", response);
 

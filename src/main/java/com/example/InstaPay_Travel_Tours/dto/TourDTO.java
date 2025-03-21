@@ -1,30 +1,24 @@
 package com.example.InstaPay_Travel_Tours.dto;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class TourDTO {
 
-    private Integer tourID;
+    private int tourID;
     private String tourName;
     private String description;
     private String location;
-    private Integer duration;
-    private Double price;
+    private int duration;
+    private double price;
     private String tourType;
-    private Integer availableSeats;
+    private int availableSeats;
     private Date startDate;
     private Date endDate;
     private String images;
-    private UUID tourOperatorID;
 
-
-    public TourDTO() {}
-
-
-    public TourDTO(Integer tourID, String tourName, String description, String location,
-                   Integer duration, Double price, String tourType, Integer availableSeats,
-                   Date startDate, Date endDate, String images, UUID tourOperatorID) {
+    // Constructors
+    public TourDTO(int tourID, String tourName, String description, String location, int duration, double price,
+                   String tourType, int availableSeats, Date startDate, Date endDate, String images) {
         this.tourID = tourID;
         this.tourName = tourName;
         this.description = description;
@@ -36,15 +30,17 @@ public class TourDTO {
         this.startDate = startDate;
         this.endDate = endDate;
         this.images = images;
-        this.tourOperatorID = tourOperatorID;
     }
 
+    public TourDTO() {
+    }
 
-    public Integer getTourID() {
+    // Getters and setters
+    public int getTourID() {
         return tourID;
     }
 
-    public void setTourID(Integer tourID) {
+    public void setTourID(int tourID) {
         this.tourID = tourID;
     }
 
@@ -72,19 +68,19 @@ public class TourDTO {
         this.location = location;
     }
 
-    public Integer getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -96,11 +92,11 @@ public class TourDTO {
         this.tourType = tourType;
     }
 
-    public Integer getAvailableSeats() {
+    public int getAvailableSeats() {
         return availableSeats;
     }
 
-    public void setAvailableSeats(Integer availableSeats) {
+    public void setAvailableSeats(int availableSeats) {
         this.availableSeats = availableSeats;
     }
 
@@ -126,71 +122,5 @@ public class TourDTO {
 
     public void setImages(String images) {
         this.images = images;
-    }
-
-    public UUID getTourOperatorID() {
-        return tourOperatorID;
-    }
-
-    public void setTourOperatorID(UUID tourOperatorID) {
-        this.tourOperatorID = tourOperatorID;
-    }
-
-    // Override toString for better logging and debugging
-    @Override
-    public String toString() {
-        return "TourDTO{" +
-                "tourID=" + tourID +
-                ", tourName='" + tourName + '\'' +
-                ", description='" + description + '\'' +
-                ", location='" + location + '\'' +
-                ", duration=" + duration +
-                ", price=" + price +
-                ", tourType='" + tourType + '\'' +
-                ", availableSeats=" + availableSeats +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", images='" + images + '\'' +
-                ", tourOperatorID=" + tourOperatorID +
-                '}';
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        TourDTO tourDTO = (TourDTO) o;
-
-        if (!tourID.equals(tourDTO.tourID)) return false;
-        if (!tourName.equals(tourDTO.tourName)) return false;
-        if (!description.equals(tourDTO.description)) return false;
-        if (!location.equals(tourDTO.location)) return false;
-        if (!duration.equals(tourDTO.duration)) return false;
-        if (!price.equals(tourDTO.price)) return false;
-        if (!tourType.equals(tourDTO.tourType)) return false;
-        if (!availableSeats.equals(tourDTO.availableSeats)) return false;
-        if (!startDate.equals(tourDTO.startDate)) return false;
-        if (!endDate.equals(tourDTO.endDate)) return false;
-        if (!images.equals(tourDTO.images)) return false;
-        return tourOperatorID.equals(tourDTO.tourOperatorID);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = tourID.hashCode();
-        result = 31 * result + tourName.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + location.hashCode();
-        result = 31 * result + duration.hashCode();
-        result = 31 * result + price.hashCode();
-        result = 31 * result + tourType.hashCode();
-        result = 31 * result + availableSeats.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + images.hashCode();
-        result = 31 * result + tourOperatorID.hashCode();
-        return result;
     }
 }
