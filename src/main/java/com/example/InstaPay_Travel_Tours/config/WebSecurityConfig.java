@@ -57,12 +57,12 @@ public class WebSecurityConfig {
                                 "/api/v1/tourguide/update",
                                 "/api/v1/tourguide/delete/**",  // ✅ DELETE Tour Guide endpoint
 
-                                "/chat/**",
-                                "/chat",
+                                "/chat/**",              // ✅ WebSocket endpoint for real-time chat
+                                "/chat",                 // ✅ WebSocket endpoint for real-time chat
                                 "/api/v1/chat/sendMessage",  // ✅ Chat endpoint for sending messages
                                 "/api/v1/chat/getMessages", // ✅ Chat endpoint for getting messages
                                 "/api/v1/chat/history",     // ✅ Chat endpoint for message history
-
+                                "/api/v1/chat/history",
                                 "/api/v1/tours/**",
                                 "/api/v1/tours/save",
                                 "/api/v1/tours/getAll",
@@ -104,6 +104,7 @@ public class WebSecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
+
 
                                 "/new/api/endpoint1", // ✅ New API endpoint 1
                                 "/new/api/endpoint2", // ✅ New API endpoint 2
