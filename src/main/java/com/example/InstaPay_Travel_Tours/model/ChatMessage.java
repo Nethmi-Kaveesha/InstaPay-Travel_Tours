@@ -1,32 +1,28 @@
 package com.example.InstaPay_Travel_Tours.model;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity // Mark this class as a JPA entity
+@Entity
 public class ChatMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generate the ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String sender;
     private String content;
 
-    @Column(nullable = false) // Ensure that the timestamp is always set
-    private LocalDateTime timestamp; // Store the timestamp of when the message was sent
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime timestamp;
 
-    // Constructor with timestamp
-    public ChatMessage(String sender, String content) {
-        this.sender = sender;
-        this.content = content;
-        this.timestamp = LocalDateTime.now(); // Automatically set the timestamp when the message is created
+    // Ensure timestamp is automatically set when saving a new message
+    @PrePersist
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
     }
 }
