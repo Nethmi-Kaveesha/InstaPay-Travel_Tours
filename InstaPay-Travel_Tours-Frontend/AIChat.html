@@ -8,32 +8,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/AIChat.js"></script>
 </head>
-<body class="show-chatbot">
+<body>
+
 <button class="chatbot-toggle">
     <span class="material-symbols-outlined">mode_comment</span>
     <span class="material-symbols-outlined">close</span>
 </button>
+
 <div class="chatbot">
     <header>
         <h2>Chatbot</h2>
-        <span class="material-symbols-outlined">close</span>
+        <span class="close-btn material-symbols-outlined">close</span>
     </header>
     <ul class="chatbox">
         <li class="chat incoming">
             <span class="material-symbols-outlined">smart_toy</span>
             <p>Hi there 👋 <br>How can I help you today?</p>
         </li>
-<!--        <li class="chat outgoing">-->
-<!--            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>-->
-<!--        </li>-->
     </ul>
     <div class="chat-input">
         <textarea placeholder="Enter a message..." required></textarea>
         <span id="send-btn" class="material-symbols-outlined">send</span>
     </div>
 </div>
+
+<!-- Move the script to the bottom -->
 <script src="js/AIChat.js"></script>
+
 </body>
 </html>
