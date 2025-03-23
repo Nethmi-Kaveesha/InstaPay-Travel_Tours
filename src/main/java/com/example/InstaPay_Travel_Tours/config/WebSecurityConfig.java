@@ -98,6 +98,7 @@ public class WebSecurityConfig {
                                 "/api/v1/expense/updateExpense",
                                 "/api/v1/expense/deleteExpense/**",  // DELETE Expense endpoint
 
+                                "/api/v1/income/",
                                 "/api/v1/income/saveIncome",
                                 "/api/v1/income/update",
                                 "/api/v1/income/getAll",
