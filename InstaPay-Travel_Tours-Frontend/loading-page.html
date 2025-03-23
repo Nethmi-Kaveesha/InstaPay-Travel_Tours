@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Income Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Loading screen styles */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        /* Main content styles */
+        .main-content {
+            text-align: center;
+            display: none;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .add-btn {
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        #tracker {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* New text styles */
+        .welcome-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .big-tracker-text {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .penny-counts-text {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-content {
+                width: 80%;
+            }
+            .loader {
+                width: 40px;
+                height: 40px;
+            }
+            h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading-container">
+    <div class="loader"></div>
+    <h2>Loading...</h2>
+</div>
+
+<div class="main-content">
+    <div class="welcome-text">Welcome to</div>
+    <div class="big-tracker-text">Expense Tracker</div>
+    <div class="penny-counts-text">Every penny counts</div>
+    <!-- Link button to expense.html -->
+    <a href="add-expense.html">
+        <button class="add-btn">Add Expense/Income</button>
+    </a>
+    <div id="tracker">
+        <!-- Tracker content will be shown here -->
+        <p>Expense/Income Tracker will appear here!</p>
+    </div>
+</div>
+
+<script>
+    // Simulate loading process and hide the loading screen after 3 seconds
+    window.addEventListener('load', function () {
+        setTimeout(function () {
+            document.querySelector('.loading-container').style.display = 'none';
+            document.querySelector('.main-content').style.display = 'block';
+            document.querySelector('.main-content').style.opacity = '1';
+        }, 3000); // 3 seconds delay
+    });
+</script>
+
+</body>
+</html>
