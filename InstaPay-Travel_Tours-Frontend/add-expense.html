@@ -340,15 +340,15 @@
                     response.forEach(function(expense) {
                         totalExpense += expense.amount;
                         expensesTableBody.append(`
-                        <tr data-id="${expense.id}">
-                            <td>${expense.description}</td>
-                            <td>${expense.amount}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                    `);
+                            <tr data-id="${expense.id}">
+                                <td>${expense.description}</td>
+                                <td>${expense.amount}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        `);
                     });
 
                     $('#totalExpense').text(totalExpense);
@@ -375,15 +375,15 @@
                     response.forEach(function(income) {
                         totalIncome += income.amount;
                         incomesTableBody.append(`
-                        <tr data-id="${income.id}">
-                            <td>${income.description}</td>
-                            <td>${income.amount}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                    `);
+                            <tr data-id="${income.id}">
+                                <td>${income.description}</td>
+                                <td>${income.amount}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
+                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                                </td>
+                            </tr>
+                        `);
                     });
 
                     $('#totalIncome').text(totalIncome);
@@ -430,6 +430,7 @@
             }
         }
 
+
         function updateBarChart() {
             const ctx = document.getElementById('incomeExpenseBarChart').getContext('2d');
             if (barChart) {
@@ -445,7 +446,7 @@
                             data: [totalIncome, totalExpense],
                             backgroundColor: ['#FF9800', '#009688'],
                             borderColor: ['#FF9800', '#009688'],
-                            borderWidth: 1,
+                            borderWidth: 1
                         }]
                     },
                     options: {
@@ -465,100 +466,50 @@
             }
         }
 
-        // Handling form submissions
-        $('#incomeForm').submit(function(event) {
+        $('#expenseForm').on('submit', function(event) {
             event.preventDefault();
-            const description = $('#incomeDescription').val();
-            const amount = parseFloat($('#incomeAmount').val());
 
-            if (description && amount) {
-                $.ajax({
-                    url: 'http://localhost:8080/api/v1/income/',
-                    type: 'POST',
-                    data: JSON.stringify({ description, amount }),
-                    contentType: 'application/json',
-                    success: function() {
-                        loadIncomes();
-                        $('#incomeDescription').val('');
-                        $('#incomeAmount').val('');
-                    },
-                    error: function() {
-                        alert('Error saving income!');
-                    }
-                });
-            }
-        });
-
-        $('#expenseForm').submit(function(event) {
-            event.preventDefault();
-            const description = $('#expenseDescription').val();
-            const amount = parseFloat($('#expenseAmount').val());
-
-            if (description && amount) {
-                $.ajax({
-                    url: 'http://localhost:8080/api/v1/expense/',
-                    type: 'POST',
-                    data: JSON.stringify({ description, amount }),
-                    contentType: 'application/json',
-                    success: function() {
-                        loadExpenses();
-                        $('#expenseDescription').val('');
-                        $('#expenseAmount').val('');
-                    },
-                    error: function() {
-                        alert('Error saving expense!');
-                    }
-                });
-            }
-        });
-
-        // Handle delete actions
-        $(document).on('click', '.delete-btn', function() {
-            const id = $(this).closest('tr').data('id');
-            const type = $(this).closest('table').attr('id') === 'incomesTable' ? 'income' : 'expense';
+            const expenseData = {
+                description: $('#expenseDescription').val(),
+                amount: parseFloat($('#expenseAmount').val())
+            };
 
             $.ajax({
-                url: `http://localhost:8080/api/v1/${type}/${id}`,
-                type: 'DELETE',
+                url: 'http://localhost:8080/api/v1/expense/saveExpense',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(expenseData),
                 success: function() {
-                    if (type === 'income') {
-                        loadIncomes();
-                    } else {
-                        loadExpenses();
-                    }
+                    loadExpenses();
+                    $('#expenseForm')[0].reset();
                 },
                 error: function() {
-                    alert(`Error deleting ${type}!`);
+                    alert('Error saving expense!');
                 }
             });
         });
 
-        // Handle edit actions
-        $(document).on('click', '.edit-btn', function() {
-            const id = $(this).closest('tr').data('id');
-            const type = $(this).closest('table').attr('id') === 'incomesTable' ? 'income' : 'expense';
+        $('#incomeForm').on('submit', function(event) {
+            event.preventDefault();
 
-            const description = prompt('Enter new description:');
-            const amount = prompt('Enter new amount:');
+            const incomeData = {
+                description: $('#incomeDescription').val(),
+                amount: parseFloat($('#incomeAmount').val())
+            };
 
-            if (description && amount) {
-                $.ajax({
-                    url: `http://localhost:8080/api/v1/${type}/${id}`,
-                    type: 'PUT',
-                    data: JSON.stringify({ description, amount: parseFloat(amount) }),
-                    contentType: 'application/json',
-                    success: function() {
-                        if (type === 'income') {
-                            loadIncomes();
-                        } else {
-                            loadExpenses();
-                        }
-                    },
-                    error: function() {
-                        alert(`Error editing ${type}!`);
-                    }
-                });
-            }
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/income/saveIncome',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(incomeData),
+                success: function() {
+                    loadIncomes();
+                    $('#incomeForm')[0].reset();
+                },
+                error: function() {
+                    alert('Error saving income!');
+                }
+            });
         });
     });
 
