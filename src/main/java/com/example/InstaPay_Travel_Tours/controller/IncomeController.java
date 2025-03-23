@@ -40,4 +40,16 @@ public class IncomeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting income: " + e.getMessage());
         }
     }
+
+    // Add this method for updating income
+    @PutMapping("/updateIncome/{id}")
+    public ResponseEntity<Income> updateIncome(@PathVariable("id") Long id, @RequestBody Income incomeDetails) {
+        Income updatedIncome = incomeService.updateIncome(id, incomeDetails);
+
+        if (updatedIncome != null) {
+            return ResponseEntity.ok(updatedIncome);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
