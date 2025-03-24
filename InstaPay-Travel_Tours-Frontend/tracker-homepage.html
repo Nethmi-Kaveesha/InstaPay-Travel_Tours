@@ -1,51 +1,787 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #2c2c2c; /* Dark grey background */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        header {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d4af37; /* Dark gold */
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 130px;
+        }
+
+        .form-section {
+            width: 48%;
+            background-color: #333; /* Dark grey */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h3 {
+            color: #d4af37; /* Dark gold */
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: #ccc; /* Light grey */
+        }
+
+        .btn-primary {
+            background-color: #d4af37; /* Dark gold */
+            border-color: #d4af37;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #b38b28; /* Slightly darker dark gold */
+            border-color: #b38b28;
+        }
+
+        .table-container {
+            margin-top: 30px;
+        }
+
+        .table-container h3 {
+            color: #d4af37; /* Dark gold */
+            margin-bottom: 20px;
+        }
+
+        .totals-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #333; /* Dark grey */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .totals-container h3 {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .totals-container span {
+            font-weight: bold;
+            color: #d4af37; /* Dark gold */
+        }
+
+        #charts-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        #pieChartContainer,
+        #barChartContainer {
+            width: 40%;
+            height: 250px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #222; /* Dark grey */
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #d4af37; /* Dark gold */
+        }
+
+        .table {
+            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: center;
+            background-color: #333; /* Dark grey */
+            color: #fff;
+            border-radius: 6px;
+        }
+
+        .table th {
+            background-color: #444; /* Slightly lighter grey */
+            font-weight: bold;
+        }
+
+        .btn-sm {
+            margin-right: 10px;
+        }
+
+        .btn-warning {
+            background-color: #ffc107; /* Yellow (for warning buttons) */
+            border-color: #ffc107;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+        }
+
+        .btn-danger {
+            background-color: #f44336; /* Red for danger buttons */
+            border-color: #f44336;
+        }
+
+        .btn-danger:hover {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+        }
+
+        .charts-header {
+            text-align: center;
+            background-color: #333; /* Dark grey */
+            color: #fff;
+            padding: 10px 0;
+            margin-top: 70px;
+            border-radius: 10px;
+        }
+
+        .charts-header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            font-weight: bold;
+            color: #d4af37; /* Dark gold */
+        }
+
+        .charts-header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-style: italic;
+            opacity: 0.8;
+            color: #ccc; /* Light grey */
+        }
+
+        nav {
+            background: #333;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 333310;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-around;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            padding: 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav .logo {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7fa; /* Light background for the body */
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            right: 40px;
+            bottom: 35px;
+            height: 50px;
+            width: 50px;
+            background: #4caf50; /* Dark Gold color */
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .show-chatbot .chatbot-toggle {
+            transform: rotate(90deg);
+        }
+
+        .chatbot-toggle span {
+            position: absolute;
+        }
+
+        .show-chatbot .chatbot-toggle span:first-child,
+        .chatbot-toggle span:last-child {
+            opacity: 0;
+        }
+
+        .show-chatbot .chatbot-toggle span:last-child {
+            opacity: 1;
+        }
+
+        .chatbot {
+            position: fixed;
+            right: 40px;
+            bottom: 100px;
+            transform: scale(0.5);
+            opacity: 0;
+            pointer-events: none;
+            width: 420px;
+            background: #fff; /* White background */
+            border-radius: 15px;
+            transform-origin: bottom right;
+            box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.5);
+            transition: all 0.1s ease;
+        }
+
+        .show-chatbot .chatbot {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chatbot header {
+            background: #2d3e50; /* Dark Grey color */
+            padding: 16px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .chatbot header h2 {
+            color: #fff; /* White text */
+            font-size: 1.4rem;
+        }
+
+        .chatbot header span {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            color: #fff;
+            cursor: pointer;
+            display: none;
+            transform: translateY(-50%);
+        }
+
+        .chatbot .chatbox {
+            height: 510px;
+            overflow: auto;
+            padding: 30px 20px 100px;
+        }
+
+        .chatbox .chat {
+            display: flex;
+        }
+
+        .chatbox .incoming span {
+            height: 32px;
+            width: 32px;
+            color: #fff;
+            background: #4caf50; /* Dark Gold color */
+            text-align: center;
+            line-height: 32px;
+            border-radius: 4px;
+            margin: 0 10px 7px 0;
+            align-self: flex-end;
+        }
+
+        .chatbox .outgoing {
+            margin: 20px 0;
+            justify-content: flex-end;
+        }
+
+        .chatbox .chat p {
+            color: #fff;
+            max-width: 75%;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            padding: 12px 16px;
+            border-radius: 10px 10px 0 10px;
+            background: #4caf50; /* Dark Gold background for outgoing message */
+        }
+
+        .chatbox .chat p.error {
+            color: darkred;
+            background: #f8d7da;
+        }
+
+        .chatbox .incoming p {
+            color: #000;
+            background: #f2f2f2; /* Light Grey background for incoming message */
+            border-radius: 10px 10px 10px 0;
+        }
+
+        .chatbot .chat-input {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            padding: 5px 20px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            gap: 5px;
+        }
+
+        .chat-input textarea {
+            height: 55px;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            max-height: 180px;
+            resize: none;
+            padding: 16px 15px 16px 0;
+            background-color: #f4f7fa; /* Light background for input */
+        }
+
+        .chat-input span {
+            align-self: flex-end;
+            height: 55px;
+            line-height: 55px;
+            color: #4caf50; /* Dark Gold color for send icon */
+            font-size: 1.35rem;
+            cursor: pointer;
+            visibility: hidden;
+        }
+
+        .chat-input textarea:valid ~ span {
+            visibility: visible;
+        }
+
+        @media(max-width: 490px) {
+            .chatbot {
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .chatbot .chatbox {
+                height: 90%;
+            }
+
+            .chatbot header span {
+                display: block;
+            }
+        }
+
+        .ai-tracker{
+            z-index: 3333;
+        }
+
+
+
+    </style>
 </head>
 <body class="bg-gray-900 text-white font-sans">
-<!-- Navbar -->
-<nav class="bg-black p-4 flex justify-between items-center shadow-lg">
-    <h1 class="text-2xl font-bold text-green-400">Expense Tracker</h1>
-    <button class="bg-green-400 text-black px-6 py-2 rounded-lg font-semibold hover:bg-green-500 transition">Get Started</button>
+<nav class="bg-black p-4 flex justify-between items-center shadow-lg" style="position: relative; z-index: 10;">
+    <h1 class="text-2xl font-bold text-yellow-500">Expense Tracker</h1>
+    <button class="bg-yellow-500 text-black px-6 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition">Get Started</button>
 </nav>
 
-<!-- Hero Section -->
 <section class="h-screen flex flex-col justify-center items-center text-center px-6">
     <img src="images/1435460178_my-finances-pro-logo.png" alt="Expense Tracker" class="w-64 md:w-86 mb-6 rounded-lg shadow-lg">
-    <h1 class="text-5xl md:text-7xl font-extrabold text-green-400 mb-6 leading-tight">Smart Expense Tracking</h1>
+    <h1 class="text-5xl md:text-7xl font-extrabold text-yellow-500 mb-6 leading-tight">Smart Expense Tracking</h1>
     <p class="text-lg md:text-xl text-gray-300 max-w-3xl mb-6">Take control of your finances with real-time tracking, insightful analytics, and an intuitive interface.</p>
-    <button class="bg-green-400 text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-500 transition shadow-lg">Start Tracking Now</button>
-</section>
+    <button class="bg-yellow-500 text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-600 transition shadow-lg">Start Tracking Now</button>
 
+</section>
+<div class="ai-tracker">
+    <button class="chatbot-toggle">
+        <span class="material-symbols-outlined">mode_comment</span>
+        <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <div class="chatbot">
+        <header>
+            <h2>Chatbot</h2>
+            <span class="close-btn material-symbols-outlined">close</span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="material-symbols-outlined">smart_toy</span>
+                <p>Hi there 👋 <br>How can I help you today?</p>
+            </li>
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Enter a message..." required></textarea>
+            <span id="send-btn" class="material-symbols-outlined">send</span>
+        </div>
+    </div>
+</div>
 <!-- Features Section -->
 <section class="py-20 px-6 text-center bg-gray-800">
-    <h2 class="text-4xl font-bold text-green-400 mb-10">Why Choose Us?</h2>
+    <h2 class="text-4xl font-bold text-yellow-500 mb-10">Why Choose Us?</h2>
     <div class="grid md:grid-cols-3 gap-8">
         <div class="bg-gray-900 p-6 rounded-lg shadow-lg">
             <img src="images/time-tracking-app.png" alt="Analytics" class="mx-auto mb-4 w-24 h-24">
-            <h3 class="text-xl font-semibold text-green-400 mb-2">Real-Time Tracking</h3>
+            <h3 class="text-xl font-semibold text-yellow-500 mb-2">Real-Time Tracking</h3>
             <p class="text-gray-300">Monitor your expenses and income in real time with an easy-to-use dashboard.</p>
         </div>
         <div class="bg-gray-900 p-6 rounded-lg shadow-lg">
             <img src="images/hero-image.webp" alt="Growth" class="mx-auto mb-4 rounded-full w-24 h-24">
-            <h3 class="text-xl font-semibold text-green-400 mb-2">Smart Insights</h3>
+            <h3 class="text-xl font-semibold text-yellow-500 mb-2">Smart Insights</h3>
             <p class="text-gray-300">Get personalized analytics and reports to optimize your spending.</p>
         </div>
         <div class="bg-gray-900 p-6 rounded-lg shadow-lg">
             <img src="images/banking-illustration.png" alt="Security" class="mx-auto mb-4 rounded-full w-24 h-24">
-            <h3 class="text-xl font-semibold text-green-400 mb-2">Secure & Private</h3>
+            <h3 class="text-xl font-semibold text-yellow-500 mb-2">Secure & Private</h3>
             <p class="text-gray-300">Your financial data is encrypted and secure with us.</p>
         </div>
     </div>
 </section>
+<header class="charts-header">
+    <h1>Data Visualization</h1>
+</header>
 
+<div id="charts-container" class="text-center">
+    <div id="pieChartContainer">
+        <h3>Income vs Expense</h3>
+        <canvas id="incomeExpensePieChart" width="20" height="20"></canvas>
+    </div>
+
+    <div id="barChartContainer">
+        <h3>Income vs Expense Bar Chart</h3>
+        <canvas id="incomeExpenseBarChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<div class="totals-container">
+    <div>
+        <h3>Total Income: <span id="totalIncome">0</span></h3>
+    </div>
+    <div>
+        <h3>Total Expense: <span id="totalExpense">0</span></h3>
+    </div>
+    <div>
+        <h3>Income - Expense Difference: <span id="incomeExpenseDiff">0</span></h3>
+    </div>
+</div>
+
+<div class="form-container">
+    <div class="form-section">
+        <h3>Income Form</h3>
+        <form id="incomeForm">
+            <div class="form-group">
+                <label for="incomeDescription">Description</label>
+                <input type="text" class="form-control" id="incomeDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="incomeAmount">Amount</label>
+                <input type="number" class="form-control" id="incomeAmount" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Income</button>
+        </form>
+    </div>
+
+    <div class="form-section">
+        <h3>Expense Form</h3>
+        <form id="expenseForm">
+            <div class="form-group">
+                <label for="expenseDescription">Description</label>
+                <input type="text" class="form-control" id="expenseDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="expenseAmount">Amount</label>
+                <input type="number" class="form-control" id="expenseAmount" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Expense</button>
+        </form>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Incomes</h3>
+            <table id="incomesTable" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Expenses</h3>
+            <table id="expensesTable" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
 <!-- Footer -->
 <footer class="bg-black p-6 text-center text-gray-400 mt-10">
     <p>&copy; 2025 Expense Tracker. All Rights Reserved.</p>
 </footer>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let totalIncome = 0;
+        let totalExpense = 0;
+        let pieChart, barChart;
+
+        loadExpenses();
+        loadIncomes();
+
+        function loadExpenses() {
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/expense/',
+                type: 'GET',
+                success: function (response) {
+                    let expensesTableBody = $('#expensesTable tbody');
+                    expensesTableBody.empty();
+                    totalExpense = 0;
+
+                    response.forEach(function (expense) {
+                        totalExpense += expense.amount;
+                        expensesTableBody.append(`
+<tr data-id="${expense.id}">
+    <td>${expense.description}</td>
+    <td>${expense.amount}</td>
+    <td>
+        <button class="btn btn-warning btn-sm edit-expense-btn">Edit</button>
+        <button class="btn btn-danger btn-sm delete-expense">Delete</button>
+    </td>
+</tr>
+`);
+                    });
+                    $('#totalExpense').text(totalExpense);
+                    updateCharts();
+                },
+                error: function () {
+                    alert('Error loading expenses!');
+                }
+            });
+        }
+
+        function loadIncomes() {
+            $.ajax({
+                url: 'http://localhost:8080/api/v1/income/',
+                type: 'GET',
+                success: function (response) {
+                    let incomesTableBody = $('#incomesTable tbody');
+                    incomesTableBody.empty();
+                    totalIncome = 0;
+
+                    response.forEach(function (income) {
+                        totalIncome += income.amount;
+                        incomesTableBody.append(`
+<tr data-id="${income.id}">
+    <td>${income.description}</td>
+    <td>${income.amount}</td>
+    <td>
+        <button class="btn btn-warning btn-sm edit-income-btn">Edit</button>
+        <button class="btn btn-danger btn-sm delete-income">Delete</button>
+    </td>
+</tr>
+`);
+                    });
+                    $('#totalIncome').text(totalIncome);
+                    updateCharts();
+                },
+                error: function () {
+                    alert('Error loading incomes!');
+                }
+            });
+        }
+
+        function updateCharts() {
+            $('#incomeExpenseDiff').text(totalIncome - totalExpense);
+            updatePieChart();
+            updateBarChart();
+        }
+
+        function updatePieChart() {
+            const ctx = document.getElementById('incomeExpensePieChart').getContext('2d');
+            if (pieChart) {
+                pieChart.data.datasets[0].data = [totalIncome, totalExpense];
+                pieChart.update();
+            } else {
+                pieChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Income', 'Expense'],
+                        datasets: [{
+                            data: [totalIncome, totalExpense],
+                            backgroundColor: ['#FF9800', '#009688'],
+                        }]
+                    }
+                });
+            }
+        }
+
+        function updateBarChart() {
+            const ctx = document.getElementById('incomeExpenseBarChart').getContext('2d');
+            if (barChart) {
+                barChart.data.datasets[0].data = [totalIncome, totalExpense];
+                barChart.update();
+            } else {
+                barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Income', 'Expense'],
+                        datasets: [{
+                            label: 'Amount',
+                            data: [totalIncome, totalExpense],
+                            backgroundColor: ['#FF9800', '#009688']
+                        }]
+                    }
+                });
+            }
+        }
+
+        $('#incomeForm').on('submit', function (event) {
+            event.preventDefault();
+            const incomeId = $(this).data('id');
+            const incomeData = {
+                description: $('#incomeDescription').val(),
+                amount: parseFloat($('#incomeAmount').val())
+            };
+
+            $.ajax({
+                url: incomeId ? `http://localhost:8080/api/v1/income/updateIncome/${incomeId}` : 'http://localhost:8080/api/v1/income/saveIncome',
+                type: incomeId ? 'PUT' : 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(incomeData),
+                success: function () {
+                    loadIncomes();
+                    $('#incomeForm')[0].reset();
+                    $('#incomeForm').removeData('id');
+                }
+            });
+        });
+
+        $('#expenseForm').on('submit', function (event) {
+            event.preventDefault();
+
+            let expenseId = $(this).attr('data-id');
+            let expenseData = {
+                description: $('#expenseDescription').val(),
+                amount: parseFloat($('#expenseAmount').val())
+            };
+
+            let url = expenseId ? `http://localhost:8080/api/v1/expense/updateExpense/${expenseId}` : 'http://localhost:8080/api/v1/expense/saveExpense';
+            let method = expenseId ? 'PUT' : 'POST';
+
+            $.ajax({
+                url: url,
+                type: method,
+                contentType: 'application/json',
+                data: JSON.stringify(expenseData),
+                success: function () {
+                    loadExpenses();
+                    $('#expenseForm')[0].reset();
+                    $('#expenseForm').removeAttr('data-id');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-expense', function () {
+            let expenseId = $(this).closest('tr').data('id');
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/expense/deleteExpense/${expenseId}`,
+                    type: 'DELETE',
+                    success: loadExpenses
+                });
+            }
+        });
+
+        $(document).on('click', '.delete-income', function () {
+            let incomeId = $(this).closest('tr').data('id');
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/income/deleteIncome/${incomeId}`,
+                    type: 'DELETE',
+                    success: loadIncomes
+                });
+            }
+        });
+
+        $(document).on('click', '.edit-expense-btn', function () {
+            let row = $(this).closest('tr');
+            let expenseId = row.data('id');
+
+            $('#expenseDescription').val(row.find('td:eq(0)').text());
+            $('#expenseAmount').val(parseFloat(row.find('td:eq(1)').text()));
+
+            $('#expenseForm').attr('data-id', expenseId);
+        });
+
+        $(document).on('click', '.edit-income-btn', function () {
+            let row = $(this).closest('tr');
+            let incomeId = row.data('id');
+
+            $('#incomeDescription').val(row.find('td:eq(0)').text());
+            $('#incomeAmount').val(parseFloat(row.find('td:eq(1)').text()));
+
+            $('#incomeForm').data('id', incomeId);
+        });
+
+    });
+
+    <!-- Move the script to the bottom -->
+</script>
+<script src="js/AIChat.js"></script>
 </body>
 </html>

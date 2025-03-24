@@ -33,17 +33,13 @@ public class IncomeService {
     // Add this method for updating income
     public Income updateIncome(Long id, Income incomeDetails) {
         Optional<Income> existingIncomeOpt = incomeRepository.findById(id);
-
         if (existingIncomeOpt.isPresent()) {
             Income existingIncome = existingIncomeOpt.get();
-
-            // Update fields
             existingIncome.setDescription(incomeDetails.getDescription());
             existingIncome.setAmount(incomeDetails.getAmount());
-
-            // Save updated income
             return incomeRepository.save(existingIncome);
         }
-        return null;  // Return null if the income with the specified ID doesn't exist
+        return null; // Return null if income doesn't exist
     }
+
 }

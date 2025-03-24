@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f7fa; /* Light background for the body */
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            right: 40px;
+            bottom: 35px;
+            height: 50px;
+            width: 50px;
+            background: #4caf50; /* Dark Gold color */
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .show-chatbot .chatbot-toggle {
+            transform: rotate(90deg);
+        }
+
+        .chatbot-toggle span {
+            position: absolute;
+        }
+
+        .show-chatbot .chatbot-toggle span:first-child,
+        .chatbot-toggle span:last-child {
+            opacity: 0;
+        }
+
+        .show-chatbot .chatbot-toggle span:last-child {
+            opacity: 1;
+        }
+
+        .chatbot {
+            position: fixed;
+            right: 40px;
+            bottom: 100px;
+            transform: scale(0.5);
+            opacity: 0;
+            pointer-events: none;
+            width: 420px;
+            background: #fff; /* White background */
+            border-radius: 15px;
+            transform-origin: bottom right;
+            box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1), 0 32px 64px -48px rgba(0, 0, 0, 0.5);
+            transition: all 0.1s ease;
+        }
+
+        .show-chatbot .chatbot {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chatbot header {
+            background: #2d3e50; /* Dark Grey color */
+            padding: 16px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .chatbot header h2 {
+            color: #fff; /* White text */
+            font-size: 1.4rem;
+        }
+
+        .chatbot header span {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            color: #fff;
+            cursor: pointer;
+            display: none;
+            transform: translateY(-50%);
+        }
+
+        .chatbot .chatbox {
+            height: 510px;
+            overflow: auto;
+            padding: 30px 20px 100px;
+        }
+
+        .chatbox .chat {
+            display: flex;
+        }
+
+        .chatbox .incoming span {
+            height: 32px;
+            width: 32px;
+            color: #fff;
+            background: #4caf50; /* Dark Gold color */
+            text-align: center;
+            line-height: 32px;
+            border-radius: 4px;
+            margin: 0 10px 7px 0;
+            align-self: flex-end;
+        }
+
+        .chatbox .outgoing {
+            margin: 20px 0;
+            justify-content: flex-end;
+        }
+
+        .chatbox .chat p {
+            color: #fff;
+            max-width: 75%;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            padding: 12px 16px;
+            border-radius: 10px 10px 0 10px;
+            background: #4caf50; /* Dark Gold background for outgoing message */
+        }
+
+        .chatbox .chat p.error {
+            color: darkred;
+            background: #f8d7da;
+        }
+
+        .chatbox .incoming p {
+            color: #000;
+            background: #f2f2f2; /* Light Grey background for incoming message */
+            border-radius: 10px 10px 10px 0;
+        }
+
+        .chatbot .chat-input {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            padding: 5px 20px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            gap: 5px;
+        }
+
+        .chat-input textarea {
+            height: 55px;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 0.95rem;
+            max-height: 180px;
+            resize: none;
+            padding: 16px 15px 16px 0;
+            background-color: #f4f7fa; /* Light background for input */
+        }
+
+        .chat-input span {
+            align-self: flex-end;
+            height: 55px;
+            line-height: 55px;
+            color: #4caf50; /* Dark Gold color for send icon */
+            font-size: 1.35rem;
+            cursor: pointer;
+            visibility: hidden;
+        }
+
+        .chat-input textarea:valid ~ span {
+            visibility: visible;
+        }
+
+        @media(max-width: 490px) {
+            .chatbot {
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .chatbot .chatbox {
+                height: 90%;
+            }
+
+            .chatbot header span {
+                display: block;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<button class="chatbot-toggle">
+    <span class="material-symbols-outlined">mode_comment</span>
+    <span class="material-symbols-outlined">close</span>
+</button>
+
+<div class="chatbot">
+    <header>
+        <h2>Chatbot</h2>
+        <span class="close-btn material-symbols-outlined">close</span>
+    </header>
+    <ul class="chatbox">
+        <li class="chat incoming">
+            <span class="material-symbols-outlined">smart_toy</span>
+            <p>Hi there 👋 <br>How can I help you today?</p>
+        </li>
+    </ul>
+    <div class="chat-input">
+        <textarea placeholder="Enter a message..." required></textarea>
+        <span id="send-btn" class="material-symbols-outlined">send</span>
+    </div>
+</div>
+
+<!-- Move the script to the bottom -->
+<script src="js/AIChat.js"></script>
+
+</body>
+</html>

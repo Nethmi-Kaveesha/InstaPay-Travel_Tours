@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            background-color: #f4f7fa;
+            background-color: #2c2c2c; /* Dark grey background */
             font-family: 'Arial', sans-serif;
         }
 
@@ -21,7 +21,7 @@
             text-align: center;
             font-size: 2rem;
             font-weight: bold;
-            color: #2d3e50;
+            color: #d4af37; /* Dark gold */
         }
 
         .form-container {
@@ -32,30 +32,30 @@
 
         .form-section {
             width: 48%;
-            background-color: #ffffff;
+            background-color: #333; /* Dark grey */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .form-section h3 {
-            color: #2d3e50;
+            color: #d4af37; /* Dark gold */
             margin-bottom: 20px;
         }
 
         .form-group label {
-            color: #555;
+            color: #ccc; /* Light grey */
         }
 
         .btn-primary {
-            background-color: #4caf50;
-            border-color: #4caf50;
+            background-color: #d4af37; /* Dark gold */
+            border-color: #d4af37;
             color: #fff;
         }
 
         .btn-primary:hover {
-            background-color: #45a049;
-            border-color: #45a049;
+            background-color: #b38b28; /* Slightly darker dark gold */
+            border-color: #b38b28;
         }
 
         .table-container {
@@ -63,7 +63,7 @@
         }
 
         .table-container h3 {
-            color: #2d3e50;
+            color: #d4af37; /* Dark gold */
             margin-bottom: 20px;
         }
 
@@ -73,19 +73,19 @@
             margin-bottom: 30px;
             margin-top: 40px;
             padding: 10px;
-            background-color: #ffffff;
+            background-color: #333; /* Dark grey */
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .totals-container h3 {
-            color: #333;
+            color: #fff;
             font-size: 1.2rem;
         }
 
         .totals-container span {
             font-weight: bold;
-            color: #4caf50;
+            color: #d4af37; /* Dark gold */
         }
 
         #charts-container {
@@ -101,15 +101,15 @@
             margin: 10px;
             border: 1px solid #ddd;
             padding: 20px;
-            background-color: #f9f9f9;
+            background-color: #222; /* Dark grey */
         }
 
         h3 {
             text-align: center;
             font-size: 18px;
             margin-bottom: 10px;
+            color: #d4af37; /* Dark gold */
         }
-
 
         .table {
             margin-top: 20px;
@@ -120,13 +120,13 @@
         .table th, .table td {
             padding: 12px;
             text-align: center;
-            background-color: #ffffff;
-            color: #333;
+            background-color: #333; /* Dark grey */
+            color: #fff;
             border-radius: 6px;
         }
 
         .table th {
-            background-color: #f0f0f0;
+            background-color: #444; /* Slightly lighter grey */
             font-weight: bold;
         }
 
@@ -135,7 +135,7 @@
         }
 
         .btn-warning {
-            background-color: #ffc107;
+            background-color: #ffc107; /* Yellow (for warning buttons) */
             border-color: #ffc107;
         }
 
@@ -145,7 +145,7 @@
         }
 
         .btn-danger {
-            background-color: #f44336;
+            background-color: #f44336; /* Red for danger buttons */
             border-color: #f44336;
         }
 
@@ -153,10 +153,11 @@
             background-color: #d32f2f;
             border-color: #d32f2f;
         }
+
         .charts-header {
             text-align: center;
-            background-color: darkslategrey;
-            color: white;
+            background-color: #333; /* Dark grey */
+            color: #fff;
             padding: 10px 0;
             margin-top: 70px;
             border-radius: 10px;
@@ -166,6 +167,7 @@
             font-size: 2.5em;
             margin: 0;
             font-weight: bold;
+            color: #d4af37; /* Dark gold */
         }
 
         .charts-header p {
@@ -173,6 +175,7 @@
             margin-top: 10px;
             font-style: italic;
             opacity: 0.8;
+            color: #ccc; /* Light grey */
         }
 
         nav {
@@ -318,9 +321,8 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         let totalIncome = 0;
         let totalExpense = 0;
         let pieChart, barChart;
@@ -332,32 +334,28 @@
             $.ajax({
                 url: 'http://localhost:8080/api/v1/expense/',
                 type: 'GET',
-                success: function(response) {
+                success: function (response) {
                     let expensesTableBody = $('#expensesTable tbody');
                     expensesTableBody.empty();
                     totalExpense = 0;
 
-                    response.forEach(function(expense) {
+                    response.forEach(function (expense) {
                         totalExpense += expense.amount;
                         expensesTableBody.append(`
-                            <tr data-id="${expense.id}">
-                                <td>${expense.description}</td>
-                                <td>${expense.amount}</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                </td>
-                            </tr>
-                        `);
+<tr data-id="${expense.id}">
+    <td>${expense.description}</td>
+    <td>${expense.amount}</td>
+    <td>
+        <button class="btn btn-warning btn-sm edit-expense-btn">Edit</button>
+        <button class="btn btn-danger btn-sm delete-expense">Delete</button>
+    </td>
+</tr>
+`);
                     });
-
                     $('#totalExpense').text(totalExpense);
-
-                    updateIncomeExpenseDifference();
-                    updatePieChart();
-                    updateBarChart();
+                    updateCharts();
                 },
-                error: function() {
+                error: function () {
                     alert('Error loading expenses!');
                 }
             });
@@ -367,40 +365,37 @@
             $.ajax({
                 url: 'http://localhost:8080/api/v1/income/',
                 type: 'GET',
-                success: function(response) {
+                success: function (response) {
                     let incomesTableBody = $('#incomesTable tbody');
                     incomesTableBody.empty();
                     totalIncome = 0;
 
-                    response.forEach(function(income) {
+                    response.forEach(function (income) {
                         totalIncome += income.amount;
                         incomesTableBody.append(`
-                            <tr data-id="${income.id}">
-                                <td>${income.description}</td>
-                                <td>${income.amount}</td>
-                                <td>
-                                    <button class="btn btn-warning btn-sm edit-btn">Edit</button>
-                                    <button class="btn btn-danger btn-sm delete-btn">Delete</button>
-                                </td>
-                            </tr>
-                        `);
+<tr data-id="${income.id}">
+    <td>${income.description}</td>
+    <td>${income.amount}</td>
+    <td>
+        <button class="btn btn-warning btn-sm edit-income-btn">Edit</button>
+        <button class="btn btn-danger btn-sm delete-income">Delete</button>
+    </td>
+</tr>
+`);
                     });
-
                     $('#totalIncome').text(totalIncome);
-
-                    updateIncomeExpenseDifference();
-                    updatePieChart();
-                    updateBarChart();
+                    updateCharts();
                 },
-                error: function() {
+                error: function () {
                     alert('Error loading incomes!');
                 }
             });
         }
 
-        function updateIncomeExpenseDifference() {
-            const incomeExpenseDiff = totalIncome - totalExpense;
-            $('#incomeExpenseDiff').text(incomeExpenseDiff);
+        function updateCharts() {
+            $('#incomeExpenseDiff').text(totalIncome - totalExpense);
+            updatePieChart();
+            updateBarChart();
         }
 
         function updatePieChart() {
@@ -417,19 +412,10 @@
                             data: [totalIncome, totalExpense],
                             backgroundColor: ['#FF9800', '#009688'],
                         }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                        }
                     }
                 });
             }
         }
-
 
         function updateBarChart() {
             const ctx = document.getElementById('incomeExpenseBarChart').getContext('2d');
@@ -444,76 +430,104 @@
                         datasets: [{
                             label: 'Amount',
                             data: [totalIncome, totalExpense],
-                            backgroundColor: ['#FF9800', '#009688'],
-                            borderColor: ['#FF9800', '#009688'],
-                            borderWidth: 1
+                            backgroundColor: ['#FF9800', '#009688']
                         }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                        }
                     }
                 });
             }
         }
 
-        $('#expenseForm').on('submit', function(event) {
+        $('#incomeForm').on('submit', function (event) {
             event.preventDefault();
-
-            const expenseData = {
-                description: $('#expenseDescription').val(),
-                amount: parseFloat($('#expenseAmount').val())
-            };
-
-            $.ajax({
-                url: 'http://localhost:8080/api/v1/expense/saveExpense',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(expenseData),
-                success: function() {
-                    loadExpenses();
-                    $('#expenseForm')[0].reset();
-                },
-                error: function() {
-                    alert('Error saving expense!');
-                }
-            });
-        });
-
-        $('#incomeForm').on('submit', function(event) {
-            event.preventDefault();
-
+            const incomeId = $(this).data('id');
             const incomeData = {
                 description: $('#incomeDescription').val(),
                 amount: parseFloat($('#incomeAmount').val())
             };
 
             $.ajax({
-                url: 'http://localhost:8080/api/v1/income/saveIncome',
-                type: 'POST',
+                url: incomeId ? `http://localhost:8080/api/v1/income/updateIncome/${incomeId}` : 'http://localhost:8080/api/v1/income/saveIncome',
+                type: incomeId ? 'PUT' : 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(incomeData),
-                success: function() {
+                success: function () {
                     loadIncomes();
                     $('#incomeForm')[0].reset();
-                },
-                error: function() {
-                    alert('Error saving income!');
+                    $('#incomeForm').removeData('id');
                 }
             });
         });
+
+        $('#expenseForm').on('submit', function (event) {
+            event.preventDefault();
+
+            let expenseId = $(this).attr('data-id');
+            let expenseData = {
+                description: $('#expenseDescription').val(),
+                amount: parseFloat($('#expenseAmount').val())
+            };
+
+            let url = expenseId ? `http://localhost:8080/api/v1/expense/updateExpense/${expenseId}` : 'http://localhost:8080/api/v1/expense/saveExpense';
+            let method = expenseId ? 'PUT' : 'POST';
+
+            $.ajax({
+                url: url,
+                type: method,
+                contentType: 'application/json',
+                data: JSON.stringify(expenseData),
+                success: function () {
+                    loadExpenses();
+                    $('#expenseForm')[0].reset();
+                    $('#expenseForm').removeAttr('data-id');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete-expense', function () {
+            let expenseId = $(this).closest('tr').data('id');
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/expense/deleteExpense/${expenseId}`,
+                    type: 'DELETE',
+                    success: loadExpenses
+                });
+            }
+        });
+
+        $(document).on('click', '.delete-income', function () {
+            let incomeId = $(this).closest('tr').data('id');
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/income/deleteIncome/${incomeId}`,
+                    type: 'DELETE',
+                    success: loadIncomes
+                });
+            }
+        });
+
+        $(document).on('click', '.edit-expense-btn', function () {
+            let row = $(this).closest('tr');
+            let expenseId = row.data('id');
+
+            $('#expenseDescription').val(row.find('td:eq(0)').text());
+            $('#expenseAmount').val(parseFloat(row.find('td:eq(1)').text()));
+
+            $('#expenseForm').attr('data-id', expenseId);
+        });
+
+        $(document).on('click', '.edit-income-btn', function () {
+            let row = $(this).closest('tr');
+            let incomeId = row.data('id');
+
+            $('#incomeDescription').val(row.find('td:eq(0)').text());
+            $('#incomeAmount').val(parseFloat(row.find('td:eq(1)').text()));
+
+            $('#incomeForm').data('id', incomeId);
+        });
+
     });
 
-</script>
 
+</script>
 </body>
 </html>

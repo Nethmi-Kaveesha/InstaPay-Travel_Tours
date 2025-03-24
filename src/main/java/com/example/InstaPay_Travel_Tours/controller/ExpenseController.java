@@ -1,6 +1,7 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.model.Expense;
+import com.example.InstaPay_Travel_Tours.model.Income;
 import com.example.InstaPay_Travel_Tours.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,4 +42,14 @@ public class ExpenseController {
         }
     }
 
+    @PutMapping("/updateExpense/{id}")
+    public ResponseEntity<Expense> updateIncome(@PathVariable("id") Long id, @RequestBody Expense expenseDetails) {
+        Expense updatedExpense = expenseService.updateExpense(id, expenseDetails);
+
+        if (updatedExpense != null) {
+            return ResponseEntity.ok(updatedExpense);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
