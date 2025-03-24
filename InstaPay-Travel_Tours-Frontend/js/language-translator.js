@@ -3,6 +3,7 @@ const translateBtn = document.querySelector("button");
 const fromText = document.querySelector(".from-text"); // Selects only one textarea
 const toText = document.querySelector(".to-text");
 const exchangeIcon = document.querySelector(".exchange");
+const icons = document.querySelectorAll(".row i");
 
 
 selectTag.forEach((tag, id) => {
@@ -31,10 +32,37 @@ translateBtn.addEventListener("click", () => {
     let text = fromText.value,
         translateFrom = selectTag[0].value,
         translateTo = selectTag[1].value;
+    if (!text) return;
+    toText.setAttribute("placeholder","Translating...");
+
+
     let apiUrl = `https://api.mymemory.translated.net/get?q=${text}&langpair=${translateFrom}|${translateTo}`;
     fetch(apiUrl).then(res => res.json()).then(data => {
         console.log(data);
         toText.value = data.responseData.translatedText;
+        toText.setAttribute("placeholder","Translation...");
     })
 
 });
+
+icons.forEach(icons => {
+    icons.addEventListener("click", ({target}) => {
+        if (target.classList.contains("fa-copy")){
+            if (target.id == "from"){
+                navigator.clipboard.writeText(fromText.value);
+            }else {
+                navigator.clipboard.writeText(toText.value);
+            }
+        }else {
+            let utterance;
+            if (target.id == "from"){
+                utterance = new SpeechSynthesisUtterance(fromText.value);
+                utterance.lang = selectTag[0].value;
+            }else {
+                utterance = new SpeechSynthesisUtterance(toText.value);
+                utterance.lang = selectTag[1].value;
+            }
+            SpeechSynthesis.speak(utterance);
+        }
+    })
+})
