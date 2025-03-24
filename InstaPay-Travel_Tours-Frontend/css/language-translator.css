@@ -1,9 +1,146 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-*{
+* {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #5372F0;
+    padding: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 690px;
+    background: #fff;
+    border-radius: 7px;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper {
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    overflow: hidden;
+}
+
+.wrapper .text-input {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #bbb;
+}
+
+.text-input .to-text {
+    border-left: none;
+}
+
+.text-input textarea {
+    height: 150px;
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    background: none;
+    padding: 10px 15px;
+    resize: none;
+}
+
+.controls {
+    list-style: none;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.controls .row {
+    display: flex;
+    align-items: center;
+    width: 45%;
+}
+
+.controls .icons {
+    display: flex;
+    gap: 10px;
+}
+
+.controls .icons i {
+    width: 40px;
+    color: #9f9f9f;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.controls .icons i:hover {
+    color: #5372F0;
+}
+
+.controls .row select {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.controls .exchange {
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.controls .exchange:hover {
+    transform: rotate(180deg);
+}
+
+.container button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 5px;
+    background: #5372F0;
+    transition: background 0.3s ease-in-out;
+}
+
+.container button:hover {
+    background: #3b5ed4;
+}
+
+
+@media (max-width: 600px) {
+    .text-input textarea {
+        height: 120px;
+        font-size: 16px;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .controls .row {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .controls .exchange {
+        font-size: 24px;
+        margin: 10px 0;
+    }
 }
