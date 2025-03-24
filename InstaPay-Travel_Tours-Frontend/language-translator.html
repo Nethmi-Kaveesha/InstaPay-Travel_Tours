@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>Language Translator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/language-translator.css">
 </head>
@@ -13,37 +13,38 @@
     <div class="wrapper">
         <div class="text-input">
             <textarea class="from-text" placeholder="Enter text"></textarea>
-            <textarea class="from-to" placeholder="Translation" readonly disabled></textarea>
+            <textarea class="to-text" placeholder="Translation" readonly></textarea>
         </div>
         <ul class="controls">
             <li class="row from">
                 <div class="icons">
-                    <i class="fas fa-volume-up"></i>
-                    <i class="fas fa-copy"></i>
+                    <i class="fas fa-volume-up" aria-label="Play audio"></i>
+                    <i class="fas fa-copy" aria-label="Copy text"></i>
                 </div>
-                <select>
+                <label for="language-from" class="sr-only">Translate From:</label>
+                <select id="language-from">
                     <option value="hi-IN">Hindi</option>
-                    <option value="ne-NP">Nepal</option>
+                    <option value="ne-NP">Nepali</option>
                     <option value="en-US">English</option>
                 </select>
             </li>
-            <li class="exchange"><i class="fas fa-exchange-alt"></i></li>
+            <li class="exchange"><i class="fas fa-right-left" aria-label="Swap languages"></i></li>
             <li class="row to">
-                <select>
+                <label for="language-to" class="sr-only">Translate To:</label>
+                <select id="language-to">
                     <option value="hi-IN">Hindi</option>
-                    <option value="ne-NP">Nepal</option>
+                    <option value="ne-NP">Nepali</option>
                     <option value="en-US">English</option>
                 </select>
                 <div class="icons">
-                    <i class="fas fa-volume-up"></i>
-                    <i class="fas fa-copy"></i>
+                    <i class="fas fa-volume-up" aria-label="Play audio"></i>
+                    <i class="fas fa-copy" aria-label="Copy text"></i>
                 </div>
             </li>
         </ul>
     </div>
     <button>Translate Text</button>
 </div>
-
 
 <script src="js/language-translator.js"></script>
 
