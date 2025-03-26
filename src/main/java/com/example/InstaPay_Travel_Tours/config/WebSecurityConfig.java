@@ -105,6 +105,7 @@ public class WebSecurityConfig {
                                 "/api/v1/income/entries",
                                 "/api/v1/income/deleteIncome/**",  // DELETE Income endpoint
 
+                                "/reviews",
                                 "/api/v1/tours/search",
                                 "/api/v1/img/upload",
                                 "/api/v1/img/**",

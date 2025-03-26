@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Page</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #444;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #666;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #reviews-list {
+            margin-top: 40px;
+        }
+
+        .review {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .review h3 {
+            margin: 0;
+            color: #555;
+            font-size: 18px;
+        }
+
+        .review .stars {
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .review p {
+            font-size: 14px;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .stars {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star {
+            width: 25px;
+            height: 25px;
+            background-color: #ccc;
+            clip-path: polygon(50% 0%, 63% 35%, 98% 35%, 72% 57%, 79% 91%, 50% 70%, 21% 91%, 28% 57%, 2% 35%, 37% 35%);
+            cursor: pointer;
+        }
+
+        .star.filled {
+            background-color: #f5a623;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Submit Your Review</h1>
+
+    <form id="review-form">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="form-group">
+            <label for="rating">Rating (1 to 5):</label>
+            <div id="rating-stars" class="stars">
+            </div>
+            <input type="hidden" id="rating" name="rating" required />
+        </div>
+
+        <div class="form-group">
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" rows="4" required></textarea>
+        </div>
+
+        <button type="submit">Submit Review</button>
+    </form>
+
+    <h2>All Reviews</h2>
+    <div id="reviews-list"></div>
+</div>
+
+<script>
+    function loadReviews() {
+        $.ajax({
+            url: 'http://localhost:8080/reviews',
+            method: 'GET',
+            success: function (reviews) {
+                let reviewsList = $('#reviews-list');
+                reviewsList.empty();
+
+                reviews.forEach(function (review) {
+                    let stars = '';
+                    for (let i = 1; i <= 5; i++) {
+                        stars += `<span class="star ${i <= review.rating ? 'filled' : ''}"></span>`;
+                    }
+
+                    reviewsList.append(`
+                            <div class="review">
+                                <h3>${review.name} (${review.rating} stars)</h3>
+                                <div class="stars">${stars}</div>
+                                <p>${review.comment}</p>
+                                <p><strong>Email:</strong> ${review.email}</p>
+                            </div>
+                        `);
+                });
+            },
+            error: function (error) {
+                alert('Error loading reviews: ' + error.statusText);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        loadReviews();
+
+        for (let i = 1; i <= 5; i++) {
+            $('#rating-stars').append(`<span class="star" data-value="${i}"></span>`);
+        }
+
+        $('#rating-stars').on('click', '.star', function () {
+            const ratingValue = $(this).data('value');
+            $('#rating').val(ratingValue);
+            $('#rating-stars .star').each(function () {
+                if ($(this).data('value') <= ratingValue) {
+                    $(this).addClass('filled');
+                } else {
+                    $(this).removeClass('filled');
+                }
+            });
+        });
+    });
+
+    $('#review-form').submit(function (event) {
+        event.preventDefault();
+
+        var reviewData = {
+            name: $('#name').val(),
+            email: $('#email').val(),
+            rating: $('#rating').val(),
+            comment: $('#comment').val()
+        };
+
+        $.ajax({
+            url: 'http://localhost:8080/reviews',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(reviewData),
+            success: function (response) {
+                loadReviews();
+                $('#review-form')[0].reset();
+                $('#rating-stars .star').removeClass('filled');
+            },
+            error: function (error) {
+                alert('Error submitting review: ' + error.statusText);
+            }
+        });
+    });
+</script>
+</body>
+
+</html>
