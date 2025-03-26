@@ -34,20 +34,19 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorization = httpServletRequest.getHeader("Authorization");
         String token = null;
         String email = null;
-
+        String role = null;
 
         if (null != authorization && authorization.startsWith("Bearer ")) {
-
             token = authorization.substring(7);
             email = jwtUtil.getUsernameFromToken(token);
-            Claims claims=jwtUtil.getUserRoleCodeFromToken(token);
+            Claims claims = jwtUtil.getUserRoleCodeFromToken(token);
+            role = (String) claims.get("role");  // Extract role from claims
             httpServletRequest.setAttribute("email", email);
-            httpServletRequest.setAttribute("role", claims.get("role"));
+            httpServletRequest.setAttribute("role", role);
         }
 
         if (null != email && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails
-                    = userService.loadUserByUsername(email);
+            UserDetails userDetails = userService.loadUserByUsername(email);
 
             if (jwtUtil.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
@@ -58,12 +57,14 @@ public class JwtFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
                 );
 
+                // Set the role as an attribute in the authentication token
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
+
+
 
     private Claims getClaimsFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody();
