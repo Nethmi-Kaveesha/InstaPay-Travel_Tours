@@ -1,129 +1,29 @@
 package com.example.InstaPay_Travel_Tours.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
+@Table(name = "payment")
 public class Payment {
-
     @Id
-    private int paymentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payment_id")
+    private Long paymentID;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;
+    private Booking booking;  // References Booking
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User systemUser;
-
-    private double amountPaid;
+    @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
-    private String transactionId;
-    private String paymentStatus;
-    private LocalDateTime paymentDate;
-    private String receiptUrl;
-    private LocalDateTime createdAt;
 
-    public Payment() {
-    }
+    @Column(name = "amount_paid", nullable = false)
+    private double amountPaid;
 
-    public Payment(int paymentId, Booking booking, User systemUser, double amountPaid, String paymentMethod,
-                   String transactionId, String paymentStatus, LocalDateTime paymentDate,
-                   String receiptUrl, LocalDateTime createdAt) {
-        this.paymentId = paymentId;
-        this.booking = booking;
-        this.systemUser = systemUser;
-        this.amountPaid = amountPaid;
-        this.paymentMethod = paymentMethod;
-        this.transactionId = transactionId;
-        this.paymentStatus = paymentStatus;
-        this.paymentDate = paymentDate;
-        this.receiptUrl = receiptUrl;
-        this.createdAt = createdAt;
-    }
+    @Column(name = "payment_date", nullable = false)
+    private Date paymentDate;
 
-    public int getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public Booking getBooking() {
-        return booking;
-    }
-
-    public void setBooking(Booking booking) {
-        this.booking = booking;
-    }
-
-    public User getSystemUser() {
-        return systemUser;
-    }
-
-    public void setSystemUser(User systemUser) {
-        this.systemUser = systemUser;
-    }
-
-    public double getAmountPaid() {
-        return amountPaid;
-    }
-
-    public void setAmountPaid(double amountPaid) {
-        this.amountPaid = amountPaid;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public String getReceiptUrl() {
-        return receiptUrl;
-    }
-
-    public void setReceiptUrl(String receiptUrl) {
-        this.receiptUrl = receiptUrl;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    // Getters and Setters
 }

@@ -1,13 +1,19 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.dto.TourDTO;
+import com.example.InstaPay_Travel_Tours.entity.Tour;
+import com.example.InstaPay_Travel_Tours.repo.TourRepository;
+import com.example.InstaPay_Travel_Tours.service.BookingService;
 import com.example.InstaPay_Travel_Tours.service.TourService;
 import com.example.InstaPay_Travel_Tours.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/tours")
@@ -17,6 +23,39 @@ public class TourController {
     @Autowired
     private TourService tourService;
 
+    @Autowired
+    private BookingService bookingService;
+
+    @Autowired
+    private TourRepository tourRepository;
+
+    // In your TourController.java
+    @PutMapping("/api/v1/tours/{id}")
+    public ResponseEntity<Tour> updateTourSeats(@PathVariable Integer id, @RequestBody Tour updatedTour) {
+        Optional<Tour> optionalTour = tourRepository.findById(id);
+        if (optionalTour.isPresent()) {
+            Tour tour = optionalTour.get();
+            tour.setAvailableSeats(updatedTour.getAvailableSeats());
+            tourRepository.save(tour);
+            return ResponseEntity.ok(tour);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<TourDTO>> searchTours(@RequestParam(required = false) String keyword) {
+        List<TourDTO> tours;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            // If a keyword is provided, search for tours by name
+            tours = tourService.searchToursByName(keyword);
+        } else {
+            // If no keyword is provided, return all tours
+            tours = tourService.getAllTours();
+        }
+        return new ResponseEntity<>(tours, HttpStatus.OK);
+    }
     // Save a new tour
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveTour(@RequestBody TourDTO tourDTO) {

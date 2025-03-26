@@ -4,11 +4,11 @@ import com.example.InstaPay_Travel_Tours.dto.TourDTO;
 import com.example.InstaPay_Travel_Tours.entity.Tour;
 import com.example.InstaPay_Travel_Tours.repo.TourRepository;
 import com.example.InstaPay_Travel_Tours.service.TourService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class TourServiceImpl implements TourService {
     private ModelMapper modelMapper;
 
     @Override
-    public void addTour(TourDTO tourDTO) {
+    public void addTour(@Valid TourDTO tourDTO) {
         // Checking if the tour already exists by tour name or ID
         Optional<Tour> existingTour = tourRepo.findById(tourDTO.getTourID());
         if (existingTour.isPresent()) {
@@ -52,8 +52,15 @@ public class TourServiceImpl implements TourService {
         }
     }
 
+    public List<TourDTO> searchToursByName(String keyword) {
+        // Search tours by name using the repository
+        List<Tour> tours = tourRepo.findByTourNameContainingIgnoreCase(keyword);
+        // Convert Tour entities to TourDTOs and return them
+        return modelMapper.map(tours, new TypeToken<List<TourDTO>>() {}.getType());
+    }
+
     @Override
-    public void updateTour(TourDTO tourDTO) {
+    public void updateTour(@Valid TourDTO tourDTO) {
         // Fetching the existing tour and updating it
         Optional<Tour> existingTour = tourRepo.findById(tourDTO.getTourID());
         if (existingTour.isPresent()) {

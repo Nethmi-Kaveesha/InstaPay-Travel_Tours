@@ -8,12 +8,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface TourRepository extends JpaRepository<Tour, Integer> {
-    //@Query("SELECT Tour from ")
 
-    Page<Tour> findByLocation(String location, Pageable pageable);
+    List<Tour> findByTourNameContainingIgnoreCase(String tourName);
 
-    Page<Tour> findByTourNameContainingIgnoreCase(String tourName, Pageable pageable);
+    // Find tour by ID
+    Optional<Tour> findByTourID(int tourID);
 
-    }
+    // Find tours by location (Custom Query)
+    @Query("SELECT t FROM Tour t WHERE t.location = :location")
+    Page<Tour> findByLocation(@Param("location") String location, Pageable pageable);
+
+    // Find tours with available seats greater than a specific number (Custom Query)
+    @Query("SELECT t FROM Tour t WHERE t.availableSeats > :seats")
+    Page<Tour> findToursWithSeatsGreaterThan(@Param("seats") int seats, Pageable pageable);
+
+    // You can add more custom queries depending on your needs.
+}

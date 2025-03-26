@@ -105,10 +105,13 @@ public class WebSecurityConfig {
                                 "/api/v1/income/entries",
                                 "/api/v1/income/deleteIncome/**",  // DELETE Income endpoint
 
+                                "/api/v1/tours/search",
                                 "/api/v1/img/upload",
                                 "/api/v1/img/**",
                                 "/images/**",
-
+                                "/api/v1/tours/search?keyword=/**",
+                                "/api/v1/tours/search/**",
+                                "api/v1/tours/book/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",

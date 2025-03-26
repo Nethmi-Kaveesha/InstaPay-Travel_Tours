@@ -1,6 +1,7 @@
 package com.example.InstaPay_Travel_Tours.service;
 
 import com.example.InstaPay_Travel_Tours.dto.TourDTO;
+import com.example.InstaPay_Travel_Tours.entity.Tour;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface TourService {
 
     // Method to delete a tour by its ID
     void deleteTour(int tourID);
+    public List<TourDTO> searchToursByName(String keyword);
+
 }
