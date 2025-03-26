@@ -12,14 +12,15 @@
             margin: 0;
             padding: 0;
             color: #333;
+            font-size: 14px;
         }
 
         .container {
-            width: 80%;
-            margin: 50px auto;
-            padding: 20px;
+            width: 60%;
+            margin: 30px auto;
+            padding: 15px;
             background-color: #fff;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
 
@@ -27,18 +28,20 @@
         h2 {
             text-align: center;
             color: #444;
+            font-size: 22px;
         }
 
         h2 {
-            margin-top: 20px;
+            margin-top: 15px;
             color: #666;
+            font-size: 18px;
         }
 
         form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 600px;
+            gap: 15px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
@@ -50,31 +53,33 @@
         label {
             font-weight: bold;
             color: #444;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
+            font-size: 13px;
         }
 
         input,
         textarea {
-            padding: 12px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-top: 5px;
-            font-size: 14px;
+            font-size: 12px;
             width: 100%;
         }
 
         textarea {
             resize: vertical;
+            font-size: 12px;
         }
 
         button {
             background-color: #28a745;
             color: white;
-            padding: 12px;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             transition: background-color 0.3s ease;
         }
 
@@ -83,14 +88,14 @@
         }
 
         #reviews-list {
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .review {
             background-color: #fafafa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 1px solid #ddd;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
         }
@@ -98,18 +103,18 @@
         .review h3 {
             margin: 0;
             color: #555;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .review .stars {
-            margin-top: 8px;
-            margin-bottom: 12px;
+            margin-top: 5px;
+            margin-bottom: 10px;
         }
 
         .review p {
-            font-size: 14px;
+            font-size: 12px;
             color: #777;
-            line-height: 1.6;
+            line-height: 1.4;
         }
 
         .stars {
@@ -118,8 +123,8 @@
         }
 
         .star {
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             background-color: #ccc;
             clip-path: polygon(50% 0%, 63% 35%, 98% 35%, 72% 57%, 79% 91%, 50% 70%, 21% 91%, 28% 57%, 2% 35%, 37% 35%);
             cursor: pointer;
@@ -148,8 +153,7 @@
 
         <div class="form-group">
             <label for="rating">Rating (1 to 5):</label>
-            <div id="rating-stars" class="stars">
-            </div>
+            <div id="rating-stars" class="stars"></div>
             <input type="hidden" id="rating" name="rating" required />
         </div>
 
@@ -243,5 +247,4 @@
     });
 </script>
 </body>
-
 </html>
