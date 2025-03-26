@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Email</title>
+    <style>
+        /* Gmail-Like Styles */
+        body {
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
+            background-color: #f6f8fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Email Form Container */
+        .email-form {
+            background: #fff;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            width: 460px;
+            text-align: left;
+        }
+
+        .email-form h2 {
+            color: #202124;
+            font-size: 22px;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        /* Input Fields */
+        label {
+            font-size: 14px;
+            color: #5f6368;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #fff;
+            margin-bottom: 14px;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #1a73e8;
+            outline: none;
+            box-shadow: 0 0 6px rgba(26, 115, 232, 0.4);
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        /* Send Button */
+        button {
+            width: 100%;
+            background: #1a73e8;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 24px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #174ea6;
+        }
+
+        /* Response Message */
+        #responseMessage {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #d93025;
+        }
+
+    </style>
+</head>
+<body>
+<div class="email-form">
+    <h2>Contact Us</h2>
+    <form id="emailForm">
+        <label for="to">Recipient:</label>
+        <input type="email" id="to" name="to" required>
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+
+        <label for="text">Message:</label>
+        <textarea id="text" name="text" required></textarea>
+
+        <button type="submit">Send Email</button>
+    </form>
+
+    <div id="responseMessage"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#emailForm').on('submit', function(e) {
+            e.preventDefault();
+
+            let to = $('#to').val();
+            let subject = $('#subject').val();
+            let text = $('#text').val();
+
+            // Send the data to the backend using AJAX
+            $.ajax({
+                url: 'http://localhost:8080/api/send-email', // Backend API endpoint
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    to: to,
+                    subject: subject,
+                    text: text
+                }),
+                success: function(response) {
+                    $('#responseMessage').html('<p style="color: green;">' + response + '</p>');
+                },
+                error: function(xhr, status, error) {
+                    $('#responseMessage').html('<p style="color: red;">Error: ' + error + '</p>');
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>
