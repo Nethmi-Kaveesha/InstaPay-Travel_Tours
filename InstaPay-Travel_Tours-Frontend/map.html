@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map with Search and Best Travel Places</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+
+        .leaflet-control-geocoder {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid #008CBA;
+            border-radius: 5px;
+            padding: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .leaflet-control-geocoder input {
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .leaflet-control-geocoder input:focus {
+            outline: none;
+            border-color: #008CBA;
+        }
+
+        .places-list {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+        }
+
+        .places-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .places-list li {
+            margin-bottom: 10px;
+        }
+
+        .place-name {
+            font-weight: bold;
+        }
+
+        #weather-info {
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Interactive Map with Search and Best Travel Places</h1>
+<div id="map"></div>
+<div class="places-list" id="places-list"></div>
+<div id="weather-info"></div>
+
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+
+    var geocoder = L.Control.geocoder({
+        placeholder: "Search for a location...",
+        geocoder: new L.Control.Geocoder.Nominatim()
+    }).addTo(map);
+
+
+    geocoder.on('markgeocode', function(e) {
+        var latlng = e.geocode.center;
+        L.marker(latlng).addTo(map)
+            .bindPopup("You searched for: " + e.geocode.name)
+            .openPopup();
+        map.setView(latlng, 13);
+
+        fetchNearbyPlaces(latlng);
+
+        fetchWeather(latlng);
+    });
+
+
+    function fetchNearbyPlaces(latlng) {
+        var lat = latlng.lat;
+        var lon = latlng.lng;
+        var radius = 2000; // Search radius in meters
+        var overpassURL = `https://overpass-api.de/api/interpreter?data=[out:json];(node(around:${radius},${lat},${lon})[tourism=attraction];node(around:${radius},${lat},${lon})[amenity=restaurant];node(around:${radius},${lat},${lon})[tourism=hotel];);out;`;
+
+        fetch(overpassURL)
+            .then(response => response.json())
+            .then(data => {
+                displayPlaces(data.elements);
+            })
+            .catch(error => console.error('Error fetching places:', error));
+    }
+
+
+    function displayPlaces(places) {
+        const placesList = document.getElementById('places-list');
+        placesList.innerHTML = '';
+
+        if (places.length === 0) {
+            placesList.innerHTML = '<p>No places found nearby.</p>';
+            return;
+        }
+
+        const ul = document.createElement('ul');
+        places.forEach(place => {
+            const li = document.createElement('li');
+            const placeName = place.tags.name || 'Unnamed place';
+            const placeType = place.tags.amenity || place.tags.tourism;
+
+            li.innerHTML = `
+                <div>
+                    <p class="place-name">${placeName}</p>
+                    <p>Type: ${placeType}</p>
+                </div>
+            `;
+
+            // Add a marker for the place on the map
+            L.marker([place.lat, place.lon]).addTo(map)
+                .bindPopup(`<b>${placeName}</b><br>Type: ${placeType}`)
+                .openPopup();
+
+            ul.appendChild(li);
+        });
+
+        placesList.appendChild(ul);
+    }
+
+
+    function fetchWeather(latlng) {
+        const apiKey = '1f63215819e1a497a27e13f440eaf8ec';
+        const lat = latlng.lat;
+        const lon = latlng.lng;
+        const weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        fetch(weatherURL)
+            .then(response => response.json())
+            .then(data => {
+                displayWeather(data);
+            })
+            .catch(error => console.error('Error fetching weather:', error));
+    }
+
+
+    function displayWeather(data) {
+        const weatherInfo = document.getElementById('weather-info');
+        weatherInfo.innerHTML = '';
+
+        const weatherDescription = data.weather[0].description;
+        const temperature = data.main.temp;
+        const humidity = data.main.humidity;
+        const windSpeed = data.wind.speed;
+        const city = data.name;
+        const country = data.sys.country;
+
+        weatherInfo.innerHTML = `
+            <h3>Weather in ${city}, ${country}</h3>
+            <p><strong>Description:</strong> ${weatherDescription}</p>
+            <p><strong>Temperature:</strong> ${temperature}°C</p>
+            <p><strong>Humidity:</strong> ${humidity}%</p>
+            <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+        `;
+    }
+</script>
+
+</body>
+</html>
