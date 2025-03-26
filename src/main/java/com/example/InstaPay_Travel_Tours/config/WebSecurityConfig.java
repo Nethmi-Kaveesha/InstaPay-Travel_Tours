@@ -37,12 +37,22 @@ public class WebSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+
+
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+
+                                "/api/v1/dashboard",
+                                "/api/v1/dashboard/stats",
+                                "/api/v1/dashboard/reports",
+                                "/email/send",
+                                "/email/sendHtml",
+                                "/api/send-email",
+                                "/api/weather/**",
                                 // Public authentication endpoints
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/auth/refreshToken",
