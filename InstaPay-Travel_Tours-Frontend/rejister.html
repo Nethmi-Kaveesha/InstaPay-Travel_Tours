@@ -34,7 +34,6 @@
             border: 1px solid #00A1E6;
         }
 
-
         .form-title {
             text-align: center;
             margin-bottom: 30px;
@@ -42,7 +41,6 @@
             font-weight: bold;
             color: #333;
         }
-
 
         .form-control {
             margin-bottom: 15px;
@@ -93,7 +91,6 @@
             border-color: #00A1E6;
         }
 
-
         .login-link {
             text-align: center;
             margin-top: 20px;
@@ -141,7 +138,6 @@
             height: auto;
             margin-right: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -189,14 +185,15 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="gender" class="form-label">Gender</label>
-                <select class="form-control" id="gender" name="gender" required>
-                    <option value="" disabled selected>Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
+                <label for="gender" class="form-label">Gender</label><br>
+                <input type="radio" id="male" name="gender" value="Male" class="form-check-input d-inline" required>
+                <label for="male" class="form-check-label d-inline">Male</label>
+                <input type="radio" id="female" name="gender" value="Female" class="form-check-input d-inline ms-3" required>
+                <label for="female" class="form-check-label d-inline">Female</label>
+                <input type="radio" id="other" name="gender" value="Other" class="form-check-input d-inline ms-3" required>
+                <label for="other" class="form-check-label d-inline">Other</label>
             </div>
+
             <button type="submit" class="btn btn-register w-100">Register</button>
         </form>
         <div class="login-link">
@@ -214,30 +211,26 @@
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
             role: document.getElementById('role').value,
-            gender: document.getElementById('gender').value
+            gender: document.querySelector('input[name="gender"]:checked').value
         };
         $.ajax({
             url: 'http://localhost:8080/api/v1/user/register',
             type: 'POST',
-            data: JSON.stringify(formData),
-            contentType: 'application/json',
+            data: formData,
             success: function(response) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Registration Successful!',
-                    text: 'Welcome to the platform, ' + formData.name + '!',
-                    confirmButtonText: 'OK',
-                    timer: 3000
-                }).then(() => {
-                    window.location.href = 'login.html';
+                    title: 'Registration Successful',
+                    text: 'You have successfully registered!'
+                }).then(function() {
+                    window.location.href = "login.html";
                 });
             },
             error: function(xhr, status, error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Oops...',
-                    text: 'There was an error registering. Please try again!',
-                    confirmButtonText: 'OK'
+                    title: 'Registration Failed',
+                    text: 'An error occurred during registration. Please try again.'
                 });
             }
         });
