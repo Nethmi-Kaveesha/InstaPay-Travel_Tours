@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Place Booking</title>
     <style>
-        /* General styling */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f5f5f5;
@@ -110,12 +109,10 @@
             margin-top: 20px;
         }
 
-        /* Style for the user dropdown options */
         #userId option {
             color: black;
         }
 
-        /* Responsive Design */
         @media screen and (max-width: 768px) {
             .container {
                 width: 90%;
@@ -159,6 +156,34 @@
         #addDetail:hover {
             background-color: #27ae60;
         }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-content {
+            background-color: white;
+            width: 350px;
+            padding: 20px;
+            margin: 100px auto;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -168,7 +193,7 @@
     <form id="bookingForm">
         <label for="uid">User ID:</label>
         <select id="uid" required>
-            <option value="">Select a User</option> <!-- Default option -->
+            <option value="">Select a User</option>
         </select>
 
         <label for="bookingDate">Booking Date:</label>
@@ -182,7 +207,7 @@
             <div class="booking-detail">
                 <label>Tour:</label>
                 <select class="tourDropdown" required>
-                    <option value="">Select a Tour</option> <!-- Default option -->
+                    <option value="">Select a Tour</option>
                 </select>
 
                 <label>Quantity:</label>
@@ -196,22 +221,48 @@
         </div>
 
         <button type="button" id="addDetail">Add More Details</button>
+        <button id="proceedPaymentBtn">Proceed to Payment</button>
+
+        <div id="paymentPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn">&times;</span>
+                <h3>Enter Payment Details</h3>
+
+                <label for="popupPaymentMethod">Payment Method:</label>
+                <select id="popupPaymentMethod">
+                    <option value="">Select</option>
+                    <option value="cash">Cash</option>
+                    <option value="credit_card">Credit Card</option>
+                </select>
+
+                <div id="creditCardFields" style="display: none;">
+                    <label for="popupCardNumber">Card Number:</label>
+                    <input type="text" id="popupCardNumber" maxlength="16" placeholder="Enter card number">
+
+                    <label for="popupExpiryDate">Expiry Date:</label>
+                    <input type="month" id="popupExpiryDate">
+
+                    <label for="popupCVV">CVV:</label>
+                    <input type="text" id="popupCVV" maxlength="3" placeholder="CVV">
+                </div>
+
+                <button id="confirmPayment">Confirm Payment</button>
+            </div>
+        </div>
+
         <button type="submit">Submit Booking</button>
     </form>
 
     <p id="responseMessage"></p>
 </div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const bookingForm = document.getElementById("bookingForm");
         const bookingDetailsContainer = document.getElementById("bookingDetails");
 
-        // Fetch users from the backend and populate the dropdown
-        // Fetch users from the backend and populate the dropdown
         fetchUsers();
 
-// Function to fetch users from backend
+
         function fetchUsers() {
             fetch("http://localhost:8080/api/v1/user/getAll")
                 .then(response => response.json())
@@ -219,9 +270,9 @@
                     const userIdDropdown = document.getElementById("uid");
                     data.forEach(user => {
                         const option = document.createElement("option");
-                        option.value = user.uid;  // Set userID as the value for the option
-                        option.textContent = user.name;  // Display userName as the text for the option
-                        userIdDropdown.appendChild(option);  // Append the option to the dropdown
+                        option.value = user.uid;
+                        option.textContent = user.name;
+                        userIdDropdown.appendChild(option);
                     });
                 })
                 .catch(error => {
@@ -231,10 +282,8 @@
         }
 
 
-        // Fetch tours from the backend and populate the dropdown
         fetchTours();
 
-        // Function to fetch tours from backend
         function fetchTours() {
             fetch("http://localhost:8080/api/v1/tours/getAll")
                 .then(response => response.json())
@@ -246,7 +295,7 @@
                             const option = document.createElement("option");
                             option.value = tour.tourID;
                             option.textContent = tour.tourName;
-                            option.dataset.price = tour.price;  // Store price in a data attribute
+                            option.dataset.price = tour.price;
                             dropdown.appendChild(option);
                         });
                     });
@@ -257,7 +306,6 @@
                 });
         }
 
-        // Add new booking detail row
         document.getElementById("addDetail").addEventListener("click", function () {
             const detailDiv = document.createElement("div");
             detailDiv.classList.add("booking-detail");
@@ -277,11 +325,10 @@
             <button type="button" class="removeDetail">Remove</button>
         `;
 
-            fetchTours(); // Fetch tours again to populate the new dropdown
+            fetchTours();
             bookingDetailsContainer.appendChild(detailDiv);
         });
 
-        // Update the price and total price when a tour is selected
         bookingDetailsContainer.addEventListener("change", function (event) {
             if (event.target.classList.contains("tourDropdown")) {
                 const selectedOption = event.target.selectedOptions[0];
@@ -289,19 +336,15 @@
                 const quantityInput = event.target.closest(".booking-detail").querySelector(".quantity");
                 const priceInput = event.target.closest(".booking-detail").querySelector(".price");
 
-                // Update the price input and total price
                 priceInput.value = price;
 
-                // Recalculate total price for all details
                 updateTotalPrice();
             }
             if (event.target.classList.contains("quantity")) {
-                // Recalculate total price when quantity changes
                 updateTotalPrice();
             }
         });
 
-        // Recalculate the total price based on quantity and price
         function updateTotalPrice() {
             let total = 0;
             document.querySelectorAll(".booking-detail").forEach(detail => {
@@ -312,7 +355,6 @@
             document.getElementById("totalPrice").value = total.toFixed(2);
         }
 
-        // Remove booking detail row
         bookingDetailsContainer.addEventListener("click", function (event) {
             if (event.target.classList.contains("removeDetail")) {
                 event.target.closest(".booking-detail").remove();
@@ -320,7 +362,6 @@
             }
         });
 
-        // Handle form submission
         bookingForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
@@ -375,6 +416,74 @@
                 });
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const paymentPopup = document.getElementById("paymentPopup");
+        const proceedPaymentBtn = document.getElementById("proceedPaymentBtn");
+        const closeBtn = document.querySelector(".close-btn");
+        const confirmPaymentBtn = document.getElementById("confirmPayment");
+
+        const paymentMethodDropdown = document.getElementById("popupPaymentMethod");
+        const creditCardFields = document.getElementById("creditCardFields");
+
+        proceedPaymentBtn.addEventListener("click", function () {
+            paymentPopup.style.display = "block";
+        });
+
+
+        closeBtn.addEventListener("click", function () {
+            paymentPopup.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+            if (event.target === paymentPopup) {
+                paymentPopup.style.display = "none";
+            }
+        });
+
+        paymentMethodDropdown.addEventListener("change", function () {
+            if (this.value === "credit_card") {
+                creditCardFields.style.display = "block";
+            } else {
+                creditCardFields.style.display = "none";
+            }
+        });
+
+        confirmPaymentBtn.addEventListener("click", function () {
+            const paymentMethod = paymentMethodDropdown.value;
+            let paymentDetails = {};
+
+            if (paymentMethod === "credit_card") {
+                const cardNumber = document.getElementById("popupCardNumber").value;
+                const expiryDate = document.getElementById("popupExpiryDate").value;
+                const cvv = document.getElementById("popupCVV").value;
+
+                if (!cardNumber || !expiryDate || !cvv) {
+                    alert("Please enter complete credit card details.");
+                    return;
+                }
+
+                paymentDetails = {
+                    paymentMethod,
+                    cardNumber,
+                    expiryDate,
+                    cvv
+                };
+            } else if (paymentMethod === "cash") {
+                paymentDetails = { paymentMethod };
+            } else {
+                alert("Please select a payment method.");
+                return;
+            }
+
+            console.log("Payment Details:", paymentDetails);
+
+            paymentPopup.style.display = "none";
+
+            alert("Payment details saved. Proceeding with booking.");
+        });
+    });
+
 
 </script>
 </body>
