@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Booking</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .booking-detail {
+            padding: 15px;
+            background-color: #f9f9f9;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .removeDetail {
+            background-color: #e74c3c;
+            padding: 6px 12px;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .removeDetail:hover {
+            background-color: #c0392b;
+        }
+
+        #responseMessage {
+            text-align: center;
+            font-size: 16px;
+            color: #2ecc71;
+            margin-top: 20px;
+        }
+
+        /* Style for the user dropdown options */
+        #userId option {
+            color: black;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .removeDetail {
+                width: 100%;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            input[type="number"],
+            select {
+                font-size: 16px;
+            }
+        }
+
+        /* Add detail button */
+        #addDetail {
+            display: block;
+            width: 100%;
+            background-color: #2ecc71;
+            padding: 10px;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        #addDetail:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h2>Place a Booking</h2>
+    <form id="bookingForm">
+        <label for="uid">User ID:</label>
+        <select id="uid" required>
+            <option value="">Select a User</option> <!-- Default option -->
+        </select>
+
+        <label for="bookingDate">Booking Date:</label>
+        <input type="date" id="bookingDate" required>
+
+        <label for="totalPrice">Total Price:</label>
+        <input type="number" id="totalPrice" step="0.01" required>
+
+        <h3>Booking Details</h3>
+        <div id="bookingDetails">
+            <div class="booking-detail">
+                <label>Tour:</label>
+                <select class="tourDropdown" required>
+                    <option value="">Select a Tour</option> <!-- Default option -->
+                </select>
+
+                <label>Quantity:</label>
+                <input type="number" class="quantity" required>
+
+                <label>Price:</label>
+                <input type="number" class="price" step="0.01" required readonly>
+
+                <button type="button" class="removeDetail">Remove</button>
+            </div>
+        </div>
+
+        <button type="button" id="addDetail">Add More Details</button>
+        <button type="submit">Submit Booking</button>
+    </form>
+
+    <p id="responseMessage"></p>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bookingForm = document.getElementById("bookingForm");
+        const bookingDetailsContainer = document.getElementById("bookingDetails");
+
+        // Fetch users from the backend and populate the dropdown
+        // Fetch users from the backend and populate the dropdown
+        fetchUsers();
+
+// Function to fetch users from backend
+        function fetchUsers() {
+            fetch("http://localhost:8080/api/v1/user/getAll")
+                .then(response => response.json())
+                .then(data => {
+                    const userIdDropdown = document.getElementById("uid");
+                    data.forEach(user => {
+                        const option = document.createElement("option");
+                        option.value = user.uid;  // Set userID as the value for the option
+                        option.textContent = user.name;  // Display userName as the text for the option
+                        userIdDropdown.appendChild(option);  // Append the option to the dropdown
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching users:", error);
+                    alert("Failed to load users.");
+                });
+        }
+
+
+        // Fetch tours from the backend and populate the dropdown
+        fetchTours();
+
+        // Function to fetch tours from backend
+        function fetchTours() {
+            fetch("http://localhost:8080/api/v1/tours/getAll")
+                .then(response => response.json())
+                .then(data => {
+                    const tourDropdowns = document.querySelectorAll(".tourDropdown");
+                    tourDropdowns.forEach(dropdown => {
+                        dropdown.innerHTML = '<option value="">Select a Tour</option>';
+                        data.forEach(tour => {
+                            const option = document.createElement("option");
+                            option.value = tour.tourID;
+                            option.textContent = tour.tourName;
+                            option.dataset.price = tour.price;  // Store price in a data attribute
+                            dropdown.appendChild(option);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching tours:", error);
+                    alert("Failed to load tours.");
+                });
+        }
+
+        // Add new booking detail row
+        document.getElementById("addDetail").addEventListener("click", function () {
+            const detailDiv = document.createElement("div");
+            detailDiv.classList.add("booking-detail");
+
+            detailDiv.innerHTML = `
+            <label>Tour:</label>
+            <select class="tourDropdown" required>
+                <option value="">Select a Tour</option>
+            </select>
+
+            <label>Quantity:</label>
+            <input type="number" class="quantity" required>
+
+            <label>Price:</label>
+            <input type="number" class="price" step="0.01" required readonly>
+
+            <button type="button" class="removeDetail">Remove</button>
+        `;
+
+            fetchTours(); // Fetch tours again to populate the new dropdown
+            bookingDetailsContainer.appendChild(detailDiv);
+        });
+
+        // Update the price and total price when a tour is selected
+        bookingDetailsContainer.addEventListener("change", function (event) {
+            if (event.target.classList.contains("tourDropdown")) {
+                const selectedOption = event.target.selectedOptions[0];
+                const price = parseFloat(selectedOption.dataset.price) || 0;
+                const quantityInput = event.target.closest(".booking-detail").querySelector(".quantity");
+                const priceInput = event.target.closest(".booking-detail").querySelector(".price");
+
+                // Update the price input and total price
+                priceInput.value = price;
+
+                // Recalculate total price for all details
+                updateTotalPrice();
+            }
+            if (event.target.classList.contains("quantity")) {
+                // Recalculate total price when quantity changes
+                updateTotalPrice();
+            }
+        });
+
+        // Recalculate the total price based on quantity and price
+        function updateTotalPrice() {
+            let total = 0;
+            document.querySelectorAll(".booking-detail").forEach(detail => {
+                const quantity = parseFloat(detail.querySelector(".quantity").value) || 0;
+                const price = parseFloat(detail.querySelector(".price").value) || 0;
+                total += quantity * price;
+            });
+            document.getElementById("totalPrice").value = total.toFixed(2);
+        }
+
+        // Remove booking detail row
+        bookingDetailsContainer.addEventListener("click", function (event) {
+            if (event.target.classList.contains("removeDetail")) {
+                event.target.closest(".booking-detail").remove();
+                updateTotalPrice();
+            }
+        });
+
+        // Handle form submission
+        bookingForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const userId = document.getElementById("uid").value;
+            const bookingDate = document.getElementById("bookingDate").value;
+            const totalPrice = document.getElementById("totalPrice").value;
+
+            if (!userId || !bookingDate || !totalPrice) {
+                alert("Please fill in all the required fields.");
+                return;
+            }
+
+            // Prepare booking details array
+            const bookingDetails = [];
+            document.querySelectorAll(".booking-detail").forEach(detail => {
+                const tourId = detail.querySelector(".tourDropdown").value;
+                const quantity = detail.querySelector(".quantity").value;
+                const price = detail.querySelector(".price").value;
+
+                if (tourId && quantity && price) {
+                    bookingDetails.push({
+                        tourId,
+                        quantity,
+                        price
+                    });
+                }
+            });
+
+            // Submit booking data
+            const bookingData = {
+                userId,
+                bookingDate,
+                totalPrice,
+                bookingDetails
+            };
+
+            fetch("http://localhost:8080/api/v1/booking/place", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(bookingData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("responseMessage").textContent = "Booking placed successfully!";
+                    bookingForm.reset();
+                })
+                .catch(error => {
+                    console.error("Error submitting booking:", error);
+                    alert("Failed to place booking.");
+                });
+        });
+    });
+
+</script>
+</body>
+</html>
