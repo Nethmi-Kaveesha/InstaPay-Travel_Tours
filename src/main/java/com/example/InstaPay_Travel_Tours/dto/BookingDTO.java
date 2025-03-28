@@ -1,24 +1,26 @@
 package com.example.InstaPay_Travel_Tours.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class BookingDTO {
+
     private int bookingId;
-    private String userId;
-    private double totalAmount;
-    private LocalDateTime bookingDate;
-    private List<PaymentDTO> payments;
+    private LocalDate bookingDate;
+    private double totalPrice;
+    private UUID userId;  // Changed to UUID to match User entity's ID type
+    private List<BookingDetailDTO> bookingDetails;
 
     public BookingDTO() {
     }
 
-    public BookingDTO(int bookingId, String userId, double totalAmount, LocalDateTime bookingDate, List<PaymentDTO> payments) {
+    public BookingDTO(int bookingId, LocalDate bookingDate, double totalPrice, UUID userId, List<BookingDetailDTO> bookingDetails) {
         this.bookingId = bookingId;
-        this.userId = userId;
-        this.totalAmount = totalAmount;
         this.bookingDate = bookingDate;
-        this.payments = payments;
+        this.totalPrice = totalPrice;
+        this.userId = userId;
+        this.bookingDetails = bookingDetails;
     }
 
     public int getBookingId() {
@@ -29,36 +31,35 @@ public class BookingDTO {
         this.bookingId = bookingId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-
-    public LocalDateTime getBookingDate() {
+    public LocalDate getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(LocalDateTime bookingDate) {
+    public void setBookingDate(LocalDate bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public List<PaymentDTO> getPayments() {
-        return payments;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPayments(List<PaymentDTO> payments) {
-        this.payments = payments;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public UUID getUserId() {  // Getter for UUID userId
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {  // Setter for UUID userId
+        this.userId = userId;
+    }
+
+    public List<BookingDetailDTO> getBookingDetails() {
+        return bookingDetails;
+    }
+
+    public void setBookingDetails(List<BookingDetailDTO> bookingDetails) {
+        this.bookingDetails = bookingDetails;
     }
 }

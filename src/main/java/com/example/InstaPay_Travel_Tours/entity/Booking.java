@@ -1,29 +1,74 @@
 package com.example.InstaPay_Travel_Tours.entity;
 
 import jakarta.persistence.*;
-
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
-    private Long bookingID;
+    private int bookingId;
+
+    private LocalDate bookingDate;
+    private double totalPrice;
 
     @ManyToOne
-    @JoinColumn(name = "tour_id", nullable = false)
-    private Tour tour;  // References Tour
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BookingDetail> bookingDetails;
 
-    @Column(name = "seats_booked", nullable = false)
-    private int seatsBooked;
+    public Booking() {
+    }
 
-    @Column(name = "booking_date", nullable = false)
-    private Date bookingDate;
+    public Booking(int bookingId, LocalDate bookingDate, double totalPrice, User user, List<BookingDetail> bookingDetails) {
+        this.bookingId = bookingId;
+        this.bookingDate = bookingDate;
+        this.totalPrice = totalPrice;
+        this.user = user;
+        this.bookingDetails = bookingDetails;
+    }
 
-    // Getters and Setters
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<BookingDetail> getBookingDetails() {
+        return bookingDetails;
+    }
+
+    public void setBookingDetails(List<BookingDetail> bookingDetails) {
+        this.bookingDetails = bookingDetails;
+    }
 }
