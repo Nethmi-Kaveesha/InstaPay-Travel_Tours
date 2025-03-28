@@ -7,132 +7,101 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f5;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right top, #141E30, #243B55);
             margin: 0;
             padding: 0;
-            color: #333;
-            font-size: 14px;
-        }
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
+        }
         .container {
-            width: 60%;
-            margin: 30px auto;
-            padding: 15px;
-            background-color: #fff;
-            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            width: 50%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        h1,
-        h2 {
+        h1, h2 {
             text-align: center;
-            color: #444;
-            font-size: 22px;
-        }
-
-        h2 {
-            margin-top: 15px;
-            color: #666;
-            font-size: 18px;
+            font-size: 24px;
         }
 
         form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            max-width: 500px;
-            margin: 0 auto;
+            gap: 12px;
+            width: 80%;
+            margin: auto;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
 
-        label {
-            font-weight: bold;
-            color: #444;
-            margin-bottom: 5px;
-            font-size: 13px;
-        }
-
-        input,
-        textarea {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-top: 5px;
-            font-size: 12px;
-            width: 100%;
-        }
-
-        textarea {
-            resize: vertical;
-            font-size: 12px;
-        }
-
-        button {
-            background-color: #28a745;
-            color: white;
+        input, textarea {
             padding: 10px;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 8px;
             font-size: 14px;
-            transition: background-color 0.3s ease;
+        }
+
+
+        button {
+            background: linear-gradient(to right, #FF512F, #DD2476);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #218838;
+            background: linear-gradient(to right, #DD2476, #FF512F);
         }
 
         #reviews-list {
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .review {
-            background-color: #fafafa;
+            background: rgba(255, 255, 255, 0.2);
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
         }
 
-        .review h3 {
-            margin: 0;
-            color: #555;
-            font-size: 16px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        .review .stars {
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-
-        .review p {
-            font-size: 12px;
-            color: #777;
-            line-height: 1.4;
-        }
-
         .stars {
             display: flex;
             gap: 5px;
         }
 
         .star {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             background-color: #ccc;
             clip-path: polygon(50% 0%, 63% 35%, 98% 35%, 72% 57%, 79% 91%, 50% 70%, 21% 91%, 28% 57%, 2% 35%, 37% 35%);
             cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        .star:hover {
+            transform: scale(1.2);
         }
 
         .star.filled {
-            background-color: #f5a623;
+            background-color: #f39c12;
         }
+
     </style>
 </head>
 
@@ -141,26 +110,18 @@
     <h1>Submit Your Review</h1>
 
     <form id="review-form">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required />
-        </div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
 
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required />
-        </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
 
-        <div class="form-group">
-            <label for="rating">Rating (1 to 5):</label>
-            <div id="rating-stars" class="stars"></div>
-            <input type="hidden" id="rating" name="rating" required />
-        </div>
+        <label for="rating">Rating (1 to 5):</label>
+        <div id="rating-stars" class="stars"></div>
+        <input type="hidden" id="rating" name="rating" required />
 
-        <div class="form-group">
-            <label for="comment">Comment:</label>
-            <textarea id="comment" name="comment" rows="4" required></textarea>
-        </div>
+        <label for="comment">Comment:</label>
+        <textarea id="comment" name="comment" rows="4" required></textarea>
 
         <button type="submit">Submit Review</button>
     </form>
@@ -185,13 +146,12 @@
                     }
 
                     reviewsList.append(`
-                            <div class="review">
-                                <h3>${review.name} (${review.rating} stars)</h3>
-                                <div class="stars">${stars}</div>
-                                <p>${review.comment}</p>
-                                <p><strong>Email:</strong> ${review.email}</p>
-                            </div>
-                        `);
+                        <div class="review">
+                            <h3>${review.name} (${review.rating} stars)</h3>
+                            <div class="stars">${stars}</div>
+                            <p>${review.comment}</p>
+                        </div>
+                    `);
                 });
             },
             error: function (error) {
@@ -211,11 +171,7 @@
             const ratingValue = $(this).data('value');
             $('#rating').val(ratingValue);
             $('#rating-stars .star').each(function () {
-                if ($(this).data('value') <= ratingValue) {
-                    $(this).addClass('filled');
-                } else {
-                    $(this).removeClass('filled');
-                }
+                $(this).toggleClass('filled', $(this).data('value') <= ratingValue);
             });
         });
     });
@@ -235,7 +191,7 @@
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(reviewData),
-            success: function (response) {
+            success: function () {
                 loadReviews();
                 $('#review-form')[0].reset();
                 $('#rating-stars .star').removeClass('filled');
