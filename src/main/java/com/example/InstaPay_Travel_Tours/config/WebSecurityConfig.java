@@ -46,10 +46,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/booking/place",
-                                    "/api/v1/booking/place/**",
                                     "/api/v1",
                                 "/api/v1/tours/",
-                                "api/v1/booking",
                                 "/api/v1/dashboard",
                                 "/api/v1/dashboard/stats",
                                 "/api/v1/dashboard/reports",
