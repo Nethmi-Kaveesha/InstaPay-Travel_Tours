@@ -3,8 +3,8 @@ package com.example.InstaPay_Travel_Tours.dto;
 public class BookingDetailDTO {
 
     private int id;
-    private int bookingId;  // This will be used to set the Booking based on the ID
-    private int tourId;  // This will be used to set the Tour based on the ID
+    private int bookingId; // Storing only the booking ID
+    private int tourId;    // Storing only the tour ID
     private double quantity;
     private double price;
     private double total;
