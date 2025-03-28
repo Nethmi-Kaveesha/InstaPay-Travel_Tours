@@ -8,58 +8,146 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
     <style>
+        /* Body background with transparency */
         body {
-            background: #f8f9fa;
+            background: linear-gradient(135deg ,white, grey,white);
+            margin: 0;
+            padding: 0;
         }
+
+        /* Card styles with transparent background */
         .card {
-            margin-top: 100px;
+            border: 2px solid white;
+            margin-top: 90px;
             border-radius: 12px;
             padding: 30px;
-            background: #ffffff;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent white background */
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Optional: Light shadow */
+            z-index: 1; /* Ensure it’s on top */
         }
-        .form-control {
-            border-radius: 8px;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            transition: all 0.3s ease-in-out;
-        }
-        .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-        }
-        .btn {
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 10px 15px;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-warning {
-            background-color: #ffc107;
-            border: none;
-            color: #212529;
-        }
-        .btn-danger {
-            background-color: #dc3545;
-            border: none;
-        }
-        table {
+
+        /* Table Styling */
+        .table {
+            width: 100%;
+            margin: 0 auto;
+            border-collapse: collapse;
             border-radius: 12px;
             overflow: hidden;
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent white background */
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); /* Optional: Light shadow */
+            border: none; /* Remove default border */
         }
-        th {
-            background: #007bff;
-            color: white;
+
+
+        /* Table Header */
+        thead {
+            background-color: rgba(0, 172, 193, 0.8); /* Transparent Aqua Blue */
+            color: #ffffff;
         }
+
+        thead th {
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Table Body */
+        tbody {
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white for the body */
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Light border for rows */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05); /* Light grey for alternate rows */
+        }
+
+        /* Table Row Hover Effect */
         tbody tr:hover {
-            background-color: rgba(0, 123, 255, 0.1);
+            background-color: rgba(0, 172, 193, 0.3); /* Soft transparent aqua blue for hover effect */
         }
+
+        /* Table Cells */
+        td {
+            padding: 12px;
+            text-align: center;
+            font-size: 1rem;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly opaque background for cells */
+        }
+
+        /* Images */
+        td img {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Action Buttons */
+        td .btn {
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Action Button Colors */
+        td .btn-primary {
+            background-color: #00acc1;
+            color: #fff;
+            border: none;
+        }
+
+        td .btn-primary:hover {
+            background-color: #00838f; /* Darker aqua on hover */
+        }
+
+        td .btn-warning {
+            background-color: #ffeb3b;
+            color: #212529;
+            border: none;
+        }
+
+        td .btn-warning:hover {
+            background-color: #fbc02d;
+        }
+
+        td .btn-danger {
+            background-color: #f44336;
+            color: #fff;
+            border: none;
+        }
+
+        td .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Table Responsiveness */
+        @media (max-width: 768px) {
+            .table {
+                font-size: 0.875rem; /* Smaller font on smaller screens */
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            td img {
+                width: 80px;
+                height: 60px;
+            }
+
+            h4.text-center {
+                font-size: 1.5rem;
+            }
+        }
+
+
 
         nav {
             background: #333;
@@ -113,39 +201,78 @@
     <div class="card">
         <h2 class="text-center mb-4">Tour Form</h2>
         <form id="tourForm">
-            <div class="mb-3">
-                <label for="tourID" class="form-label">Tour ID:</label>
-                <input type="text" class="form-control" id="tourID" name="tourID" placeholder="Auto-generated" disabled>
-
-                <label for="tourName" class="form-label mt-2">Tour Name:</label>
+            <div class="mb-3 form-floating">
                 <input type="text" class="form-control" id="tourName" name="tourName" placeholder="Enter tour name" required>
+                <label for="tourName">Tour Name</label>
+            </div>
 
-                <label for="description" class="form-label mt-2">Description:</label>
+            <div class="mb-3 form-floating">
                 <textarea class="form-control" id="description" name="description" placeholder="Enter description" rows="4"></textarea>
+                <label for="description">Description</label>
+            </div>
 
-                <label for="location" class="form-label mt-2">Location:</label>
-                <input type="text" class="form-control" id="location" name="location" placeholder="Enter location" required>
+            <!-- Location and Duration fields in one line -->
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="location" name="location" placeholder="Enter location" required>
+                        <label for="location">Location</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter duration in days" required>
+                        <label for="duration">Duration (days)</label>
+                    </div>
+                </div>
+            </div>
 
-                <label for="duration" class="form-label mt-2">Duration (days):</label>
-                <input type="number" class="form-control" id="duration" name="duration" placeholder="Enter duration in days" required>
+            <!-- Price and Tour Type fields in one line -->
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" required>
+                        <label for="price">Price</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="tourType" name="tourType" placeholder="Enter tour type" required>
+                        <label for="tourType">Tour Type</label>
+                    </div>
+                </div>
+            </div>
 
-                <label for="price" class="form-label mt-2">Price:</label>
-                <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" required>
+            <!-- Available Seats and Start Date fields in one line -->
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="number" class="form-control" id="availableSeats" name="availableSeats" placeholder="Enter available seats" required>
+                        <label for="availableSeats">Available Seats</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="startDate" name="startDate" required>
+                        <label for="startDate">Start Date</label>
+                    </div>
+                </div>
+            </div>
 
-                <label for="tourType" class="form-label mt-2">Tour Type:</label>
-                <input type="text" class="form-control" id="tourType" name="tourType" placeholder="Enter tour type" required>
-
-                <label for="availableSeats" class="form-label mt-2">Available Seats:</label>
-                <input type="number" class="form-control" id="availableSeats" name="availableSeats" placeholder="Enter available seats" required>
-
-                <label for="startDate" class="form-label mt-2">Start Date:</label>
-                <input type="date" class="form-control" id="startDate" name="startDate" required>
-
-                <label for="endDate" class="form-label mt-2">End Date:</label>
-                <input type="date" class="form-control" id="endDate" name="endDate" required>
-
-                <label for="images" class="form-label mt-2">Tour Images:</label>
-                <input type="text" class="form-control" id="images" name="images" placeholder="Enter image URLs" required>
+            <!-- End Date and Images fields in one line -->
+            <div class="mb-3 row">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="endDate" name="endDate" required>
+                        <label for="endDate">End Date</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="images" name="images" placeholder="Enter image URLs" required>
+                        <label for="images">Tour Images</label>
+                    </div>
+                </div>
             </div>
 
             <div class="d-flex justify-content-between">
@@ -154,8 +281,10 @@
                 <button type="button" class="btn btn-danger d-none" id="deleteButton">Delete</button>
             </div>
         </form>
+<div>
+    <div>
 
-        <div class="mt-5">
+        <div id="tables" class="mt-5">
             <h4 class="text-center">Tours List</h4>
             <table class="table table-hover mt-3">
                 <thead>
@@ -177,6 +306,8 @@
                 <tbody id="tourTableBody"></tbody>
             </table>
         </div>
+    </div>
+</div>
     </div>
 </div>
 
