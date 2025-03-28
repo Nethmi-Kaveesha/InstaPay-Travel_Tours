@@ -3,6 +3,7 @@ package com.example.InstaPay_Travel_Tours.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "booking_detail")
 public class BookingDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
