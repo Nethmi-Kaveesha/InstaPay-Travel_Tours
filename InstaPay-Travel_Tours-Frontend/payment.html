@@ -3,62 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Stripe Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
+            background: #f7f7f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .payment-container {
-            max-width: 500px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            margin: auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+            border: 2px solid #00c6ff; /* Vibrant blue border */
         }
-        .btn-pay {
-            background-color: #28a745;
-            color: white;
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #00c6ff; /* Focus effect for inputs */
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00c6ff; /* Vibrant button color */
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #00b3e6; /* Hover effect on button */
+        }
+        p {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #333;
         }
     </style>
 </head>
 <body>
+
 <div class="payment-container">
-    <h3 class="text-center">Complete Your Payment</h3>
-    <p class="text-center">Please enter your payment details below.</p>
-    <form id="paymentForm">
-        <div class="mb-3">
-            <label for="cardNumber" class="form-label">Card Number</label>
-            <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" required>
-        </div>
-        <div class="mb-3">
-            <label for="cardName" class="form-label">Cardholder Name</label>
-            <input type="text" class="form-control" id="cardName" required>
-        </div>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="expiryDate" class="form-label">Expiry Date</label>
-                <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="cvv" class="form-label">CVV</label>
-                <input type="text" class="form-control" id="cvv" placeholder="123" required>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-pay">Pay Now</button>
-    </form>
+    <h2>Stripe Payment</h2>
+    <input type="email" id="email" placeholder="Enter Email" required />
+    <input type="number" id="amount" placeholder="Enter Amount" required />
+    <button id="payBtn">Pay Now</button>
+    <p id="message"></p>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+
 <script>
-    document.getElementById("paymentForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        alert("Payment successful!");
-        window.location.href = "confirmation.html";
+    const stripe = Stripe("pk_test_51R7u4x4Dqr1U2IgQZw0eoc95KkDlU4jCSQesOYAQNRcOBZFiBPfz4xE9LcbWZ6tQcI0mHeKInEIAzyknlUMcOejq00av7yJhj2");
+
+    document.getElementById("payBtn").addEventListener("click", async function() {
+        const email = document.getElementById("email").value;
+        const amount = document.getElementById("amount").value;
+
+        if (!email || !amount) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Missing Fields',
+                text: 'Please enter both email and amount.'
+            });
+            return;
+        }
+
+        // Create Payment Intent (Send request to Backend)
+        const response = await fetch("http://localhost:8080/api/payments/create-payment-intent", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: amount, customerEmail: email })
+        });
+
+        const { clientSecret } = await response.json();
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: { token: "tok_visa" } // Use test card token
+            }
+        });
+
+        if (!error) {
+            await fetch("http://localhost:8080/api/payments/update-payment-status", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    paymentId: paymentIntent.id,
+                    email: email,
+                    amount: amount,
+                    status: paymentIntent.status
+                })
+            });
+            Swal.fire({
+                icon: 'success',
+                title: 'Payment Successful',
+                text: 'Your payment was successful!',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Payment Failed',
+                text: error.message
+            });
+        }
     });
 </script>
+
 </body>
 </html>
