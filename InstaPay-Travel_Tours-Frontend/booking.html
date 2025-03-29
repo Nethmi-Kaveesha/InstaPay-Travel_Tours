@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <title>Place Booking</title>
     <style>
         body {
@@ -184,6 +187,96 @@
             cursor: pointer;
         }
 
+        /* Flex container for inline inputs */
+        .inline-inputs {
+            display: flex;
+            gap: 20px; /* Adjust space between inputs */
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            flex: 1; /* Make inputs take equal space */
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        /* Flex container for the inline form fields */
+        .inline-fields {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1 1 calc(33% - 10px); /* Each input takes 1/3 width of the container */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-group input,
+        .input-group select {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .inline-fields {
+                flex-direction: column; /* Stack the fields vertically on smaller screens */
+                gap: 15px;
+            }
+
+            .input-group {
+                flex: 1 1 100%; /* Make each field take full width */
+            }
+        }
+
+
     </style>
 </head>
 
@@ -191,16 +284,20 @@
 <div class="container">
     <h2>Place a Booking</h2>
     <form id="bookingForm">
-        <label for="uid">User ID:</label>
-        <select id="uid" required>
-            <option value="">Select a User</option>
-        </select>
-
-        <label for="bookingDate">Booking Date:</label>
-        <input type="date" id="bookingDate" required>
-
-        <label for="totalPrice">Total Price:</label>
-        <input type="number" id="totalPrice" step="0.01" required>
+        <div class="inline-fields">
+            <div class="input-group">
+                <label for="uid">User ID:</label>
+                <select id="uid" required>
+                    <option value="">Select a User</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="bookingDate">Booking Date:</label>
+                <input type="date" id="bookingDate" required>
+            </div>
+            <div class="input-group">
+                <label for="totalPrice">Total Price:</label>
+                <input type="number" id="totalPrice" step="0.01" required>
 
         <h3>Booking Details</h3>
         <div id="bookingDetails">
@@ -210,45 +307,24 @@
                     <option value="">Select a Tour</option>
                 </select>
 
-                <label>Quantity:</label>
-                <input type="number" class="quantity" required>
+                <!-- Flex container for inline inputs -->
+                <div class="inline-inputs">
+                    <div class="input-group">
+                        <label>Quantity:</label>
+                        <input type="number" class="quantity" required>
+                    </div>
 
-                <label>Price:</label>
-                <input type="number" class="price" step="0.01" required readonly>
+                    <div class="input-group">
+                        <label>Price:</label>
+                        <input type="number" class="price" step="0.01" required readonly>
+                    </div>
+                </div>
 
                 <button type="button" class="removeDetail">Remove</button>
             </div>
-        </div>
 
-        <button type="button" id="addDetail">Add More Details</button>
-        <button id="proceedPaymentBtn">Proceed to Payment</button>
 
-        <div id="paymentPopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn">&times;</span>
-                <h3>Enter Payment Details</h3>
-
-                <label for="popupPaymentMethod">Payment Method:</label>
-                <select id="popupPaymentMethod">
-                    <option value="">Select</option>
-                    <option value="cash">Cash</option>
-                    <option value="credit_card">Credit Card</option>
-                </select>
-
-                <div id="creditCardFields" style="display: none;">
-                    <label for="popupCardNumber">Card Number:</label>
-                    <input type="text" id="popupCardNumber" maxlength="16" placeholder="Enter card number">
-
-                    <label for="popupExpiryDate">Expiry Date:</label>
-                    <input type="month" id="popupExpiryDate">
-
-                    <label for="popupCVV">CVV:</label>
-                    <input type="text" id="popupCVV" maxlength="3" placeholder="CVV">
-                </div>
-
-                <button id="confirmPayment">Confirm Payment</button>
-            </div>
-        </div>
+            <button type="button" id="addDetail">Add More Details</button>
 
         <button type="submit">Submit Booking</button>
     </form>
@@ -261,7 +337,6 @@
         const bookingDetailsContainer = document.getElementById("bookingDetails");
 
         fetchUsers();
-
 
         function fetchUsers() {
             fetch("http://localhost:8080/api/v1/user/getAll")
@@ -277,10 +352,9 @@
                 })
                 .catch(error => {
                     console.error("Error fetching users:", error);
-                    alert("Failed to load users.");
+                    Swal.fire("Error", "Failed to load users.", "error");
                 });
         }
-
 
         fetchTours();
 
@@ -302,7 +376,7 @@
                 })
                 .catch(error => {
                     console.error("Error fetching tours:", error);
-                    alert("Failed to load tours.");
+                    Swal.fire("Error", "Failed to load tours.", "error");
                 });
         }
 
@@ -311,19 +385,19 @@
             detailDiv.classList.add("booking-detail");
 
             detailDiv.innerHTML = `
-            <label>Tour:</label>
-            <select class="tourDropdown" required>
-                <option value="">Select a Tour</option>
-            </select>
+        <label>Tour:</label>
+        <select class="tourDropdown" required>
+            <option value="">Select a Tour</option>
+        </select>
 
-            <label>Quantity:</label>
-            <input type="number" class="quantity" required>
+        <label>Quantity:</label>
+        <input type="number" class="quantity" required>
 
-            <label>Price:</label>
-            <input type="number" class="price" step="0.01" required readonly>
+        <label>Price:</label>
+        <input type="number" class="price" step="0.01" required readonly>
 
-            <button type="button" class="removeDetail">Remove</button>
-        `;
+        <button type="button" class="removeDetail">Remove</button>
+    `;
 
             fetchTours();
             bookingDetailsContainer.appendChild(detailDiv);
@@ -370,7 +444,7 @@
             const totalPrice = document.getElementById("totalPrice").value;
 
             if (!userId || !bookingDate || !totalPrice) {
-                alert("Please fill in all the required fields.");
+                Swal.fire("Error", "Please fill in all the required fields.", "error");
                 return;
             }
 
@@ -407,83 +481,30 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("responseMessage").textContent = "Booking placed successfully!";
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text: "Booking placed successfully!",
+                        showCancelButton: true,
+                        confirmButtonText: "Go to Payment",
+                        cancelButtonText: "Stay Here",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = "payment.html";  // Replace with your actual payment page URL
+                        }
+                    });
                     bookingForm.reset();
                 })
                 .catch(error => {
                     console.error("Error submitting booking:", error);
-                    alert("Failed to place booking.");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Failed to place booking!",
+                    });
                 });
         });
     });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const paymentPopup = document.getElementById("paymentPopup");
-        const proceedPaymentBtn = document.getElementById("proceedPaymentBtn");
-        const closeBtn = document.querySelector(".close-btn");
-        const confirmPaymentBtn = document.getElementById("confirmPayment");
-
-        const paymentMethodDropdown = document.getElementById("popupPaymentMethod");
-        const creditCardFields = document.getElementById("creditCardFields");
-
-        proceedPaymentBtn.addEventListener("click", function () {
-            paymentPopup.style.display = "block";
-        });
-
-
-        closeBtn.addEventListener("click", function () {
-            paymentPopup.style.display = "none";
-        });
-
-        window.addEventListener("click", function (event) {
-            if (event.target === paymentPopup) {
-                paymentPopup.style.display = "none";
-            }
-        });
-
-        paymentMethodDropdown.addEventListener("change", function () {
-            if (this.value === "credit_card") {
-                creditCardFields.style.display = "block";
-            } else {
-                creditCardFields.style.display = "none";
-            }
-        });
-
-        confirmPaymentBtn.addEventListener("click", function () {
-            const paymentMethod = paymentMethodDropdown.value;
-            let paymentDetails = {};
-
-            if (paymentMethod === "credit_card") {
-                const cardNumber = document.getElementById("popupCardNumber").value;
-                const expiryDate = document.getElementById("popupExpiryDate").value;
-                const cvv = document.getElementById("popupCVV").value;
-
-                if (!cardNumber || !expiryDate || !cvv) {
-                    alert("Please enter complete credit card details.");
-                    return;
-                }
-
-                paymentDetails = {
-                    paymentMethod,
-                    cardNumber,
-                    expiryDate,
-                    cvv
-                };
-            } else if (paymentMethod === "cash") {
-                paymentDetails = { paymentMethod };
-            } else {
-                alert("Please select a payment method.");
-                return;
-            }
-
-            console.log("Payment Details:", paymentDetails);
-
-            paymentPopup.style.display = "none";
-
-            alert("Payment details saved. Proceeding with booking.");
-        });
-    });
-
 
 </script>
 </body>
