@@ -45,6 +45,11 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/api/payments/send-email",
+                                "/api/payments/create-payment-intent",
+                                "/api/payments/update-payment-status",
+
+
                                 "/api/v1/booking/place",
                                     "/api/v1",
                                 "/api/v1/tours/",
