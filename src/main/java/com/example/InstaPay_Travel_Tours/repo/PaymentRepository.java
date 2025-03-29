@@ -1,8 +1,9 @@
 package com.example.InstaPay_Travel_Tours.repo;
 
-import com.example.InstaPay_Travel_Tours.entity.Payment;
+
+
+import com.example.InstaPay_Travel_Tours.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PaymentRepository extends JpaRepository<Payment, Integer> {
-    // Additional query methods (if necessary)
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
 }
