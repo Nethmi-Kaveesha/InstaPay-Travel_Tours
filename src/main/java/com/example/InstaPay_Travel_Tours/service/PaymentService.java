@@ -1,37 +1,52 @@
 package com.example.InstaPay_Travel_Tours.service;
 
-import com.example.InstaPay_Travel_Tours.entity.Booking;
-import com.example.InstaPay_Travel_Tours.entity.Payment;
-import com.example.InstaPay_Travel_Tours.repo.BookingRepository;
+
+import com.example.InstaPay_Travel_Tours.model.Payment;
 import com.example.InstaPay_Travel_Tours.repo.PaymentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stripe.Stripe;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class PaymentService {
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+    @Value("${stripe.api.secret-key}")
+    private String stripeSecretKey;
 
-    @Autowired
-    private BookingRepository bookingRepository; // Make sure you have this repository
+    private final PaymentRepository paymentRepository;
 
-    public Payment processPayment(int bookingId, String paymentMethod, String cardNumber, String expiryDate, String cvv) {
-        // Fetch the booking by bookingId
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    public PaymentService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
 
-        // Create the payment instance
+    public Map<String, String> createPaymentIntent(Double amount, String email) throws Exception {
+        Stripe.apiKey = stripeSecretKey;
+
+        PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+                .setAmount((long) (amount * 100)) // Convert to cents
+                .setCurrency("usd")
+                .setReceiptEmail(email)
+                .build();
+
+        PaymentIntent paymentIntent = PaymentIntent.create(params);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("clientSecret", paymentIntent.getClientSecret());
+
+        return response;
+    }
+
+    public void savePayment(String paymentId, String email, Double amount, String status) {
         Payment payment = new Payment();
-
-        // Set the payment details
-        payment.setBooking(booking); // Set the fetched booking
-        payment.setPaymentMethod(paymentMethod);
-        payment.setCardNumber(cardNumber);
-        payment.setCardExpiry(expiryDate);
-        payment.setCardCvv(cvv);
-
-        // Save the payment to the database
-        return paymentRepository.save(payment);
+        payment.setPaymentId(paymentId);
+        payment.setEmail(email);
+        payment.setAmount(amount);
+        payment.setStatus(status);
+        paymentRepository.save(payment);
     }
 }
