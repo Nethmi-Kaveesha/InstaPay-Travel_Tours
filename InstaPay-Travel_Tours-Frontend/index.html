@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Responsive Navigation with Image Slider</title>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
@@ -11,65 +15,26 @@
             padding: 0;
         }
 
-        nav {
-            background: #1E3A8A; /* Deep Blue */
-            padding: 10px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 333310;
-        }
-
-        nav ul {
-            list-style-type: none;
-            display: flex;
-            justify-content: space-around;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li {
-            padding: 10px;
-        }
-
-        nav ul li a {
-            color: #FFFFFF; /* White for contrast */
-            text-decoration: none;
-            font-size: 18px;
-            transition: 0.3s ease;
-        }
-
-        /* Hover effect */
-        nav ul li a:hover {
-            background: #F4A460; /* Sand Beige */
-            color: #333; /* Dark for contrast */
-            padding: 8px 12px;
-            border-radius: 5px;
-        }
-
         .container {
             position: absolute;
-            top: 65px;
+            top: 145px;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
             max-width: 1750px;
             height: 600px;
-            background: #E0E0E0; /* Soft Gray for a subtle, modern look */
-            box-shadow: 0 30px 50px rgba(30, 58, 138, 0.3); /* Deep Blue shadow for depth */
+            background: #E0E0E0;
+            box-shadow: 0 30px 50px rgba(30, 58, 138, 0.3);
             overflow: hidden;
             border-radius: 15px;
         }
 
-        /* Slide container */
         .slide {
             position: relative;
             height: 100%;
-            background: linear-gradient(135deg, #87CEEB, #F4A460); /* Sky Blue to Sand Beige */
+            background: linear-gradient(135deg, #87CEEB, #F4A460);
         }
 
-        /* Individual slide items */
         .slide .item {
             width: 200px;
             height: 300px;
@@ -77,18 +42,18 @@
             top: 50%;
             transform: translate(0, -50%);
             border-radius: 20px;
-            box-shadow: 0 30px 50px rgba(80, 80, 80, 0.4); /* Softer shadow */
+            box-shadow: 0 30px 50px rgba(80, 80, 80, 0.4);
             background-size: cover;
             background-position: center;
             display: inline-block;
             transition: 0.5s;
-            border: 5px solid #1E3A8A; /* Deep Blue border for contrast */
+            border: 5px solid #1E3A8A;
         }
 
         /* Hover Effect */
         .slide .item:hover {
             transform: scale(1.05) translate(0, -50%);
-            box-shadow: 0 40px 60px rgba(30, 58, 138, 0.5); /* Deeper shadow */
+            box-shadow: 0 40px 60px rgba(30, 58, 138, 0.5);
         }
 
 
@@ -153,31 +118,28 @@
             padding: 12px 24px;
             border: none;
             cursor: pointer;
-            background: #FF4500; /* Sunset Orange - Vibrant & Eye-catching */
-            color: #FFFFFF; /* White for contrast */
+            background: #FF4500;
+            color: #FFFFFF;
             font-size: 16px;
             font-weight: bold;
             border-radius: 8px;
             transition: background 0.3s ease-in-out, transform 0.2s;
             opacity: 0;
             animation: fadeIn 1s ease-in-out 0.6s 1 forwards;
-            box-shadow: 0 5px 10px rgba(255, 69, 0, 0.3); /* Soft glow effect */
+            box-shadow: 0 5px 10px rgba(255, 69, 0, 0.3);
         }
 
-        /* Hover effect */
         .content button:hover {
-            background: #D83400; /* Darker Sunset Orange */
-            transform: scale(1.05); /* Slightly enlarge on hover */
-            box-shadow: 0 8px 15px rgba(216, 52, 0, 0.4); /* Enhanced shadow */
+            background: #D83400;
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(216, 52, 0, 0.4);
         }
 
-        /* Active (click) effect */
         .content button:active {
-            background: #1E3A8A; /* Deep Blue for contrast */
+            background: #1E3A8A;
             transform: scale(0.98);
             box-shadow: 0 3px 8px rgba(30, 58, 138, 0.5);
         }
-
 
         @keyframes fadeIn {
             from {
@@ -206,30 +168,27 @@
             border: none;
             cursor: pointer;
             margin: 0 5px;
-            border: 1px solid #1E3A8A; /* Deep Blue border for contrast */
-            background: #F4A460; /* Sand Beige for a warm, travel vibe */
-            color: #1E3A8A; /* Deep Blue text for contrast */
+            border: 1px solid #1E3A8A;
+            background: #F4A460;
+            color: #1E3A8A;
             font-size: 16px;
             font-weight: bold;
             transition: background 0.3s, transform 0.2s;
         }
 
-        /* Hover effect */
         .button button:hover {
-            background: #FF4500; /* Sunset Orange - Vibrant & Eye-catching */
-            color: #FFFFFF; /* White for better contrast */
-            transform: scale(1.1); /* Slightly enlarge on hover */
-            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3); /* Soft glow effect */
+            background: #FF4500;
+            color: #FFFFFF;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
         }
 
-        /* Active (click) effect */
         .button button:active {
-            background: #1E3A8A; /* Deep Blue for a sleek contrast */
+            background: #1E3A8A;
             color: #FFFFFF;
             transform: scale(0.95);
             box-shadow: 0 2px 5px rgba(30, 58, 138, 0.4);
         }
-
 
         .services {
             display: flex;
@@ -244,41 +203,37 @@
             z-index: 2000;
             width: 180px;
             height: 180px;
-            background: #F8F9FA; /* Soft White for a clean look */
-            color: #1E3A8A; /* Deep Blue text for contrast */
+            background: #F8F9FA;
+            color: #1E3A8A;
             text-align: center;
             border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3); /* Soft Deep Blue shadow */
+            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
-            border: 2px solid #F4A460; /* Sand Beige border for warmth */
+            border: 2px solid #F4A460;
         }
 
-        /* Hover effect */
         .service-item:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(255, 69, 0, 0.4); /* Sunset Orange glow */
-            background: #FF4500; /* Sunset Orange for vibrancy */
-            color: #FFFFFF; /* White text for contrast */
+            box-shadow: 0 15px 30px rgba(255, 69, 0, 0.4);
+            background: #FF4500;
+            color: #FFFFFF;
         }
 
-        /* Icon Styling */
         .service-item i {
-            color: #D3D3D3; /* Cool Gray for subtle contrast */
+            color: #D3D3D3;
             font-size: 40px;
             margin-bottom: 5px;
             transition: color 0.3s ease;
         }
 
-        /* Hover effect for icons */
         .service-item:hover i {
-            color: #FFFFFF; /* White icons on hover */
+            color: #FFFFFF;
         }
-
 
         .service-item h3 {
             font-size: 18px;
@@ -308,46 +263,35 @@
             }
         }
 
-
-        nav .logo {
-            width: 150px;
-            height: auto;
-            margin-right: 20px;
-        }
-
-        /* Header Styling */
         header {
-            background: #1E3A8A; /* Deep Blue for a strong and elegant look */
+            background: #1E3A8A;
             padding: 20px;
             text-align: center;
-            color: #FFFFFF; /* White text for contrast */
+            color: #FFFFFF;
         }
 
         header h1 {
             margin: 0;
             font-size: 2.5em;
-            color: #F4A460; /* Sand Beige for warmth */
+            color: #F4A460;
         }
 
-        /* About Section Styling */
         .about-container {
             padding: 20px;
             max-width: 1000px;
             top: 300px;
             margin: 0 auto;
-            background: #F8F9FA; /* Soft White for a clean and modern appearance */
-            box-shadow: 0 0 10px rgba(30, 58, 138, 0.2); /* Subtle Deep Blue shadow */
+            background: #F8F9FA;
+            box-shadow: 0 0 10px rgba(30, 58, 138, 0.2);
             border-radius: 10px;
         }
 
-        /* About Section Titles */
         .about-container h2 {
             text-align: center;
             font-size: 2em;
-            color: #FF4500; /* Sunset Orange for an eye-catching look */
+            color: #FF4500;
         }
 
-        /* About Content */
         .about-content {
             display: flex;
             flex-wrap: wrap;
@@ -355,7 +299,6 @@
             margin-top: 20px;
         }
 
-        /* Image Styling */
         .about-content img {
             max-width: 100%;
             height: 500px;
@@ -364,7 +307,6 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* About Text Styling */
         .about-text {
             flex: 1;
             padding: 20px;
@@ -372,46 +314,44 @@
             text-align: left;
         }
 
-        /* Paragraph Styling */
         .about-text p {
             line-height: 1.6;
-            color: #555; /* Subtle text color */
+            color: #555;
         }
 
-        /* Subheadings */
         .about-text h3 {
-            color: #1E3A8A; /* Deep Blue for contrast */
+            color: #1E3A8A;
         }
 
-        /* List Items */
+
         .about-text ul {
             margin-top: 10px;
         }
 
         .about-text ul li {
             margin-bottom: 10px;
-            color: #FF4500; /* Sunset Orange for emphasis */
+            color: #FF4500;
         }
 
-        /* Footer Styling */
+
         footer {
-            background: #1E3A8A; /* Deep Blue for a sophisticated look */
+            background: #1E3A8A;
             padding: 15px;
-            color: #FFFFFF; /* White text for contrast */
+            color: #FFFFFF;
             text-align: center;
         }
 
-        /* Footer Links */
+
         footer a {
-            color: #F4A460; /* Sand Beige for a warm accent */
+            color: #F4A460;
             text-decoration: none;
             margin-left: 10px;
             transition: color 0.3s ease-in-out;
         }
 
-        /* Footer Links Hover Effect */
+
         footer a:hover {
-            color: #FF4500; /* Sunset Orange for vibrancy */
+            color: #FF4500;
         }
 
 
@@ -433,49 +373,49 @@
             margin-bottom: 20px;
         }
 
-        /* Contact Info Title Styling */
+
         .contact-info h2, .contact-form h2 {
             margin-bottom: 20px;
             font-size: 1.8rem;
-            color: #FF4500; /* Sunset Orange for a vibrant look */
+            color: #FF4500;
         }
 
-        /* Contact Info Text Styling */
+
         .contact-info p {
             font-size: 1.1rem;
             margin-bottom: 10px;
-            color: #333; /* Deep Gray for text clarity */
+            color: #333;
         }
 
-        /* Contact Info Icon Styling */
+
         .contact-info i {
             margin-right: 10px;
-            color: #1E3A8A; /* Deep Blue for contrast */
+            color: #1E3A8A;
         }
 
-        /* Contact Form Background and Styling */
+
         .contact-form form {
-            background-color: #F8F9FA; /* Soft White for a clean background */
+            background-color: #F8F9FA;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1); /* Soft Deep Blue shadow */
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.1);
         }
 
-        /* Input & Textarea Fields Styling */
+
         .contact-form input, .contact-form textarea {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
-            border: 1px solid #D3D3D3; /* Cool Gray border */
+            border: 1px solid #D3D3D3;
             border-radius: 8px;
             font-size: 1rem;
         }
 
-        /* Contact Form Button Styling */
+
         .contact-form button {
             width: 100%;
             padding: 15px;
-            background-color: #1E3A8A; /* Deep Blue button background */
+            background-color: #1E3A8A;
             color: white;
             border: none;
             border-radius: 8px;
@@ -483,9 +423,9 @@
             cursor: pointer;
         }
 
-        /* Button Hover Effect */
+
         .contact-form button:hover {
-            background-color: #FF4500; /* Sunset Orange on hover for a vibrant touch */
+            background-color: #FF4500;
         }
 
 
@@ -541,17 +481,16 @@
             margin: 0 auto;
         }
 
-        /* Team Member Styling */
+
         .team-member {
-            background-color: #F8F9FA; /* Soft White for a clean and modern background */
+            background-color: #F8F9FA;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1); /* Subtle Deep Blue shadow for depth */
+            box-shadow: 0 2px 10px rgba(30, 58, 138, 0.1);
             text-align: center;
             padding: 20px;
         }
 
-        /* Team Member Image Styling */
         .team-member img {
             width: 100%;
             height: 200px;
@@ -559,18 +498,18 @@
             border-radius: 10px;
         }
 
-        /* Team Member Name Styling */
+
         .team-member h3 {
             margin-top: 15px;
             font-size: 1.2rem;
             font-weight: bold;
-            color: #1E3A8A; /* Deep Blue for professionalism and contrast */
+            color: #1E3A8A;
         }
 
-        /* Team Member Description Styling */
+
         .team-member p {
             font-size: 1rem;
-            color: #555; /* Subtle gray for readability */
+            color: #555;
         }
 
 
@@ -591,9 +530,9 @@
                 grid-template-columns: 1fr;
             }
         }
-        /* Footer Styling */
+
         footer {
-            background-color: #1E3A8A; /* Deep Blue for a professional, vibrant look */
+            background-color: #1E3A8A;
             color: white;
             padding: 40px 20px;
             text-align: center;
@@ -615,7 +554,7 @@
 
         .footer-left h3 {
             font-size: 1.8rem;
-            color: #F4A460; /* Sand Beige for contrast and warmth */
+            color: #F4A460;
         }
 
         .footer-left p {
@@ -644,7 +583,7 @@
         }
 
         .footer-center a:hover {
-            color: #F4A460; /* Sand Beige hover color for emphasis */
+            color: #F4A460;
         }
 
         .social-icons a {
@@ -655,16 +594,15 @@
         }
 
         .social-icons a:hover {
-            color: #F4A460; /* Sand Beige hover color */
+            color: #F4A460;
         }
 
         .footer-bottom {
             margin-top: 30px;
             font-size: 1rem;
-            color: #D3D3D3; /* Cool Gray for subtle text */
+            color: #D3D3D3;
         }
 
-        /* Mobile Responsiveness for Footer */
         @media (max-width: 768px) {
             .footer-container {
                 flex-direction: column;
@@ -685,7 +623,6 @@
             }
         }
 
-        /* Gallery Section Styling */
         .wrapper {
             width: 100%;
             height: 100vh;
@@ -704,7 +641,6 @@
             overflow-x: auto;
         }
 
-        /* Card Styling */
         .card {
             width: 106px;
             height: 650px;
@@ -721,16 +657,14 @@
             box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.8);
         }
 
-        /* Row in Card */
         .card > .row {
             color: white;
             display: flex;
             flex-wrap: nowrap;
         }
 
-        /* Icon Styling in Card */
         .card > .row > .icon {
-            background: #223; /* Dark grayish tone for the icon background */
+            background: #223;
             color: white;
             border-radius: 50%;
             width: 50px;
@@ -860,21 +794,144 @@
                 gap: 15px;
             }
         }
+
+
+        .navbar-top {
+            background-color: black;
+            color: white;
+            padding: 5px 0;
+            z-index: 1000;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .navbar-top .icon {
+            color: lightskyblue;
+            margin-left: 10px;
+        }
+
+        .navbar-top .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .navbar-top .content span {
+            margin-right: 20px;
+        }
+
+        .social-media-icons {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+            margin-top: -17px;
+        }
+
+        .social-media-icons a {
+            color: white !important;
+            margin-left: 30px;
+            font-size: 16px;
+        }
+
+
+        .navbar {
+            background-color: white;
+            height: 50px;
+            padding: 5px 0;
+            z-index: 90999;
+            width: 100%;
+            position: fixed;
+            top: 60px;
+        }
+
+        .navbar .navbar-nav {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .navbar .navbar-nav .nav-item {
+            margin: 0 15px;
+        }
+
+        .navbar .navbar-nav .nav-item .nav-link {
+            padding: 5px 10px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-item .nav-link:hover {
+            color: blue;
+        }
+
+        .navbar .navbar-nav .nav-item {
+            margin-right: 20px;
+        }
+
+        .navbar-brand img {
+            margin-left: 50px;
+            height: 120px;
+            margin-top: 45px;
+            width: auto;
+        }
+
+        .navbar-all-in-one {
+            background-color: white; /* Set background to white */
+            height: 100px;
+
+        }
+
+
+
     </style>
 </head>
 <body>
-<nav>
-    <ul>
-        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
-        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
-        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
-        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
-        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
-    </ul>
-</nav>
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<div class="navbar-all-in-one fixed-top">
+    <div class="navbar-top">
+        <div class="content">
+            <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
+            <span><i class="fas fa-phone icon"></i>011 257 4646</span>
+            <span><i class="fas fa-link icon"></i> <a href="https://yourwebsite.com" class="text-white">marketing@travelco.lk</a></span>
+        </div>
+        <div class="social-media-icons">
+            <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="rejister.html">Booking</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
 
 <div class="container">
@@ -1162,6 +1219,8 @@
 
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>
