@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,16 @@ public class TourController {
         }
     }
 
+    @GetMapping("/available")
+    public List<Tour> getAvailableTours(
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate) {
+
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        return tourService.findAvailableTours(start, end);
+    }
 
     @GetMapping("/search")
     public ResponseEntity<List<TourDTO>> searchTours(@RequestParam(required = false) String keyword) {
