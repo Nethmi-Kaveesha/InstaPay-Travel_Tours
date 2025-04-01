@@ -1,118 +1,133 @@
 /* Import Google Font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins',sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #675AFE;
+    background: #4A90E2; /* Soft Blue */
 }
 
-.wrapper{
+.wrapper {
     width: 370px;
     padding: 30px;
-    border-radius: 7px;
-    background: #fff;
+    border-radius: 10px;
+    background: #F9F9F9; /* Light Grey for Comfort */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.wrapper header{
+.wrapper header {
     font-size: 28px;
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
+    color: #333;
 }
 
-.wrapper form{
+.wrapper form {
     margin: 40px 0 20px 0;
 }
 
-form :where(input,select,button){
+form :where(input, select, button) {
     width: 100%;
     outline: none;
     border: none;
 }
 
-form p{
+form p {
     font-size: 18px;
     margin-bottom: 5px;
+    color: #444;
 }
 
-form input{
+form input {
     height: 50px;
     font-size: 17px;
     padding: 0 15px;
-    border: 1px solid #999;
+    border: 1px solid #BBB;
+    border-radius: 5px;
+    background: #FFF;
+    transition: 0.3s;
 }
 
-form input:focus{
+form input:focus {
     padding: 0 14px;
-    border: 2px solid #675AFE;
+    border: 2px solid #4A90E2;
+    background: #EAF4FE;
 }
 
-form .drop-list{
+form .drop-list {
     display: flex;
     margin-top: 20px;
     align-items: center;
     justify-content: space-between;
 }
 
-.drop-list .select-box{
+.drop-list .select-box {
     display: flex;
     height: 45px;
     width: 115px;
     border-radius: 5px;
     align-items: center;
     justify-content: center;
-    border: 1px solid #999;
+    border: 1px solid #BBB;
+    background: #FFF;
 }
 
-.select-box select{
+.select-box select {
     width: auto;
     font-size: 16px;
     margin: 0 -5px 0 5px;
+    background: transparent;
 }
 
-.select-box select::-webkit-scrollbar{
+.select-box select::-webkit-scrollbar {
     width: 8px;
 }
 
-.select-box select::-webkit-scrollbar-track{
-    background: #fff;
+.select-box select::-webkit-scrollbar-track {
+    background: #F9F9F9;
 }
 
-.select-box select::-webkit-scrollbar-thumb{
+.select-box select::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 8px;
-    border-right: 2px solid #fff;
 }
 
-.select-box img{
+.select-box img {
     max-width: 25px;
 }
 
-.drop-list .icon{
+.drop-list .icon {
     cursor: pointer;
     font-size: 22px;
     margin-top: 30px;
+    color: #4A90E2;
 }
 
-form .exchange-rate{
+form .exchange-rate {
     font-size: 17px;
     margin: 20px 0 30px;
+    color: #555;
 }
 
-form button{
+form button {
     height: 52px;
-    color: #fff;
+    color: #FFF;
     font-size: 17px;
     cursor: pointer;
-    background: #675AFE;
+    background: #4A90E2;
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
+form button:hover {
+    background: #357ABD;
+}
