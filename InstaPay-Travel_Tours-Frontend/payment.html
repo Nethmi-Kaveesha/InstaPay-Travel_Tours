@@ -24,7 +24,7 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             width: 400px;
-            border: 2px solid #00c6ff; /* Vibrant blue border */
+            border: 2px solid #00c6ff;
         }
         h2 {
             font-size: 2rem;
@@ -41,12 +41,12 @@
             transition: border-color 0.3s ease;
         }
         input:focus {
-            border-color: #00c6ff; /* Focus effect for inputs */
+            border-color: #00c6ff;
         }
         button {
             width: 100%;
             padding: 12px;
-            background-color: #00c6ff; /* Vibrant button color */
+            background-color: #00c6ff;
             color: white;
             font-size: 1.2rem;
             border-radius: 8px;
@@ -55,7 +55,7 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #00b3e6; /* Hover effect on button */
+            background-color: #00b3e6;
         }
         p {
             margin-top: 20px;
@@ -103,7 +103,7 @@
 
         const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
             payment_method: {
-                card: { token: "tok_visa" } // Use test card token
+                card: { token: "tok_visa" }
             }
         });
 
