@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,11 @@ public class TourServiceImpl implements TourService {
         // Mapping DTO to entity and saving the new tour
         Tour newTour = modelMapper.map(tourDTO, Tour.class);
         tourRepo.save(newTour);
+    }
+
+    @Override
+    public List<Tour> findAvailableTours(LocalDate startDate, LocalDate endDate) {
+        return tourRepo.findAvailableTours(startDate, endDate);
     }
 
     @Override
