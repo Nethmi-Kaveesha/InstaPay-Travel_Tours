@@ -94,4 +94,6 @@ public class UserController {
                     .body(new ResponseDTO(400, "Failed to delete user", null));
         }
     }
+
+
 }
