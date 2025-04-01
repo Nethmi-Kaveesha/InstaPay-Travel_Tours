@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,6 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
     // Find tours with available seats greater than a specific number (Custom Query)
     @Query("SELECT t FROM Tour t WHERE t.availableSeats > :seats")
     Page<Tour> findToursWithSeatsGreaterThan(@Param("seats") int seats, Pageable pageable);
-
-    // You can add more custom queries depending on your needs.
+    @Query("SELECT t FROM Tour t WHERE t.startDate >= :startDate AND t.endDate <= :endDate")
+    List<Tour> findAvailableTours(LocalDate startDate, LocalDate endDate);
 }
