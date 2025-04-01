@@ -18,7 +18,6 @@ public class Reviews {
     private int rating;
     private String comment;
 
-    // Getters and setters
 
     public Reviews() {
     }
