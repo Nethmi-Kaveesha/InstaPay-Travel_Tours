@@ -4,24 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SweetAlert2 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>Place Booking</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            background-image: url("images/1000_F_120022199_oWkco1KRUa7jm7Swcp1AIULfKnA2lNDP.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
             margin: 0;
             padding: 0;
             color: #333;
+            font-weight: bold;
         }
+
+
 
         .container {
             width: 80%;
             max-width: 900px;
-            margin: 30px auto;
-            background-color: #fff;
+            margin: 120px auto;
+            background-color: rgba(255, 255, 255, 0.3);
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -226,7 +233,7 @@
         }
 
         .input-group {
-            flex: 1 1 calc(33% - 10px); /* Each input takes 1/3 width of the container */
+            flex: 1 1 calc(33% - 10px);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -264,45 +271,174 @@
             background-color: #2980b9;
         }
 
-        /* Responsive Design */
         @media screen and (max-width: 768px) {
             .inline-fields {
-                flex-direction: column; /* Stack the fields vertically on smaller screens */
+                flex-direction: column;
                 gap: 15px;
             }
 
             .input-group {
-                flex: 1 1 100%; /* Make each field take full width */
+                flex: 1 1 100%;
             }
         }
 
+        .navbar-top {
+            background-color: black;
+            color: white;
+            padding: 5px 0;
+            z-index: 1000;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .navbar-top .icon {
+            color: lightskyblue;
+            margin-left: 10px;
+        }
+
+        .navbar-top .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .navbar-top .content span {
+            margin-right: 20px;
+        }
+
+        .social-media-icons {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+            margin-top: -17px;
+        }
+
+        .social-media-icons a {
+            color: white !important;
+            margin-left: 30px;
+            font-size: 16px;
+        }
+
+
+        .navbar {
+            background-color: white;
+            height: 50px;
+            padding: 5px 0;
+            z-index: 90999;
+            width: 100%;
+            position: fixed;
+            top: 60px;
+        }
+
+        .navbar .navbar-nav {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .navbar .navbar-nav .nav-item {
+            margin: 0 15px;
+        }
+
+        .navbar .navbar-nav .nav-item .nav-link {
+            padding: 5px 10px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-item .nav-link:hover {
+            color: blue;
+        }
+
+        .navbar .navbar-nav .nav-item {
+            margin-right: 20px;
+        }
+
+        .navbar-brand img {
+            margin-left: 50px;
+            height: 120px;
+            margin-top: 45px;
+            width: auto;
+        }
+
+        .navbar-all-in-one {
+            background-color: white;
+            height: 100px;
+
+        }
 
     </style>
 </head>
 
 <body>
+<div class="navbar-all-in-one fixed-top">
+    <div class="navbar-top">
+        <div class="content">
+            <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
+            <span><i class="fas fa-phone icon"></i>011 257 4646</span>
+            <span><i class="fas fa-link icon"></i> <a href="https://yourwebsite.com" class="text-white">marketing@travelco.lk</a></span>
+        </div>
+        <div class="social-media-icons">
+            <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="rejister.html">Booking</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 <div class="container">
-    <h2>Place a Booking</h2>
+    <h2>Reserve Your Trip</h2>
     <form id="bookingForm">
         <div class="inline-fields">
             <div class="input-group">
-                <label for="uid">User ID:</label>
+                <label for="uid">👤  Explorer's Name</label>
                 <select id="uid" required>
-                    <option value="">Select a User</option>
+                    <option value="">Select Explorer's Name</option>
                 </select>
             </div>
             <div class="input-group">
-                <label for="bookingDate">Booking Date:</label>
+                <label for="bookingDate">🗓️  Pick Your Travel Date</label>
                 <input type="date" id="bookingDate" required>
             </div>
             <div class="input-group">
-                <label for="totalPrice">Total Price:</label>
+                <label for="totalPrice">💳 Bill Total</label>
                 <input type="number" id="totalPrice" step="0.01" required>
 
         <h3>Booking Details</h3>
         <div id="bookingDetails">
             <div class="booking-detail">
-                <label>Tour:</label>
+                <label>✈️  Expedition</label>
                 <select class="tourDropdown" required>
                     <option value="">Select a Tour</option>
                 </select>
@@ -310,23 +446,23 @@
                 <!-- Flex container for inline inputs -->
                 <div class="inline-inputs">
                     <div class="input-group">
-                        <label>Quantity:</label>
+                        <label>💺  Remaining Seat</label>
                         <input type="number" class="quantity" required>
                     </div>
 
                     <div class="input-group">
-                        <label>Price:</label>
+                        <label>🛂  Fare</label>
                         <input type="number" class="price" step="0.01" required readonly>
                     </div>
                 </div>
 
-                <button type="button" class="removeDetail">Remove</button>
+                <button type="button" class="removeDetail">Unbook</button>
             </div>
 
 
-            <button type="button" id="addDetail">Add More Details</button>
+            <button type="button" id="addDetail">Provide Additional Information</button>
 
-        <button type="submit">Submit Booking</button>
+        <button type="submit">Finalize Reservation</button>
     </form>
 
     <p id="responseMessage"></p>
@@ -484,13 +620,13 @@
                     Swal.fire({
                         icon: "success",
                         title: "Success!",
-                        text: "Booking placed successfully!",
+                        text: "Your booking has been confirmed!",
                         showCancelButton: true,
                         confirmButtonText: "Go to Payment",
                         cancelButtonText: "Stay Here",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = "payment.html";  // Replace with your actual payment page URL
+                            window.location.href = "payment.html";
                         }
                     });
                     bookingForm.reset();
