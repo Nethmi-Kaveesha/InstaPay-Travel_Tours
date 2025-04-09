@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("/api/v1/user")
 @CrossOrigin(origins = "http://localhost:63342")
 public class UserController {
     @Autowired
@@ -70,7 +70,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(users);
@@ -83,17 +83,17 @@ public class UserController {
     }
 
 
-    @DeleteMapping("delete/{uid}")
-    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable("uid") UUID uid) {
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<?> deleteUser(@PathVariable String email) {
         try {
-            userService.deleteUser(uid);
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseDTO(200, "User Deleted", null));
+            // Calling the service method to delete the user by email
+            userService.deleteUserByEmail(email);
+            // If successful, return 200 OK response with a success message
+            return ResponseEntity.ok().body("User deleted successfully!");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseDTO(400, "Failed to delete user", null));
+            // If an error occurs, return 500 Internal Server Error with the error message
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting user: " + e.getMessage());
         }
     }
-
-
 }

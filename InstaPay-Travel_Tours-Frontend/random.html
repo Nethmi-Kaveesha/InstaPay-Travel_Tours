@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🌍 Spin the Globe</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #fff);
+            text-align: center;
+            padding: 50px 20px;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            background: #ffffffdd;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .globe {
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Globe_icon.svg/512px-Globe_icon.svg.png') no-repeat center/cover;
+            animation: none;
+            cursor: pointer;
+        }
+
+        .result-card {
+            background: #fefefe;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .result-card.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-card h2 {
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+
+        .result-card p {
+            font-size: 1.1em;
+            color: #444;
+        }
+
+        .result-card img {
+            width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: #00b4d8;
+            color: white;
+            border: none;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0077b6;
+        }
+
+        @keyframes spin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(1440deg); }
+        }
+
+        .history-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 40px;
+        }
+
+        .history-item {
+            margin: 10px 0;
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .globe {
+                width: 100px;
+                height: 100px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>🌍 Spin the Globe</h1>
+    <div class="globe" id="globe" onclick="spin()">🎡</div>
+    <button onclick="spin()">🎡 Spin the Globe</button>
+
+    <div class="result-card" id="resultCard">
+        <h2 id="destinationTitle">Where will you go?</h2>
+        <p id="destinationDesc">Click the button to spin the globe and get inspired!</p>
+        <div id="imageSlideShow"></div>
+        <div id="mapPopup" style="margin-top: 20px;">
+            <div id="map" style="width: 100%; height: 300px;"></div>
+        </div>
+    </div>
+
+    <h3>Spin History:</h3>
+    <ul id="historyList" class="history-list"></ul>
+</div>
+
+<script>
+    let map;  // Map instance
+
+    function initializeMap(lat, lng) {
+        // Initialize map only if it is not already initialized
+        if (!map) {
+            map = L.map('map').setView([lat, lng], 10); // Set initial view
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+        } else {
+            // Update map view
+            map.setView([lat, lng], 10);
+        }
+    }
+
+    function spin() {
+        const globe = document.getElementById('globe');
+        const card = document.getElementById('resultCard');
+        const title = document.getElementById('destinationTitle');
+        const desc = document.getElementById('destinationDesc');
+        const imageSlideShow = document.getElementById('imageSlideShow');
+        const historyList = document.getElementById('historyList');
+
+        // Clear previous slideshow
+        imageSlideShow.innerHTML = '';
+
+        // Start spin animation
+        globe.style.animation = "spin 2s ease-in-out";
+
+        // Hide result card during spin
+        card.classList.remove('show');
+
+        // Stop animation and fetch after 2s
+        setTimeout(() => {
+            globe.style.animation = "none";
+
+            fetch('http://localhost:8080/api/random-destination')
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the case when data.images is missing or not an array
+                    if (!data || !Array.isArray(data.images) || data.images.length === 0) {
+                        title.textContent = "✈️ No images available for this destination!";
+                        desc.textContent = "Try again later.";
+                        imageSlideShow.innerHTML = "<p>No images available for this destination.</p>";
+                    } else {
+                        title.textContent = `✈️ ${data.city}, ${data.country}`;
+                        desc.textContent = data.tip;
+
+                        // Loop through the images and create image elements
+                        data.images.forEach(img => {
+                            const imgElement = document.createElement('img');
+                            imgElement.src = `/images/${img}`;
+                            imgElement.alt = `${data.city} - ${img}`;
+                            imageSlideShow.appendChild(imgElement);
+                        });
+                    }
+
+                    // Initialize or update the map with the new destination's coordinates
+                    initializeMap(data.lat, data.lng);
+
+                    // Show card with transition
+                    setTimeout(() => {
+                        card.classList.add('show');
+                    }, 100);
+
+                    // Update the history list
+                    const historyItem = document.createElement('li');
+                    historyItem.classList.add('history-item');
+                    historyItem.textContent = `${data.city}, ${data.country}`;
+                    historyList.appendChild(historyItem);
+
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+                    title.textContent = "❌ Failed to fetch destination!";
+                    desc.textContent = "Please check your server connection.";
+                    card.classList.add('show');
+                });
+
+        }, 2000);
+    }
+</script>
+</body>
+</html>

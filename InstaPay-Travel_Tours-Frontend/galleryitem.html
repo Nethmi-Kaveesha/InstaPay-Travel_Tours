@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traveler's Gallery Wall</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 2em;
+        }
+
+        .filters {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .filter {
+            margin: 0 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .filter:hover {
+            background-color: #45a049;
+        }
+
+        .kaveesha-picks {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kaveesha-picks h2 {
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @media screen and (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .filter {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <h1>Traveler's Gallery Wall</h1>
+</header>
+
+<!-- Filters Section -->
+<div class="filters">
+    <button class="filter" onclick="loadGallery('nature')">Nature</button>
+    <button class="filter" onclick="loadGallery('culture')">Culture</button>
+    <button class="filter" onclick="loadGallery('food')">Food</button>
+    <button class="filter" onclick="loadGallery('adventure')">Adventure</button>
+</div>
+
+<!-- Kaveesha Picks Section -->
+<div class="kaveesha-picks">
+    <h2>Kaveesha Picks</h2>
+    <div class="gallery" id="kaveesha-picks-gallery"></div>
+</div>
+
+<!-- All Gallery Items Section -->
+<div class="gallery" id="gallery"></div>
+
+<script>
+    // Get elements for gallery and Kaveesha Picks
+    const galleryContainer = document.getElementById('gallery');
+    const kaveeshaPicksContainer = document.getElementById('kaveesha-picks-gallery');
+
+    // Sample data for gallery - Replace these with your actual travel images and details
+    const galleryItems = [
+        { imageUrl: 'images/nature1.jpg', category: 'nature', location: 'Mountain View' },
+        { imageUrl: 'images/culture1.jpg', category: 'culture', location: 'Ancient Temple' },
+        { imageUrl: 'images/food1.jpg', category: 'food', location: 'Tasty Sushi' },
+        { imageUrl: 'images/adventure1.jpg', category: 'adventure', location: 'Skydiving in Dubai' },
+        { imageUrl: 'images/nature2.jpg', category: 'nature', location: 'Sandy Beach' },
+        { imageUrl: 'images/culture2.jpg', category: 'culture', location: 'Historic Museum' },
+        { imageUrl: 'images/food2.jpg', category: 'food', location: 'Delicious Pizza' },
+        { imageUrl: 'images/adventure2.jpg', category: 'adventure', location: 'Bungee Jumping' }
+    ];
+
+    // Featured Items (Kaveesha Picks) - Replace these with your favorite travels
+    const featuredItems = [
+        { imageUrl: 'images/featured_nature.jpg', location: 'Featured Nature Destination' },
+        { imageUrl: 'images/featured_food.jpg', location: 'Featured Food Journey' }
+    ];
+
+    // Load all gallery items
+    function loadGallery(category = '') {
+        const filteredItems = category
+            ? galleryItems.filter(item => item.category === category)
+            : galleryItems;
+        displayGalleryItems(filteredItems);
+    }
+
+    // Load featured items (Kaveesha Picks)
+    function loadFeaturedGalleryItems() {
+        kaveeshaPicksContainer.innerHTML = ''; // Clear previous picks
+        featuredItems.forEach(item => {
+            const img = document.createElement('img');
+            img.src = item.imageUrl;
+            img.alt = item.location;
+            kaveeshaPicksContainer.appendChild(img);
+        });
+    }
+
+    // Display gallery items dynamically
+    function displayGalleryItems(items) {
+        galleryContainer.innerHTML = ''; // Clear existing gallery items
+        items.forEach(item => {
+            const img = document.createElement('img');
+            img.src = item.imageUrl;
+            img.alt = item.location;
+            galleryContainer.appendChild(img);
+        });
+    }
+
+    // Load initial content
+    loadFeaturedGalleryItems();
+    loadGallery(); // Load all items by default
+</script>
+</body>
+</html>

@@ -151,21 +151,23 @@
             text-decoration: none;
             font-size: 18px;
         }
-
         .filter-container {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            background: linear-gradient(to right, #E5B700, #D4A200);
+            background: linear-gradient(to right, lightblue, pink);
             color: #E5B700;
-            padding: 15px 20px;
+            padding: 30px 10px;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            min-height: 100px;
+            width: 100%;
+            flex-wrap: nowrap;
+            margin-top: 100px;
         }
 
-        .filter-container select {
+        .form-select, input[type="date"] {
             padding: 10px 15px;
             font-size: 16px;
             font-weight: 500;
@@ -175,6 +177,7 @@
             cursor: pointer;
             transition: all 0.3s ease-in-out;
             outline: none;
+            width: 250px;
         }
 
         .filter-container select:hover,

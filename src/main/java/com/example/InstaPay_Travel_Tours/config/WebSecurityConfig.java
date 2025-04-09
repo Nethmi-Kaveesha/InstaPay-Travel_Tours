@@ -14,6 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -37,21 +42,40 @@ public class WebSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:63342")); // Correct frontend URL
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true); // Optional, only if you are dealing with cookies or JWTs
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/user/getAll",
+                                "/api/random-destination",
+                                "/api/history",
+                                "/reviews/getAll",
+                                "/api/articles",
+                                "/reviews/save",
+                                "/reviews/update",
+                                "/reviews/delete/**",
                                 "/api/payments/send-email",
                                 "/api/payments/create-payment-intent",
                                 "/api/payments/update-payment-status",
-
-
                                 "/api/v1/booking/place",
-                                    "/api/v1",
+                                "/api/v1",
                                 "/api/v1/tours/",
                                 "/api/v1/dashboard",
                                 "/api/v1/dashboard/stats",
@@ -60,80 +84,69 @@ public class WebSecurityConfig {
                                 "/email/sendHtml",
                                 "/api/send-email",
                                 "/api/weather/**",
-                                // Public authentication endpoints
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/auth/refreshToken",
                                 "/api/v1/user/register",
                                 "/api/v1/user/save",
                                 "/api/v1/user/update",
                                 "/api/v1/user/getAll",
-                                "/api/v1/user/delete/**",  // DELETE User endpoint
-
-                                // Tour guide endpoints
+                                "/api/v1/user/delete/**",
                                 "/api/v1/tourguide/save",
                                 "/api/v1/tourguide/getAll",
                                 "/api/v1/tourguide/update",
-                                "/api/v1/tourguide/delete/**",  // DELETE Tour Guide endpoint
-
-                                // Chat-related endpoints
-                                "/chat/**",              // WebSocket endpoint for real-time chat
-                                "/chat",                 // WebSocket endpoint for real-time chat
-                                "/api/v1/chat/sendMessage",  // Chat endpoint for sending messages
-                                "/api/v1/chat/getMessages", // Chat endpoint for getting messages
-                                "/api/v1/chat/history",     // Chat endpoint for message history
-                                "/api/v1/chat/history",     // Duplicate entry for history endpoint
-                                "/new/api/endpoint1", // New API endpoint 1
-                                "/new/api/endpoint2", // New API endpoint 2
-                                "/new/api/endpoint3", // New API endpoint 3
-
-                                // Additional endpoints
-                                "/api/v1/tours/**",
+                                "/api/v1/tourguide/delete/**",
+                                "/chat/**",
+                                "/api/v1/chat/sendMessage",
+                                "/api/v1/chat/getMessages",
+                                "/api/v1/chat/history",
+                                "/new/api/endpoint1",
+                                "/new/api/endpoint2",
+                                "/new/api/endpoint3",
                                 "/api/v1/tours/save",
                                 "/api/v1/tours/getAll",
                                 "/api/v1/tours/edit",
                                 "/api/v1/tours/1",
                                 "/api/v1/tours/uploadImage",
-
-                                "/api/v1/reviews", // Reviews endpoint for fetching reviews
-                                "/api/v1/reviews/save", // Reviews endpoint for saving new review
-                                "/api/v1/reviews/getAll", // Reviews endpoint for getting all reviews
-                                "/api/v1/reviews/update", // Reviews endpoint for updating review
-                                "/api/v1/reviews/delete/**",  // DELETE Review endpoint
-                                "/api/v1/reviews/getById/**", // Reviews endpoint for fetching review by ID
-
+                                "/api/v1/reviews",
+                                "/api/v1/reviews/save",
+                                "/api/v1/reviews/getAll",
+                                "/api/v1/reviews/update",
+                                "/api/v1/reviews/delete/**",
+                                "/api/v1/reviews/getById/**",
                                 "/api/v1/tourschedule/save",
                                 "/api/v1/tourschedule/getAll",
                                 "/api/v1/tourschedule/update",
-                                "/api/v1/tourschedule/delete/**",  // DELETE Tour Schedule endpoint
-
+                                "/api/v1/tourschedule/delete/**",
                                 "/api/v1/payment/**",
                                 "/api/v1/booking/**",
-
                                 "/api/v1/expense/save",
                                 "/api/v1/expense/",
                                 "/api/v1/expense/saveExpense",
                                 "/api/v1/expense/updateExpense/**",
-                                "/api/v1/expense/deleteExpense/**",  // DELETE Expense endpoint
-
+                                "/api/v1/expense/deleteExpense/**",
                                 "/api/v1/income/",
                                 "/api/v1/income/saveIncome",
                                 "/api/v1/income/updateIncome/**",
                                 "/api/v1/income/getAll",
                                 "/api/v1/income/entries",
-                                "/api/v1/income/deleteIncome/**",  // DELETE Income endpoint
-
+                                "/api/v1/income/deleteIncome/**",
                                 "/reviews",
                                 "/api/v1/tours/search",
                                 "/api/v1/img/upload",
                                 "/api/v1/img/**",
                                 "/images/**",
-                                "/api/v1/tours/search?keyword=/**",
                                 "/api/v1/tours/search/**",
                                 "api/v1/tours/book/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "https://api.openai.com/v1/chat/completions"
+                                "https://api.openai.com/v1/chat/completions",
+                                "/api/v1/gallery/all",
+                                "/api/v1/gallery/upload",
+                                "/api/v1/gallery/featured",
+                                "/api/v1/gallery/filter",
+                                "/api/v1/gallery/delete/**",
+                                "/api/events"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

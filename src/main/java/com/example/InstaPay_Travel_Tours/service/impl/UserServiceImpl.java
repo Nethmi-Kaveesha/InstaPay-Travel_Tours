@@ -96,6 +96,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
 
+    public void deleteUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            userRepository.deleteByEmail(email);  // Ensure this method works as expected
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
+
     @Override
     public void deleteUser(UUID uid) {
         userRepository.deleteById(uid);

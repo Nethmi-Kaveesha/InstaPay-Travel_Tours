@@ -1,43 +1,60 @@
 package com.example.InstaPay_Travel_Tours.dto;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import jakarta.validation.constraints.*;
 
 public class ReviewDTO {
 
-    private int reviewid;           // Review ID
-    private LocalDateTime createdAt; // Created At timestamp
-    private int rating;             // Rating
-    private String reviewText;      // Review Text
-    private int tourid;             // Tour ID
-    private int userid;            // User ID (UUID format to represent binary(16) in DTO)
+    private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
+    private String name;
+
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email cannot be empty")
+    private String email;
+
+    @Min(value = 1, message = "Rating must be at least 1")
+    @Max(value = 5, message = "Rating cannot be more than 5")
+    private int rating;
+
+    @NotBlank(message = "Comment cannot be empty")
+    @Size(max = 500, message = "Comment must be at most 500 characters")
+    private String comment;
+
+    // Constructors
     public ReviewDTO() {}
 
-    public ReviewDTO(int reviewid, LocalDateTime createdAt, int rating, String reviewText, int tourid, int userid) {
-        this.reviewid = reviewid;
-        this.createdAt = createdAt;
+    public ReviewDTO(Long id, String name, String email, int rating, String comment) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
         this.rating = rating;
-        this.reviewText = reviewText;
-        this.tourid = tourid;
-        this.userid = userid;
+        this.comment = comment;
     }
 
     // Getters and Setters
-    public int getReviewid() {
-        return reviewid;
+    public Long getId() {
+        return id;
     }
 
-    public void setReviewid(int reviewid) {
-        this.reviewid = reviewid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getName() {
+        return name;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getRating() {
@@ -45,33 +62,14 @@ public class ReviewDTO {
     }
 
     public void setRating(int rating) {
-        if (rating < 1 || rating > 5) {
-            throw new IllegalArgumentException("Rating must be between 1 and 5");
-        }
         this.rating = rating;
     }
 
-    public String getReviewText() {
-        return reviewText;
+    public String getComment() {
+        return comment;
     }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
-    public int getTourid() {
-        return tourid;
-    }
-
-    public void setTourid(int tourid) {
-        this.tourid = tourid;
-    }
-
-    public int getUserid() {
-        return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

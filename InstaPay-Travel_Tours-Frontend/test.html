@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-top {
+            background-color: black;
+            color: white;
+            padding: 5px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .navbar-top .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .navbar-top .content span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .navbar-top .content .icon {
+            color: lightskyblue;
+            font-size: 14px;
+        }
+
+        .social-media-icons {
+            margin-top: 3px;
+        }
+
+        .social-media-icons a {
+            color: white !important;
+            font-size: 14px;
+            margin: 0 8px;
+            transition: 0.3s ease;
+        }
+
+        .social-media-icons a:hover {
+            color: lightskyblue !important;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 5px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand img {
+            height: 60px;
+            width: auto;
+        }
+
+        .navbar-collapse {
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .nav-item {
+            margin: 0;
+        }
+
+        .nav-item .nav-link {
+            color: black;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 5px 12px;
+            transition: 0.3s ease;
+        }
+
+        .nav-item:first-child .nav-link {
+            background-color: cornflowerblue;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 12px;
+        }
+
+        .nav-link:hover {
+            color: blue;
+        }
+
+        .nav-link.active {
+            color: white;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-top .content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .navbar-collapse {
+                justify-content: center;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .nav-item {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Top Navbar -->
+<div class="navbar-top">
+    <div class="content">
+        <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
+        <span><i class="fas fa-phone icon"></i>011 257 4646</span>
+        <span><i class="fas fa-link icon"></i> <a href="https://yourwebsite.com" class="text-white">marketing@travelco.lk</a></span>
+    </div>
+    <div class="social-media-icons">
+        <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+    </div>
+</div>
+
+<!-- Main Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="rejister.html">Booking</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Scripts for Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

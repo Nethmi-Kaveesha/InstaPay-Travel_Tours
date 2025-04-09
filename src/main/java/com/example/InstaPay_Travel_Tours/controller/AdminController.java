@@ -28,4 +28,10 @@ public class AdminController {
         return "passed~!2";
     }
 
+    @GetMapping("/dashboard")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String adminDashboard() {
+        return "Welcome to Admin Dashboard!";
+    }
+
 }

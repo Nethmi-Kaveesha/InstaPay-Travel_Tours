@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #218838;
+        }
+
+        #gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        #gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Upload Photo</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required>
+
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+
+        <button type="submit">Upload Photo</button>
+    </form>
+
+    <h2>Gallery</h2>
+    <div id="gallery">
+        <!-- Photos will be dynamically loaded here -->
+    </div>
+</div>
+
+<script>
+    // Function to display the photos in the gallery
+    function loadGallery() {
+        fetch('http://localhost:8080/api/v1/gallery/all')
+            .then(response => response.json())
+            .then(photos => {
+                const gallery = document.getElementById('gallery');
+                gallery.innerHTML = ''; // Clear existing gallery
+                photos.forEach(photo => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = photo.imageUrl; // Assuming imageUrl is in the response
+                    imgElement.alt = photo.title;
+                    gallery.appendChild(imgElement);
+                });
+            })
+            .catch(error => console.error('Error loading gallery:', error));
+    }
+
+    // Upload photo using AJAX
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('title', document.getElementById('title').value);
+        formData.append('description', document.getElementById('description').value);
+        formData.append('location', document.getElementById('location').value);
+        formData.append('category', document.getElementById('category').value);
+        formData.append('image', document.getElementById('image').files[0]);
+
+        fetch('http://localhost:8080/api/v1/gallery/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.msg); // Show success message
+                loadGallery(); // Reload gallery
+            })
+            .catch(error => {
+                alert('Error uploading photo: ' + error);
+            });
+    });
+
+    // Load the gallery on page load
+    window.onload = function() {
+        loadGallery();
+    };
+</script>
+
+</body>
+</html>

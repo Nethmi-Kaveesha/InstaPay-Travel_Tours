@@ -2,37 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Review Form</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link href="css/bootstrap.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: #f8f9fa;
         }
         .card {
             margin-top: 100px;
             border-radius: 12px;
-            padding: 20px;
+            padding: 30px;
             background: #ffffff;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
         }
         .form-control {
             border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease-in-out;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
         }
         .btn {
             border-radius: 8px;
+            font-weight: 600;
             padding: 10px 15px;
         }
-        .table {
-            border-radius: 10px;
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: #212529;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        table {
+            border-radius: 12px;
             overflow: hidden;
         }
-        .table-hover tbody tr:hover {
-            background-color: #e9ecef;
+        th {
+            background: #007bff;
+            color: white;
         }
-
+        tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
         nav {
             background: #333;
             padding: 10px;
@@ -42,7 +69,6 @@
             width: 100%;
             z-index: 333310;
         }
-
         nav ul {
             list-style-type: none;
             display: flex;
@@ -50,23 +76,19 @@
             padding: 0;
             margin: 0;
         }
-
         nav ul li {
             padding: 10px;
         }
-
         nav ul li a {
             color: white;
             text-decoration: none;
             font-size: 18px;
         }
-
         nav .logo {
             width: 150px;
             height: auto;
             margin-right: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -78,51 +100,60 @@
         <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
         <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
         <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
-        <li><a href="payment.html"><i class="fas fa-book"></i>payment</a></li>
+        <li><a href="register.html"><i class="fas fa-book"></i> Booking</a></li>
     </ul>
 </nav>
 <div class="container mt-5">
-    <div class="card shadow-lg">
+    <div class="card">
         <h2 class="text-center mb-4">Review Form</h2>
         <form id="reviewForm">
             <div class="mb-3">
-                <label for="reviewid" class="form-label">Review ID:</label>
-                <input type="text" class="form-control" id="reviewid" placeholder="Auto-generated" disabled>
+                <label for="id" class="form-label">Review ID:</label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="Auto-generated" disabled>
 
-                <label for="userid" class="form-label mt-2">User ID:</label>
-                <input type="text" class="form-control" id="userid" placeholder="User ID" disabled>
+                <label for="name" class="form-label mt-2">Customer Name:</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter customer name" required>
 
-                <label for="tourid" class="form-label mt-2">Tour ID:</label>
-                <input type="text" class="form-control" id="tourid" placeholder="Enter Tour ID" required>
+                <label for="email" class="form-label mt-2">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
 
                 <label for="rating" class="form-label mt-2">Rating:</label>
-                <input type="number" class="form-control" id="rating" min="1" max="5" placeholder="Enter rating (1-5)" required>
+                <select class="form-control" id="rating" name="rating" required>
+                    <option value="">Select Rating</option>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="3">3 - Good</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="1">1 - Poor</option>
+                </select>
 
-                <label for="reviewText" class="form-label mt-2">Review:</label>
-                <textarea class="form-control" id="reviewText" placeholder="Enter your review" required></textarea>
+                <label for="comment" class="form-label mt-2">Review:</label>
+                <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Write your review..." required></textarea>
             </div>
 
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-warning" style="display: none;" onclick="updateReview()">Update</button>
-                <button type="button" class="btn btn-danger" style="display: none;" onclick="deleteReview(selectedReviewId)">Delete</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-warning d-none" id="updateButton">Update</button>
+                <button type="button" class="btn btn-danger d-none" id="deleteButton">Delete</button>
             </div>
         </form>
 
-        <table class="table table-striped table-hover mt-5">
-            <thead>
-            <tr>
-                <th>Review ID</th>
-                <th>User ID</th>
-                <th>Tour ID</th>
-                <th>Rating</th>
-                <th>Review Text</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="reviewTableBody"></tbody>
-        </table>
+        <div class="mt-5">
+            <h4 class="text-center">Customer Reviews</h4>
+            <table class="table table-hover mt-3">
+                <thead>
+                <tr>
+                    <th>Review ID</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Rating</th>
+                    <th>Review</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 

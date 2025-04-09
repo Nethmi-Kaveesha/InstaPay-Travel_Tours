@@ -314,10 +314,10 @@
         </div>
     </div>
 </div>
-
 <script>
     function handleFormSubmit(event) {
         event.preventDefault();
+
         const formData = {
             name: document.getElementById('name').value,
             phoneNumber: document.getElementById('phoneNumber').value,
@@ -326,17 +326,31 @@
             role: document.getElementById('role').value,
             gender: document.querySelector('input[name="gender"]:checked').value
         };
+
         $.ajax({
-            url: 'http://localhost:8080/api/v1/user/register',
+            url: 'http://localhost:8080/api/v1/user/register', // Ensure this is correct
             type: 'POST',
-            data: formData,
+            contentType: 'application/json', // Send data as JSON
+            data: JSON.stringify(formData), // Convert data to JSON
             success: function(response) {
+                // Assuming the response contains the user data with the role (either "Admin" or "User")
+                const role = response.role;
+
+                // Display success message
                 Swal.fire({
                     icon: 'success',
                     title: 'Registration Successful',
                     text: 'You have successfully registered!'
                 }).then(function() {
-                    window.location.href = "login.html";
+                    // Redirect based on the user's role
+                    if (role === 'Admin') {
+                        window.location.href = "admin-dashboard.html"; // Redirect to admin dashboard
+                    } else if (role === 'User') {
+                        window.location.href = "user-dashboard.html"; // Redirect to user dashboard
+                    } else {
+                        // If role is unexpected, redirect to login page
+                        window.location.href = "login.html";
+                    }
                 });
             },
             error: function(xhr, status, error) {
@@ -348,6 +362,7 @@
             }
         });
     }
+
 </script>
 
 </body>

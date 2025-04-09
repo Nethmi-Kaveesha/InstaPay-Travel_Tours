@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Local Calendar with Dark Mode</title>
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --text-color: #333;
+            --card-bg: white;
+            --date-bg: #e8edf1;
+            --today-bg: #4caf50;
+            --primary: #007bff;
+        }
+        body.dark {
+            --bg-color: #121212;
+            --text-color: #eee;
+            --card-bg: #1e1e1e;
+            --date-bg: #2c2c2c;
+            --today-bg: #009688;
+            --primary: #4fc3f7;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            margin: 0; padding: 2rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+        .calendar {
+            max-width: 650px;
+            margin: auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header h2 { margin: 0; }
+        .days, .dates {
+            display: grid; grid-template-columns: repeat(7, 1fr);
+            margin-top: 1rem;
+        }
+        .days { font-weight: bold; }
+        .dates { gap: 0.5rem; margin-top: 0.5rem; }
+        .date {
+            padding: 10px;
+            background: var(--date-bg);
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .date.today {
+            background: var(--today-bg);
+            color: white;
+        }
+        .event-input {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .event-input input, .event-input button {
+            padding: 8px;
+            flex: 1;
+        }
+        .event-log {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        #downloadBtn, .dark-toggle {
+            margin-top: 1rem;
+            padding: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .lang-select select {
+            padding: 4px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="calendar">
+    <div class="top-bar">
+        <div class="lang-select">
+            <label for="lang">🌐 Language: </label>
+            <select id="lang" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="si">සිංහල</option>
+                <option value="ta">தமிழ்</option>
+            </select>
+        </div>
+        <button class="dark-toggle" onclick="toggleDarkMode()">🌓 Dark Mode</button>
+    </div>
+
+    <div class="header">
+        <button onclick="prevMonth()">❮</button>
+        <h2 id="monthYear"></h2>
+        <button onclick="nextMonth()">❯</button>
+    </div>
+
+    <div class="days" id="weekdays"></div>
+    <div class="dates" id="calendarDates"></div>
+
+    <div class="event-input">
+        <input type="date" id="eventDate" />
+        <input type="text" id="eventText" placeholder="Event name" />
+        <input type="time" id="eventTime" />
+        <button onclick="addEvent()">Add Event</button>
+    </div>
+
+    <button id="downloadBtn" onclick="downloadICS()">Download ICS</button>
+    <div class="event-log" id="eventLog"></div>
+</div>
+
+<script>
+    const calendarDates = document.getElementById('calendarDates');
+    const monthYear = document.getElementById('monthYear');
+    const weekdays = document.getElementById('weekdays');
+    const eventLog = document.getElementById('eventLog');
+    let events = [];
+    let currentDate = new Date();
+    let currentLang = 'en';
+
+    const langData = {
+        en: {
+            months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            days: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+        },
+        si: {
+            months: ["ජනවාරි", "පෙබරවාරි", "මාර්තු", "අප්‍රේල්", "මැයි", "ජූනි", "ජූලි", "අගෝස්තු", "සැප්තැම්බර්", "ඔක්තෝබර්", "නොවැම්බර්", "දෙසැම්බර්"],
+            days: ["ඉරි", "සඳු", "අඟ", "බුධ", "බ්‍රහස්", "සිකු", "සෙන"]
+        },
+        ta: {
+            months: ["ஜனவரி", "பிப்ரவரி", "மார்ச்", "ஏப்ரல்", "மே", "ஜூன்", "ஜூலை", "ஆகஸ்ட்", "செப்டம்பர்", "அக்டோபர்", "நவம்பர்", "டிசம்பர்"],
+            days: ["ஞாயி", "திங்கள்", "செவ்", "புதன்", "வியாழன்", "வெள்ளி", "சனி"]
+        }
+    };
+
+    function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const { months, days } = langData[currentLang];
+
+        monthYear.textContent = `${months[month]} ${year}`;
+        weekdays.innerHTML = days.map(d => `<div>${d}</div>`).join('');
+        calendarDates.innerHTML = '';
+
+        for (let i = 0; i < firstDay; i++) calendarDates.innerHTML += `<div></div>`;
+        for (let i = 1; i <= daysInMonth; i++) {
+            const isToday = i === new Date().getDate() &&
+                month === new Date().getMonth() &&
+                year === new Date().getFullYear();
+            calendarDates.innerHTML += `<div class="date ${isToday ? 'today' : ''}" onclick="selectDate(${i})">${i}</div>`;
+        }
+    }
+
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    }
+
+    function changeLanguage(lang) {
+        currentLang = lang;
+        renderCalendar();
+    }
+
+    function selectDate(day) {
+        const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+        document.getElementById('eventDate').value = selectedDate.toISOString().split('T')[0];
+    }
+
+    function addEvent() {
+        const date = document.getElementById('eventDate').value;
+        const text = document.getElementById('eventText').value;
+        const time = document.getElementById('eventTime').value;
+        if (!date || !text || !time) return alert('Please fill all fields');
+
+        const dateTime = new Date(`${date}T${time}`);
+
+        saveEventToBackend(dateTime, text);
+    }
+
+    function saveEventToBackend(dateTime, text) {
+        const eventData = {
+            date: dateTime,
+            text: text
+        };
+
+        fetch('http://localhost:8080/api/events', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(eventData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Event saved successfully', data);
+                displayEvent(data); // Update event log UI
+                renderCalendar(); // Refresh calendar UI
+            })
+            .catch(error => {
+                console.error('Error saving event:', error);
+            });
+    }
+
+    function displayEvent(event) {
+        const eventTime = new Date(event.date);
+        eventLog.innerHTML += `<div>🗓️ ${event.text} at ${eventTime.toLocaleString()}</div>`;
+    }
+
+    function downloadICS() {
+        let icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\n`;
+        events.forEach(ev => {
+            icsContent += `BEGIN:VEVENT\nSUMMARY:${ev.text}\nDTSTART:${formatICSDate(ev.date)}\nDTEND:${formatICSDate(new Date(ev.date.getTime() + 60 * 60 * 1000))}\nEND:VEVENT\n`;
+        });
+        icsContent += `END:VCALENDAR`;
+
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'events.ics';
+        link.click();
+    }
+
+    function formatICSDate(date) {
+        return date.toISOString().replace(/[-:]/g, '').split('.')[0];
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark');
+    }
+
+    renderCalendar();
+</script>
+</body>
+</html>

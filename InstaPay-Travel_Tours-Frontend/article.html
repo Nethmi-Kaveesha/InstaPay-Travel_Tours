@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Blog - Add and Read Articles</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Main content area */
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form label styles */
+        label {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        /* Input and Textarea styles */
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        /* Textarea specific styling */
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Articles list section styling */
+        #articles-list {
+            margin-top: 40px;
+        }
+
+        #articles-ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #articles-ul li {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #articles-ul h3 {
+            color: #2c3e50;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Responsive styling for small screens */
+        @media screen and (max-width: 768px) {
+            main {
+                padding: 15px;
+            }
+
+            label {
+                font-size: 1em;
+            }
+
+            input[type="text"], input[type="date"], textarea {
+                font-size: 1em;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <h1>Travel Blog</h1>
+</header>
+
+<!-- Article Add Form -->
+<main>
+    <h2>Add a New Article</h2>
+    <form id="add-article-form">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" required></textarea>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <button type="submit">Submit Article</button>
+    </form>
+
+    <div id="message"></div>
+</main>
+
+<!-- Articles List Section -->
+<section id="articles-list">
+    <h2>All Articles</h2>
+    <ul id="articles-ul"></ul>
+</section>
+
+<!-- Footer Section -->
+<footer>
+    <p>&copy; 2025 Travel Blog</p>
+</footer>
+
+<script>
+    // Function to handle form submission and save article to the backend
+    document.getElementById('add-article-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Get form values
+        const title = document.getElementById('title').value;
+        const author = document.getElementById('author').value;
+        const content = document.getElementById('content').value;
+        const date = document.getElementById('date').value;
+
+        // Create an article object
+        const article = {
+            title: title,
+            author: author,
+            content: content,
+            createdDate: date
+        };
+
+        // Send article to the backend using POST request
+        fetch("http://localhost:8080/api/articles", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(article)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Show success message
+                document.getElementById('message').innerHTML = '<p>Article added successfully!</p>';
+                document.getElementById('add-article-form').reset();  // Reset form fields
+                loadArticles();  // Reload articles list
+            })
+            .catch(error => {
+                console.error("Error adding article:", error);
+                document.getElementById('message').innerHTML = '<p>Error adding article. Please try again.</p>';
+            });
+    });
+
+    // Function to fetch and display articles
+    function loadArticles() {
+        fetch("http://localhost:8080/api/articles")  // Get articles from the backend
+            .then(response => response.json())  // Parse JSON
+            .then(data => {
+                const articlesList = document.getElementById("articles-ul");
+                articlesList.innerHTML = '';  // Clear previous list
+                data.forEach(article => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `
+                        <h3>${article.title}</h3>
+                        <p>${article.content}</p>
+                        <p><em>Written by: ${article.author} | Date: ${article.createdDate}</em></p>
+                    `;
+                    articlesList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching articles:", error);
+            });
+    }
+
+    // Load articles when the page loads
+    window.onload = loadArticles;
+</script>
+
+</body>
+</html>

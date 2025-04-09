@@ -155,23 +155,66 @@ function updateUser() {
 }
 
 function deleteUser(uid) {
-    fetch(`http://your-api-url/api/v1/user/delete/${uid}`, {
+    fetch(`${URL}/delete/${uid}`, {
         method: "DELETE",
         headers: {
             "Authorization": "Bearer " + localStorage.getItem('token')
         },
     })
-        .then(response => response.json())
+        .then(response => {
+            return response.json();
+        })
         .then(data => {
-            if (data.status === 200) {
+            if (data.code === 200) {
                 alert("User deleted successfully!");
+                getAll();  // Refresh user list
             } else {
-                alert("Failed to delete user: " + data.message);
+                alert("Failed to delete user: " + data.msg);
             }
         })
         .catch(error => console.error("Error deleting user:", error));
+}
 
 
+function getAll() {
+    $.ajax({
+        url: `${URL}/getAll`,
+        type: "GET",
+        dataType: "json",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem('token')
+        },
+        success: function (response) {
+            console.log("Full Response:", response);
+
+            let users = Array.isArray(response) ? response : response.data;
+
+            if (!Array.isArray(users)) {
+                console.error("Error: Expected array, got", typeof users);
+                return;
+            }
+
+            $("#userTableBody").empty();
+            users.forEach(user => {
+                $("#userTableBody").append(`
+                    <tr>
+                        <td>${user.email}</td>
+                        <td>${user.name}</td>
+                        <td>${user.role}</td>
+                        <td>${user.phone_number}</td>
+                        <td>${user.gender}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.uid}', '${user.email}', '${user.name}', '${user.role}', '${user.phone_number}', '${user.gender}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.uid}')">Delete</button>
+                        </td>
+                    </tr>`);
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching users:", error);
+            alert("Error fetching users!");
+        }
+    });
 }
 
 function clearForm() {

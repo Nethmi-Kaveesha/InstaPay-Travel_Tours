@@ -1,10 +1,5 @@
-const URL = "http://localhost:8080/api/v1/reviews";
+const URL = "http://localhost:8080/reviews";
 let selectedReviewId = null;
-let loggedInUserId = "user_id_here";
-
-$(document).ready(function () {
-    getAllReviews();
-});//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
 
 $("#reviewForm").submit(function (event) {
     event.preventDefault();
@@ -17,13 +12,11 @@ $("#reviewForm").submit(function (event) {
 
 function saveReview() {
     let review = {
-        userid: loggedInUserId,
-        tourId: $("#tourid").val(),
+        customerName: $("#name").val(),
+        email: $("#email").val(),
         rating: $("#rating").val(),
-        reviewText: $("#reviewText").val(),
+        reviewText: $("#comment").val(),
     };
-
-    console.log("Saving Review:", review);
 
     $.ajax({
         url: `${URL}/save`,
@@ -31,27 +24,80 @@ function saveReview() {
         contentType: "application/json",
         data: JSON.stringify(review),
         success: function () {
-            alert("Review saved successfully!");
+            alert("Review submitted successfully!");
             getAllReviews();
             clearForm();
         },
         error: function () {
-            alert("Error saving review!");
+            alert("Error submitting Review!");
         }
     });
 }
 
+function getAllReviews() {
+    $.ajax({
+        url: `${URL}/getAll`,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log("Full Response:", response);
+
+            if (!Array.isArray(response)) {
+                console.error("Error: Expected array, got", typeof response);
+                return;
+            }
+
+            let reviews = response;
+
+            $("#reviewTableBody").empty();
+            reviews.forEach(review => {
+                $("#reviewTableBody").append(`
+                    <tr>
+                        <td>${review.id}</td>
+                        <td>${review.name}</td>
+                        <td>${review.email}</td>
+                        <td>${review.rating}</td>
+                        <td>${review.comment}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="fillReviewFields('${review.id}', '${review.name}', '${review.email}', '${review.rating}', '${review.comment}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteReview('${review.id}')">Delete</button>
+                        </td>
+                    </tr>`);
+            });
+        },
+        error: function () {
+            alert("Error fetching reviews!");
+        }
+    });
+}
+
+function fillReviewFields(id, name, email, rating, reviewText) {
+    $("#id").val(id);
+    $("#name").val(name);
+    $("#email").val(email);
+    $("#rating").val(rating);
+    $("#comment").val(reviewText);
+
+    selectedReviewId = id;
+
+    $("#submitButton").hide();
+    $("#updateButton").show();
+    $("#deleteButton").show();
+}
 
 function updateReview() {
     let updatedReview = {
-        reviewid: selectedReviewId,
-        userid: loggedInUserId,
-        tourId: $("#tourid").val(),
+        id: selectedReviewId,
+        name: $("#name").val(),
+        email: $("#email").val(),
         rating: $("#rating").val(),
-        reviewText: $("#reviewText").val(),
+        comment: $("#comment").val(),
     };
 
-    console.log("Updating Review:", updatedReview);
+    if (!updatedReview.name || !updatedReview.email || !updatedReview.rating || !updatedReview.comment) {
+        alert("Please fill all fields!");
+        return;
+    }
 
     $.ajax({
         url: `${URL}/update`,
@@ -86,57 +132,14 @@ function deleteReview(id) {
     });
 }
 
-
-function getAllReviews() {
-    $.ajax({
-        url: `${URL}/getAll`,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            console.log("Fetched Reviews:", response);
-            $("#reviewTableBody").empty();
-
-            response.forEach(review => {
-                let userId = review.userid ? review.userid : "Unknown";
-                $("#reviewTableBody").append(`
-                    <tr>
-                        <td>${review.reviewid}</td>
-                        <td>${userId}</td>
-                        <td>${review.tourId}</td>
-                        <td>${review.rating}</td>
-                        <td>${review.reviewText}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info" onclick="fillReviewFields('${review.reviewid}', '${userId}', '${review.tourId}', '${review.rating}', '${review.reviewText}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteReview('${review.reviewid}')">Delete</button>
-                        </td>
-                    </tr>`);
-            });
-        },
-        error: function () {
-            alert("Error fetching reviews!");
-        }
-    });
-}
-
-
-function fillReviewFields(id, userId, tourId, rating, reviewText) {
-    $("#reviewid").val(id);
-    $("#userid").val(userId || "Unknown");
-    $("#tourid").val(tourId);
-    $("#rating").val(rating);
-    $("#reviewText").val(reviewText);
-
-    selectedReviewId = id;
-    $("#saveButton").hide();
-    $("#updateButton").show();
-    $("#deleteButton").show();
-}
-
-
 function clearForm() {
     $("#reviewForm")[0].reset();
     $("#updateButton").hide();
     $("#deleteButton").hide();
-    $("#saveButton").show();
+    $("#submitButton").show();
     selectedReviewId = null;
 }
+
+$(document).ready(function () {
+    getAllReviews();
+});
