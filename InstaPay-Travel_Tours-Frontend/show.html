@@ -387,6 +387,14 @@
         <option value="zToA">Name: Z to A</option>
     </select>
 
+    <select id="durationFilter" class="form-select" onchange="filterToursByDuration()">
+        <option value="">-- Select Trip Duration --</option>
+        <option value="short">Less than 7 days</option>
+        <option value="medium">7 to 14 days</option>
+        <option value="long">More than 14 days</option>
+    </select>
+
+
     <input type="date" id="startDate" class="form-select" onchange="filterToursByDate()">
     <input type="date" id="endDate" class="form-select" onchange="filterToursByDate()">
 </div>
@@ -532,6 +540,58 @@
         });
         renderTours(filteredTours);
     }
+
+    function filterToursByDuration() {
+        const selectedDuration = document.getElementById("durationFilter").value;
+        const filteredTours = toursData.filter(tour => {
+            if (selectedDuration === "short" && tour.duration < 7) {
+                return true;
+            }
+            if (selectedDuration === "medium" && tour.duration >= 7 && tour.duration <= 14) {
+                return true;
+            }
+            if (selectedDuration === "long" && tour.duration > 14) {
+                return true;
+            }
+            return false;
+        });
+        displayTours(filteredTours);
+    }
+
+    function displayTours(tours) {
+        const toursContainer = document.getElementById("tours");
+        toursContainer.innerHTML = ""; // Clear the previous tours
+        if (tours.length === 0) {
+            toursContainer.innerHTML = "<p>No tours available for this duration.</p>";
+        } else {
+            tours.forEach(tour => {
+                const imageUrl = tour.images || 'images/default-tour.jpg';
+                const tourSection = document.createElement("div");
+                tourSection.classList.add("col");
+                tourSection.innerHTML = `
+                <div class="card shadow-sm h-100" data-tour-name="${tour.tourName}" data-price="${tour.price}">
+                    <div class="card-body">
+                        <img class="tour-image" src="${imageUrl}" alt="Tour Image">
+                        <div class="tour-details">
+                            <h5 class="card-title">✈️ ${tour.tourName}</h5>
+                            <hr>
+                            <p class="card-text">📍 ${tour.location}</p>
+                            <div class="tour-info">
+                                <p><strong>🔍  Travel Experience:</strong> ${tour.description}</p>
+                                <p><strong>⏳  Vacation Type:</strong> ${tour.duration} days</p>
+                                <p><strong>🌍  Trip Duration:</strong> ${tour.tourType}</p>
+                                <p><strong>💳  Cost:</strong> <span class="price">$${tour.price}</span></p>
+                                <p><strong>💺  Remaining Seats:</strong> ${tour.availableSeats}</p>
+                                <p><strong>📅  Departure Date:</strong> ${new Date(tour.startDate).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                toursContainer.appendChild(tourSection);
+            });
+        }
+    }
+
 </script>
 </body>
 

@@ -163,17 +163,34 @@ function deleteUserByEmail(email) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Failed to delete user, status: ${response.status}`);
+                // Read the error response for more details
+                return response.text().then(errMessage => {
+                    throw new Error(`Failed to delete user, status: ${response.status}, Message: ${errMessage}`);
+                });
             }
             return response.text();
         })
         .then(data => {
             console.log('User deleted:', data);
+            Swal.fire({
+                icon: 'success',
+                title: 'User Deleted Successfully!',
+                text: data,
+                confirmButtonText: 'OK'
+            });
+            getAll();
         })
         .catch(error => {
             console.error('Error deleting user:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Deletion Failed',
+                text: `Error deleting user: ${error.message}`,
+                confirmButtonText: 'OK'
+            });
         });
 }
+
 
 
 function clearForm() {
