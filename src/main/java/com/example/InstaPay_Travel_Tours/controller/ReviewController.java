@@ -21,7 +21,7 @@ public class ReviewController {
     @Autowired
     private ReviewServiceImpl reviewService;
 
-    // POST method to save review
+
     @PostMapping
     public void saveReview(@RequestBody Review review) {
         // Print review to debug

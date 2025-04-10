@@ -25,7 +25,6 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void addTour(@Valid TourDTO tourDTO) {
-        // Checking if the tour already exists by tour name or ID
         Optional<Tour> existingTour = tourRepo.findById(tourDTO.getTourID());
         if (existingTour.isPresent()) {
             throw new RuntimeException("Tour with ID " + tourDTO.getTourID() + " already exists");
@@ -43,14 +42,12 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public List<TourDTO> getAllTours() {
-        // Fetching all tours from the repository and mapping to DTOs
         List<Tour> tours = tourRepo.findAll();
         return modelMapper.map(tours, new TypeToken<List<TourDTO>>() {}.getType());
     }
 
     @Override
     public TourDTO getTourById(int tourID) {
-        // Fetching tour by ID
         Optional<Tour> tour = tourRepo.findById(tourID);
         if (tour.isPresent()) {
             return modelMapper.map(tour.get(), TourDTO.class);
@@ -60,18 +57,14 @@ public class TourServiceImpl implements TourService {
     }
 
     public List<TourDTO> searchToursByName(String keyword) {
-        // Search tours by name using the repository
         List<Tour> tours = tourRepo.findByTourNameContainingIgnoreCase(keyword);
-        // Convert Tour entities to TourDTOs and return them
         return modelMapper.map(tours, new TypeToken<List<TourDTO>>() {}.getType());
     }
 
     @Override
     public void updateTour(@Valid TourDTO tourDTO) {
-        // Fetching the existing tour and updating it
         Optional<Tour> existingTour = tourRepo.findById(tourDTO.getTourID());
         if (existingTour.isPresent()) {
-            // Mapping DTO to existing tour entity
             Tour tourToUpdate = existingTour.get();
             modelMapper.map(tourDTO, tourToUpdate);
             tourRepo.save(tourToUpdate);
@@ -82,7 +75,6 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void deleteTour(int tourID) {
-        // Checking if the tour exists before deleting
         Optional<Tour> existingTour = tourRepo.findById(tourID);
         if (existingTour.isPresent()) {
             tourRepo.deleteById(tourID);

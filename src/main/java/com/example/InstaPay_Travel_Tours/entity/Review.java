@@ -20,5 +20,4 @@ public class Review {
     private int rating;
     private String comment;
 
-    // Getters and Setters
 }

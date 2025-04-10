@@ -5,7 +5,7 @@ public class EmailRequest {
     private String subject;
     private String text;
 
-    // Getters and Setters
+
     public String getTo() {
         return to;
     }

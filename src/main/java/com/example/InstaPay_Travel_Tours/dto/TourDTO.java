@@ -16,7 +16,6 @@ public class TourDTO {
     private Date endDate;
     private String images;
 
-    // Constructors
     public TourDTO(int tourID, String tourName, String description, String location, int duration, double price,
                    String tourType, int availableSeats, Date startDate, Date endDate, String images) {
         this.tourID = tourID;

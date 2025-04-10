@@ -39,6 +39,6 @@ public class ExpenseService {
             existingIncome.setAmount(expenseDetails.getAmount());
             return expenseRepository.save(existingIncome);
         }
-        return null; // Return null if income doesn't exist
+        return null;
     }
 }

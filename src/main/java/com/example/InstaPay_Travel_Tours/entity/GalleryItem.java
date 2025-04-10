@@ -17,5 +17,5 @@ public class GalleryItem {
     private String category;
     private boolean featured;
 
-    // Getters and Setters
+
 }

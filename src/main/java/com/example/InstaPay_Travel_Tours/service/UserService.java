@@ -18,5 +18,5 @@ public interface UserService {
 
     void deleteUser(UUID uid);
 
-    void deleteUserByEmail(String email);
+    boolean deleteUserByEmail(String email);
 }

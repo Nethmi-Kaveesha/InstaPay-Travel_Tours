@@ -20,7 +20,6 @@ public class ChatMessage {
     @Column(nullable = false, updatable = false)
     private LocalDateTime timestamp;
 
-    // Ensure timestamp is automatically set when saving a new message
     @PrePersist
     protected void onCreate() {
         this.timestamp = LocalDateTime.now();

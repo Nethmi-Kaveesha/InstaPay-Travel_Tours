@@ -9,19 +9,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/articles")
-@CrossOrigin(origins = "http://localhost:3000")  // Adjust for your frontend URL if needed
+@CrossOrigin(origins = "http://localhost:3000")
 public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
 
-    // Existing method to get articles
     @GetMapping
     public List<Article> getArticles() {
         return articleService.getAllArticles();
     }
 
-    // Method to add a new article
     @PostMapping
     public Article addArticle(@RequestBody Article article) {
         return articleService.saveArticle(article);

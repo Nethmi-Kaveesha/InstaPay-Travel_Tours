@@ -20,7 +20,6 @@ public class Photo {
 
     private boolean isFeatured;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

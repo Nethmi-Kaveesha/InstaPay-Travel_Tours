@@ -8,7 +8,7 @@ public class TourScheduleDTO {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String meetingPoint;
-    private Integer guideId; // Nullable field
+    private Integer guideId;
     private LocalDateTime createdAt;
 
     public TourScheduleDTO() {

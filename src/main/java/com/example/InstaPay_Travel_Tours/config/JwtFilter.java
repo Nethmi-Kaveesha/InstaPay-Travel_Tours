@@ -40,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
             token = authorization.substring(7);
             email = jwtUtil.getUsernameFromToken(token);
             Claims claims = jwtUtil.getUserRoleCodeFromToken(token);
-            role = (String) claims.get("role");  // Extract role from claims
+            role = (String) claims.get("role");
             httpServletRequest.setAttribute("email", email);
             httpServletRequest.setAttribute("role", role);
         }
@@ -57,7 +57,6 @@ public class JwtFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
                 );
 
-                // Set the role as an attribute in the authentication token
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

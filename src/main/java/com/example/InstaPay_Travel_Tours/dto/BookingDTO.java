@@ -9,7 +9,7 @@ public class BookingDTO {
     private int bookingId;
     private LocalDate bookingDate;
     private double totalPrice;
-    private UUID userId;  // Changed to UUID to match User entity's ID type
+    private UUID userId;
     private List<BookingDetailDTO> bookingDetails;
 
     public BookingDTO() {

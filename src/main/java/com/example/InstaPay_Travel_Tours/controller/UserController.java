@@ -81,19 +81,15 @@ public class UserController {
         userService.updateUser(userDTO);
         return new ResponseUtil(200, "Tour Guide Updated", null);
     }
-
-
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+    @DeleteMapping("/delete/email/{email}")
+    public ResponseEntity<String> deleteUserByEmail(@PathVariable String email) {
         try {
-            // Calling the service method to delete the user by email
             userService.deleteUserByEmail(email);
-            // If successful, return 200 OK response with a success message
-            return ResponseEntity.ok().body("User deleted successfully!");
+            return ResponseEntity.ok("User deleted successfully");
         } catch (Exception e) {
-            // If an error occurs, return 500 Internal Server Error with the error message
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error deleting user: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user: " + e.getMessage());
         }
     }
+
+
 }

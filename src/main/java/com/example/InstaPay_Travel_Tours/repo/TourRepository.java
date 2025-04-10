@@ -17,14 +17,11 @@ public interface TourRepository extends JpaRepository<Tour, Integer> {
 
     List<Tour> findByTourNameContainingIgnoreCase(String tourName);
 
-    // Find tour by ID
     Optional<Tour> findByTourID(int tourID);
 
-    // Find tours by location (Custom Query)
     @Query("SELECT t FROM Tour t WHERE t.location = :location")
     Page<Tour> findByLocation(@Param("location") String location, Pageable pageable);
 
-    // Find tours with available seats greater than a specific number (Custom Query)
     @Query("SELECT t FROM Tour t WHERE t.availableSeats > :seats")
     Page<Tour> findToursWithSeatsGreaterThan(@Param("seats") int seats, Pageable pageable);
     @Query("SELECT t FROM Tour t WHERE t.startDate >= :startDate AND t.endDate <= :endDate")

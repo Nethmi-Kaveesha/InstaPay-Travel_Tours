@@ -17,7 +17,6 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    // Save a new article
     public Article saveArticle(Article article) {
         return articleRepository.save(article);
     }

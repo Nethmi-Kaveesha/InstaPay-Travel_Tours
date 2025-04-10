@@ -30,7 +30,6 @@ public class IncomeService {
         return false;
     }
 
-    // Add this method for updating income
     public Income updateIncome(Long id, Income incomeDetails) {
         Optional<Income> existingIncomeOpt = incomeRepository.findById(id);
         if (existingIncomeOpt.isPresent()) {
@@ -39,7 +38,7 @@ public class IncomeService {
             existingIncome.setAmount(incomeDetails.getAmount());
             return incomeRepository.save(existingIncome);
         }
-        return null; // Return null if income doesn't exist
+        return null;
     }
 
 }

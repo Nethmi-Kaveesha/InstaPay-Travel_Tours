@@ -12,5 +12,4 @@ public class PaymentRequest {
     private String expiryDate;
     private String cvv;
 
-    // Getters and Setters
 }

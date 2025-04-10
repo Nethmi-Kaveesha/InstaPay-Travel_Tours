@@ -17,7 +17,7 @@ public class PlaceBookingController {
 
     @PostMapping("place")
     public ResponseUtil saveBooking(@RequestBody BookingDTO bookingDTO) {
-        System.out.println("Received booking data: " + bookingDTO);  // Log the received data
+        System.out.println("Received booking data: " + bookingDTO);
 
         boolean res = placeBookingService.addBooking(bookingDTO);
         if (res) {

@@ -15,14 +15,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        // Extract the role from the authentication object
         String role = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(auth -> auth.startsWith("ROLE_"))
                 .findFirst()
-                .orElse("ROLE_GUEST"); // Default role if none found
+                .orElse("ROLE_GUEST");
 
-        // Redirect based on role
         if (role.equals("ROLE_ADMIN")) {
             response.sendRedirect("/admin/dashboard");
         } else if (role.equals("ROLE_USER")) {

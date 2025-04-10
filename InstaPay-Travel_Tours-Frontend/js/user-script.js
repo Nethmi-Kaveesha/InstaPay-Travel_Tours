@@ -36,7 +36,6 @@ function saveData() {
         return;
     }
 
-
     if (!user.name || !user.role || !user.phone_number || !user.gender || !user.email || !user.password) {
         alert("Please fill all fields!");
         return;
@@ -88,8 +87,8 @@ function getAll() {
                         <td>${user.phone_number}</td>
                         <td>${user.gender}</td>
                         <td>
-                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.email}', '${user.name}', '${user.role}', '${user.phone_number}', '${user.gender}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.email}')">Delete</button>
+                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.uid}', '${user.email}', '${user.name}', '${user.role}', '${user.phone_number}', '${user.gender}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteUserByEmail('${user.email}')">Delete</button>
                         </td>
                     </tr>`);
             });
@@ -101,29 +100,29 @@ function getAll() {
     });
 }
 
-function fillTextFields(email, name, role, phone_number, gender) {
+function fillTextFields(uid, email, name, role, phone_number, gender) {
     $("#email").val(email);
     $("#name").val(name);
     $("#role").val(role);
     $("#phone_number").val(phone_number);
     $("#gender").val(gender);
 
-    selectedUserId = email;
+    selectedUserId = uid;
 
     $("#saveButton").hide();
     $("#updateButton").show();
     $("#deleteButton").show();
 }
+
 function updateUser() {
-    console.log("Updating user with email:", selectedUserId);  // Debugging log
+    console.log("Updating user with UID:", selectedUserId);  // Debugging log
     let updatedUser = {
-        email: selectedUserId,
+        uid: selectedUserId,
         name: $("#name").val(),
         role: $("#role").val(),
         phone_number: $("#phone_number").val(),
         gender: $("#gender").val()
     };
-
 
     if (!updatedUser.name || !updatedUser.role || !updatedUser.phone_number || !updatedUser.gender) {
         alert("Please fill all fields!");
@@ -154,68 +153,28 @@ function updateUser() {
     });
 }
 
-function deleteUser(uid) {
-    fetch(`${URL}/delete/${uid}`, {
-        method: "DELETE",
+function deleteUserByEmail(email) {
+    fetch(`http://localhost:8080/api/v1/user/delete/email/${email}`, {
+        method: 'DELETE',
         headers: {
-            "Authorization": "Bearer " + localStorage.getItem('token')
-        },
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer YOUR_TOKEN' // if needed
+        }
     })
         .then(response => {
-            return response.json();
+            if (!response.ok) {
+                throw new Error(`Failed to delete user, status: ${response.status}`);
+            }
+            return response.text();
         })
         .then(data => {
-            if (data.code === 200) {
-                alert("User deleted successfully!");
-                getAll();  // Refresh user list
-            } else {
-                alert("Failed to delete user: " + data.msg);
-            }
+            console.log('User deleted:', data);
         })
-        .catch(error => console.error("Error deleting user:", error));
+        .catch(error => {
+            console.error('Error deleting user:', error);
+        });
 }
 
-
-function getAll() {
-    $.ajax({
-        url: `${URL}/getAll`,
-        type: "GET",
-        dataType: "json",
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem('token')
-        },
-        success: function (response) {
-            console.log("Full Response:", response);
-
-            let users = Array.isArray(response) ? response : response.data;
-
-            if (!Array.isArray(users)) {
-                console.error("Error: Expected array, got", typeof users);
-                return;
-            }
-
-            $("#userTableBody").empty();
-            users.forEach(user => {
-                $("#userTableBody").append(`
-                    <tr>
-                        <td>${user.email}</td>
-                        <td>${user.name}</td>
-                        <td>${user.role}</td>
-                        <td>${user.phone_number}</td>
-                        <td>${user.gender}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info" onclick="fillTextFields('${user.uid}', '${user.email}', '${user.name}', '${user.role}', '${user.phone_number}', '${user.gender}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.uid}')">Delete</button>
-                        </td>
-                    </tr>`);
-            });
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching users:", error);
-            alert("Error fetching users!");
-        }
-    });
-}
 
 function clearForm() {
     $("#userForm")[0].reset();

@@ -14,12 +14,10 @@ public class PhotoService {
     @Autowired
     private PhotoRepository photoRepository;
 
-    // Get all photos
     public List<Photo> getAllPhotos() {
         return photoRepository.findAll();
     }
 
-    // Upload a new photo
     public boolean uploadPhoto(Photo photo) {
         try {
             photoRepository.save(photo);
@@ -29,17 +27,15 @@ public class PhotoService {
         }
     }
 
-    // Get featured photos
     public List<Photo> getFeaturedPhotos() {
         return photoRepository.findByIsFeatured(true);
     }
 
-    // Get photos by category
     public List<Photo> getPhotosByCategory(String category) {
         return photoRepository.findByCategory(category);
     }
 
-    // Delete a photo by ID
+
     public boolean deletePhoto(Long id) {
         try {
             Optional<Photo> photo = photoRepository.findById(id);

@@ -13,5 +13,5 @@ public class Article {
     private String author;
     private String createdDate;
 
-    // Getters and Setters
+
 }

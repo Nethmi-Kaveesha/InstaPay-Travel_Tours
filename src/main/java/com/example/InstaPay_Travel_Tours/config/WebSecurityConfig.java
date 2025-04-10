@@ -45,10 +45,10 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:63342")); // Correct frontend URL
+        configuration.setAllowedOrigins(List.of("http://localhost:63342"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true); // Optional, only if you are dealing with cookies or JWTs
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -99,9 +99,6 @@ public class WebSecurityConfig {
                                 "/api/v1/chat/sendMessage",
                                 "/api/v1/chat/getMessages",
                                 "/api/v1/chat/history",
-                                "/new/api/endpoint1",
-                                "/new/api/endpoint2",
-                                "/new/api/endpoint3",
                                 "/api/v1/tours/save",
                                 "/api/v1/tours/getAll",
                                 "/api/v1/tours/edit",

@@ -17,19 +17,18 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    // EmailService.java
     public void sendEmail(String to, String subject, String text) throws MessagingException {
-        String from = "kaveefernando2003@gmail.com";  // Gmail email address
-        String password = "poyv hjlr fzbl zhjf"; // Gmail app password or normal password
+        String from = "kaveefernando2003@gmail.com";
+        String password = "poyv hjlr fzbl zhjf";
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.connectiontimeout", "10000"); // 10 seconds timeout
-        properties.put("mail.smtp.timeout", "10000");           // 10 seconds timeout
-        properties.put("mail.smtp.writetimeout", "10000");      // 10 seconds timeout
+        properties.put("mail.smtp.connectiontimeout", "10000");
+        properties.put("mail.smtp.timeout", "10000");
+        properties.put("mail.smtp.writetimeout", "10000");
 
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override

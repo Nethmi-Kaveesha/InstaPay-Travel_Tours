@@ -9,7 +9,7 @@ import com.example.InstaPay_Travel_Tours.entity.Tour;
 import com.example.InstaPay_Travel_Tours.entity.User;
 import com.example.InstaPay_Travel_Tours.repo.BookingDetailRepository;
 import com.example.InstaPay_Travel_Tours.repo.BookingRepository;
-import com.example.InstaPay_Travel_Tours.repo.TourRepository;  // Use the correct TourRepository
+import com.example.InstaPay_Travel_Tours.repo.TourRepository;
 import com.example.InstaPay_Travel_Tours.repo.UserRepository;
 import com.example.InstaPay_Travel_Tours.service.PlaceBookingService;
 import jakarta.transaction.Transactional;
@@ -29,10 +29,10 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
     private BookingDetailRepository bookingDetailRepo;
 
     @Autowired
-    private TourRepository tourRepo;  // Correct repository for Tour entities
+    private TourRepository tourRepo;
 
     @Autowired
-    private UserRepository userRepo;  // Using UserRepo instead of CustomerRepo
+    private UserRepository userRepo;
 
     @Transactional
     public boolean addBooking(BookingDTO bookingDTO) {
@@ -53,7 +53,6 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
                 Tour tour = tourRepo.findById(bookingDetailDTO.getTourId())
                         .orElseThrow(() -> new RuntimeException("Tour not found"));
 
-                // 🛠️ DEBUG: Print DTO values
                 System.out.println("Tour ID: " + bookingDetailDTO.getTourId() +
                         ", Quantity: " + bookingDetailDTO.getQuantity() +
                         ", Price: " + bookingDetailDTO.getPrice() +
@@ -62,10 +61,8 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
                 BookingDetail bookingDetail = new BookingDetail();
                 bookingDetail.setQuantity(bookingDetailDTO.getQuantity());
 
-                // ✅ Ensure price is set
                 bookingDetail.setPrice(bookingDetailDTO.getPrice());
 
-                // ✅ Ensure total is calculated if missing
                 if (bookingDetailDTO.getTotal() == 0) {
                     bookingDetail.setTotal(bookingDetailDTO.getQuantity() * bookingDetailDTO.getPrice());
                 } else {
