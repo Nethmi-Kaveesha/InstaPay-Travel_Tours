@@ -202,7 +202,7 @@
         }
 
         .input-group {
-            flex: 1; /* Make inputs take equal space */
+            flex: 1;
         }
 
         .input-group label {
@@ -370,6 +370,39 @@
 
         }
 
+        .go-back-btn {
+            margin-top: 120px;
+            margin-left: 1270px;
+            background-color: transparent;
+            border: 3px solid whitesmoke;
+            color: #007bff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .go-back-btn i {
+            margin-right: 8px;
+        }
+
+        .go-back-btn:hover {
+            background: linear-gradient(to right, lightblue, pink);
+            color: white;
+            cursor: pointer;
+        }
+
+        .go-back-btn:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+        }
+
+        .go-back-btn:active {
+            background-color: #0056b3;
+            transform: translateY(2px);
+        }
     </style>
 </head>
 
@@ -416,8 +449,12 @@
             </ul>
         </div>
     </nav>
+    <button class="go-back-btn" onclick="goBack()">
+        <i class="bi bi-arrow-left"></i> Go Back
+    </button>
 </div>
 <div class="container">
+
     <h2>Reserve Your Trip</h2>
     <form id="bookingForm">
         <div class="inline-fields">
@@ -472,7 +509,10 @@
         const bookingForm = document.getElementById("bookingForm");
         const bookingDetailsContainer = document.getElementById("bookingDetails");
 
+        let toursData = [];
+
         fetchUsers();
+        fetchTours();
 
         function fetchUsers() {
             fetch("http://localhost:8080/api/v1/user/getAll")
@@ -492,12 +532,11 @@
                 });
         }
 
-        fetchTours();
-
         function fetchTours() {
             fetch("http://localhost:8080/api/v1/tours/getAll")
                 .then(response => response.json())
                 .then(data => {
+                    toursData = data;
                     const tourDropdowns = document.querySelectorAll(".tourDropdown");
                     tourDropdowns.forEach(dropdown => {
                         dropdown.innerHTML = '<option value="">Select a Tour</option>';
@@ -506,6 +545,7 @@
                             option.value = tour.tourID;
                             option.textContent = tour.tourName;
                             option.dataset.price = tour.price;
+                            option.dataset.availableSeats = tour.availableSeats;
                             dropdown.appendChild(option);
                         });
                     });
@@ -521,39 +561,68 @@
             detailDiv.classList.add("booking-detail");
 
             detailDiv.innerHTML = `
-        <label>Tour:</label>
-        <select class="tourDropdown" required>
-            <option value="">Select a Tour</option>
-        </select>
+                <label>Tour:</label>
+                <select class="tourDropdown" required>
+                    <option value="">Select a Tour</option>
+                </select>
 
-        <label>Quantity:</label>
-        <input type="number" class="quantity" required>
+                <label>Quantity:</label>
+                <input type="number" class="quantity" required min="1">
 
-        <label>Price:</label>
-        <input type="number" class="price" step="0.01" required readonly>
+                <label>Price:</label>
+                <input type="number" class="price" step="0.01" required readonly>
 
-        <button type="button" class="removeDetail">Remove</button>
-    `;
+                <button type="button" class="removeDetail">Remove</button>
+            `;
 
-            fetchTours();
             bookingDetailsContainer.appendChild(detailDiv);
+            fetchTours();
         });
 
         bookingDetailsContainer.addEventListener("change", function (event) {
+            const detail = event.target.closest(".booking-detail");
+
             if (event.target.classList.contains("tourDropdown")) {
                 const selectedOption = event.target.selectedOptions[0];
                 const price = parseFloat(selectedOption.dataset.price) || 0;
-                const quantityInput = event.target.closest(".booking-detail").querySelector(".quantity");
-                const priceInput = event.target.closest(".booking-detail").querySelector(".price");
+                const availableSeats = parseInt(selectedOption.dataset.availableSeats) || 0;
 
+                const quantityInput = detail.querySelector(".quantity");
+                const priceInput = detail.querySelector(".price");
+
+                quantityInput.value = availableSeats > 0 ? 1 : 0;
+                quantityInput.max = availableSeats;
                 priceInput.value = price;
+
+                if (availableSeats === 0) {
+                    Swal.fire("Unavailable", "No seats available for this tour.", "warning");
+                }
 
                 updateTotalPrice();
             }
+
             if (event.target.classList.contains("quantity")) {
+                const quantityInput = event.target;
+                let quantity = parseInt(quantityInput.value) || 1;
+
+                const tourId = detail.querySelector(".tourDropdown").value;
+                const tour = toursData.find(t => t.tourID == tourId);
+
+                if (quantity < 1) {
+                    Swal.fire("Invalid Quantity", "Quantity cannot be less than 1.", "warning");
+                    quantityInput.value = 1;
+                    quantity = 1;
+                }
+
+                if (tour && quantity > tour.availableSeats) {
+                    Swal.fire("Error", `Only ${tour.availableSeats} seats available for this tour.`, "error");
+                    quantityInput.value = tour.availableSeats;
+                }
+
                 updateTotalPrice();
             }
         });
+
 
         function updateTotalPrice() {
             let total = 0;
@@ -584,23 +653,29 @@
                 return;
             }
 
-            // Prepare booking details array
             const bookingDetails = [];
+            let hasInvalid = false;
+
             document.querySelectorAll(".booking-detail").forEach(detail => {
                 const tourId = detail.querySelector(".tourDropdown").value;
-                const quantity = detail.querySelector(".quantity").value;
-                const price = detail.querySelector(".price").value;
+                const quantity = parseInt(detail.querySelector(".quantity").value);
+                const price = parseFloat(detail.querySelector(".price").value);
 
-                if (tourId && quantity && price) {
-                    bookingDetails.push({
-                        tourId,
-                        quantity,
-                        price
-                    });
+                const tour = toursData.find(t => t.tourID == tourId);
+
+                if (!tourId || !quantity || !price || quantity < 1 || quantity > tour.availableSeats) {
+                    hasInvalid = true;
+                    return;
                 }
+
+                bookingDetails.push({ tourId, quantity, price });
             });
 
-            // Submit booking data
+            if (hasInvalid) {
+                Swal.fire("Error", "Please make sure all quantities are valid and within available seats.", "error");
+                return;
+            }
+
             const bookingData = {
                 userId,
                 bookingDate,
@@ -617,6 +692,7 @@
             })
                 .then(response => response.json())
                 .then(data => {
+                    decreaseAvailableSeats(bookingDetails);
                     Swal.fire({
                         icon: "success",
                         title: "Success!",
@@ -630,18 +706,28 @@
                         }
                     });
                     bookingForm.reset();
+                    bookingDetailsContainer.innerHTML = '';
                 })
                 .catch(error => {
                     console.error("Error submitting booking:", error);
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Failed to place booking!",
-                    });
+                    Swal.fire("Error", "Failed to place booking!", "error");
                 });
         });
-    });
 
+        function decreaseAvailableSeats(bookingDetails) {
+            bookingDetails.forEach(detail => {
+                const tour = toursData.find(t => t.tourID == detail.tourId);
+                if (tour) {
+                    tour.availableSeats -= detail.quantity;
+                }
+            });
+        }
+    });
+</script>
+<script>
+    function goBack() {
+        window.history.back();  // Goes back to the previous page
+    }
 </script>
 </body>
 </html>
