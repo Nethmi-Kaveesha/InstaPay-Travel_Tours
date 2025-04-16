@@ -327,6 +327,40 @@
 
         }
 
+        .go-back-btn {
+            margin-top: 10px;
+            margin-left: 1270px;
+            background-color: transparent;
+            border: 5px solid transparent;
+            border-image: linear-gradient(to right, lightblue, pink) 1;
+            color: #007bff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .go-back-btn i {
+            margin-right: 8px;
+        }
+
+        .go-back-btn:hover {
+            background: linear-gradient(to right, lightblue, pink);
+            color: white;
+            cursor: pointer;
+        }
+
+        .go-back-btn:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+        }
+
+        .go-back-btn:active {
+            background-color: #0056b3;
+            transform: translateY(2px);
+        }
     </style>
 </head>
 
@@ -398,7 +432,9 @@
     <input type="date" id="startDate" class="form-select" onchange="filterToursByDate()">
     <input type="date" id="endDate" class="form-select" onchange="filterToursByDate()">
 </div>
-
+<button class="go-back-btn" onclick="goBack()">
+    <i class="bi bi-arrow-left"></i> Go Back
+</button>
 <div class="container">
     <div class="tour-header">
         <h1>Discover Exclusive Tours</h1>
@@ -592,6 +628,11 @@
         }
     }
 
+</script>
+<script>
+    function goBack() {
+        window.history.back();  // Goes back to the previous page
+    }
 </script>
 </body>
 
