@@ -31,7 +31,7 @@
             margin-bottom: 20px;
             color: #333;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -40,7 +40,7 @@
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
-        input:focus {
+        input:focus, select:focus {
             border-color: #00c6ff;
         }
         button {
@@ -62,6 +62,12 @@
             font-size: 1rem;
             color: #333;
         }
+
+        select, select option {
+            color: #000 !important;
+            background-color: #fff !important;
+            font-family: Arial, sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -70,65 +76,132 @@
     <h2>Stripe Payment</h2>
     <input type="email" id="email" placeholder="Enter Email" required />
     <input type="number" id="amount" placeholder="Enter Amount" required />
+
+    <!-- Tour selection dropdown -->
+    <select id="tourSelect" required>
+        <option value="">Loading tours...</option>
+    </select>
+
     <button id="payBtn">Pay Now</button>
     <p id="message"></p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
-
 <script>
     const stripe = Stripe("pk_test_51R7u4x4Dqr1U2IgQZw0eoc95KkDlU4jCSQesOYAQNRcOBZFiBPfz4xE9LcbWZ6tQcI0mHeKInEIAzyknlUMcOejq00av7yJhj2");
 
-    document.getElementById("payBtn").addEventListener("click", async function() {
+    // Fetch and populate tour list
+    window.addEventListener("DOMContentLoaded", async () => {
+        const tourSelect = document.getElementById("tourSelect");
+
+        try {
+            const res = await fetch("http://localhost:8080/api/v1/tours/getAll");
+            if (!res.ok) throw new Error("Failed to load tours");
+            const tours = await res.json();
+
+            tourSelect.innerHTML = '<option value="">Select a Tour</option>';
+            tours.forEach(tour => {
+                const option = document.createElement("option");
+                option.value = tour.tourID;
+                option.textContent = tour.tourName;
+                tourSelect.appendChild(option);
+            });
+        } catch (err) {
+            console.error("Failed to load tours:", err);
+            tourSelect.innerHTML = '<option value="">Failed to load tours</option>';
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Unable to load tours. Please try again later.'
+            });
+        }
+    });
+
+    // Payment button logic
+    document.getElementById("payBtn").addEventListener("click", async function () {
         const email = document.getElementById("email").value;
         const amount = document.getElementById("amount").value;
+        const tourId = document.getElementById("tourSelect").value;
 
-        if (!email || !amount) {
+        if (!email || !amount || !tourId) {
             Swal.fire({
                 icon: 'error',
                 title: 'Missing Fields',
-                text: 'Please enter both email and amount.'
+                text: 'Please enter email, amount, and select a tour.'
             });
             return;
         }
 
-        // Create Payment Intent (Send request to Backend)
-        const response = await fetch("http://localhost:8080/api/payments/create-payment-intent", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: amount, customerEmail: email })
-        });
+        try {
+            // Step 1: Create Payment Intent
+            const response = await fetch("http://localhost:8080/api/payments/create-payment-intent", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: amount, customerEmail: email })
+            });
 
-        const { clientSecret } = await response.json();
-
-        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-                card: { token: "tok_visa" }
+            const data = await response.json();
+            if (!response.ok || data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Intent Creation Failed',
+                    text: data.error || 'Unable to create payment intent.'
+                });
+                return;
             }
-        });
 
-        if (!error) {
-            await fetch("http://localhost:8080/api/payments/update-payment-status", {
+            const { clientSecret } = data;
+
+            // Step 2: Confirm Payment (mocked token for test)
+            const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: { token: "tok_visa" }
+                }
+            });
+
+            if (stripeError) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Failed',
+                    text: stripeError.message
+                });
+                return;
+            }
+
+            // Step 3: Save Payment in DB
+            const updateResponse = await fetch("http://localhost:8080/api/payments/update-payment-status", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     paymentId: paymentIntent.id,
                     email: email,
                     amount: amount,
-                    status: paymentIntent.status
+                    status: paymentIntent.status,
+                    tourId: tourId
                 })
             });
+
+            const updateData = await updateResponse.json();
+            if (!updateResponse.ok || updateData.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Payment Status Update Failed',
+                    text: updateData.error || 'Unable to update payment status.'
+                });
+                return;
+            }
+
             Swal.fire({
                 icon: 'success',
                 title: 'Payment Successful',
                 text: 'Your payment was successful!',
                 confirmButtonText: 'OK'
             });
-        } else {
+        } catch (err) {
             Swal.fire({
                 icon: 'error',
-                title: 'Payment Failed',
-                text: error.message
+                title: 'Error',
+                text: err.message || 'An unexpected error occurred.'
             });
         }
     });
