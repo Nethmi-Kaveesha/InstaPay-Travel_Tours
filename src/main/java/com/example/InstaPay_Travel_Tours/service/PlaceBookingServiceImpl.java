@@ -11,12 +11,13 @@ import com.example.InstaPay_Travel_Tours.repo.BookingDetailRepository;
 import com.example.InstaPay_Travel_Tours.repo.BookingRepository;
 import com.example.InstaPay_Travel_Tours.repo.TourRepository;
 import com.example.InstaPay_Travel_Tours.repo.UserRepository;
-import com.example.InstaPay_Travel_Tours.service.PlaceBookingService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -53,14 +54,23 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
                 Tour tour = tourRepo.findById(bookingDetailDTO.getTourId())
                         .orElseThrow(() -> new RuntimeException("Tour not found"));
 
-                System.out.println("Tour ID: " + bookingDetailDTO.getTourId() +
-                        ", Quantity: " + bookingDetailDTO.getQuantity() +
-                        ", Price: " + bookingDetailDTO.getPrice() +
-                        ", Total: " + bookingDetailDTO.getTotal());
+                int availableSeats = tour.getAvailableSeats();
+                int requestedSeats = (int) bookingDetailDTO.getQuantity();
+
+                if (availableSeats <= 0) {
+                    throw new RuntimeException("No seats available for " + tour.getTourName());
+                }
+
+                if (requestedSeats > availableSeats) {
+                    throw new RuntimeException("Only " + availableSeats + " seats available for " + tour.getTourName());
+                }
+
+                // Reduce the available seats
+                tour.setAvailableSeats(availableSeats - requestedSeats);
+                tourRepo.save(tour); // update seat count in DB
 
                 BookingDetail bookingDetail = new BookingDetail();
                 bookingDetail.setQuantity(bookingDetailDTO.getQuantity());
-
                 bookingDetail.setPrice(bookingDetailDTO.getPrice());
 
                 if (bookingDetailDTO.getTotal() == 0) {
@@ -77,9 +87,34 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
 
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            // You can log this or pass a custom error message
+            throw new RuntimeException("Booking failed: " + e.getMessage());
         }
     }
 
+    public List<BookingDTO> getAllBookings() {
+        return bookingRepo.findAll().stream().map(booking -> {
+            BookingDTO dto = new BookingDTO();
+            dto.setBookingId(booking.getBookingId());
+            dto.setBookingDate(booking.getBookingDate());
+            dto.setTotalPrice(booking.getTotalPrice());
+            dto.setUserId(booking.getUser().getUid());
+
+            // Map booking detail list
+            List<BookingDetailDTO> detailDTOs = booking.getBookingDetails().stream().map(detail -> {
+                BookingDetailDTO detailDTO = new BookingDetailDTO();
+                detailDTO.setId(detail.getId());
+                detailDTO.setBookingId(booking.getBookingId());
+                detailDTO.setTourId(detail.getTour().getTourID());
+                detailDTO.setQuantity(detail.getQuantity());
+                detailDTO.setPrice(detail.getPrice());
+                detailDTO.setTotal(detail.getTotal());
+                return detailDTO;
+            }).collect(Collectors.toList());
+
+            dto.setBookingDetails(detailDTOs);
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }
