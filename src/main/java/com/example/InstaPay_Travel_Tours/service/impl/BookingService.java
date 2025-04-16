@@ -54,6 +54,17 @@ public class BookingService {
                         Tour tour = tourRepo.findById(detailDTO.getTourId())
                                 .orElseThrow(() -> new RuntimeException("Tour not found"));
 
+                        // Check if there are enough available seats
+                        int availableSeats = tour.getAvailableSeats();
+                        if (availableSeats < detailDTO.getQuantity()) {
+                            throw new RuntimeException("Not enough available seats for tour: " + tour.getTourName());
+                        }
+
+                        // Update the available seats after the booking
+                        tour.setAvailableSeats((int) (availableSeats - detailDTO.getQuantity()));
+                        tourRepo.save(tour); // Save the updated tour entity
+
+                        // Create booking detail
                         BookingDetail bookingDetail = new BookingDetail();
                         bookingDetail.setQuantity(detailDTO.getQuantity());
                         bookingDetail.setTotal(detailDTO.getTotal());
