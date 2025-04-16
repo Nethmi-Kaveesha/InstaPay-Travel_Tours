@@ -12,6 +12,7 @@
             background: #f8f9fa;
         }
         .card {
+            margin-left: 200px;
             margin-top: 100px;
             border-radius: 12px;
             padding: 30px;
@@ -61,54 +62,187 @@
             background-color: rgba(0, 123, 255, 0.1);
         }
 
-        nav {
-            background: #333;
-            padding: 10px;
+
+
+        .navbar-top {
+            background-color: black;
+            color: white;
+            padding: 5px 0;
+            z-index: 1000;
+            width: 100%;
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            z-index: 333310;
         }
 
-        nav ul {
-            list-style-type: none;
+        .navbar-top .icon {
+            color: lightskyblue;
+            margin-left: 10px;
+        }
+
+        .navbar-top .content {
             display: flex;
-            justify-content: space-around;
-            padding: 0;
-            margin: 0;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
-        nav ul li {
-            padding: 10px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        nav .logo {
-            width: 150px;
-            height: auto;
+        .navbar-top .content span {
             margin-right: 20px;
         }
 
+        .social-media-icons {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 100px;
+            margin-top: -17px;
+        }
+
+        .social-media-icons a {
+            color: white !important;
+            margin-left: 30px;
+            font-size: 16px;
+        }
+
+        .navbar {
+            background-color: white;
+            height: 50px;
+            padding: 5px 0;
+            z-index: 90999;
+            width: 100%;
+            position: fixed;
+            top: 60px;
+        }
+
+        .navbar .navbar-nav {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .navbar .navbar-nav .nav-item {
+            margin: 0 15px;
+        }
+
+        .navbar .navbar-nav .nav-item .nav-link {
+            padding: 5px 10px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-item .nav-link:hover {
+            color: blue;
+        }
+
+        .navbar-brand img {
+            margin-left: 50px;
+            height: 120px;
+            margin-top: 45px;
+            width: auto;
+        }
+
+        .navbar-all-in-one {
+            background-color: white;
+            height: 100px;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: #1f2937;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            position: fixed;
+            top: 130px;
+            left: 0;
+            bottom: 0;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .sidebar a:hover {
+            background-color: #374151;
+        }
     </style>
 </head>
 <body>
-<nav>
-    <ul>
-        <li><img src="images/new-logo.png" alt="Logo" class="logo"></li>
-        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
-        <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
-        <li><a href="#team"><i class="fas fa-users"></i> Team</a></li>
-        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-        <li><a href="rejister.html"><i class="fas fa-book"></i> Booking</a></li>
-    </ul>
-</nav>
+<div class="navbar-all-in-one fixed-top">
+    <div class="navbar-top">
+        <div class="content">
+            <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
+            <span><i class="fas fa-phone icon"></i>011 257 4646</span>
+            <span><i class="fas fa-link icon"></i> <a href="https://yourwebsite.com" class="text-white">marketing@travelco.lk</a></span>
+        </div>
+        <div class="social-media-icons">
+            <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="rejister.html">Booking</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<aside class="sidebar">
+    <a href="show.html">🧳 Tours</a>
+    <a href="Reveiw.html">📝 Review</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="weather.html">🌦️ Weather</a>
+    <a href="random.html">🌍 Spin the Globe</a>
+    <a href="currency-converter.html">💱 Currency Converter</a>
+    <a href="email.html">✉️ Send Email</a>
+    <a href="language-translator.html">🌐 Language Translator</a>
+    <a href="chatbot.html">🤖 AI Chatbot</a>
+    <a href="chat.html">💬 Real-Time Chat</a>
+    <a href="tracker-homepage.html">💰 Expense Tracker</a>
+    <a href="gallery.html">🖼️ Gallery</a>
+    <a href="blog.html">✍️ Blog</a>
+    <a href="user.html">👤 Users</a>
+    <a href="tourGuide.html">🧭 Tour Guides</a>
+    <a href="tour.html">🏖️ Manage Tours</a>
+    <a href="ReviewForm.html">📝 Add Review</a>
+    <a href="ViewPayments.html">💳 Payment Details</a>
+    <a href="viewBookings.html">📋 Booking Details</a>
+    <a href="userDetails.html">🧾 User Details</a>
+</aside>
+
 <div class="container mt-5">
     <div class="card">
         <h2 class="text-center mb-4">Tour Guide Form</h2>
