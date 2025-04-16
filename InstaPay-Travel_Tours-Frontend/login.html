@@ -100,37 +100,30 @@
             top: 0;
             left: 0;
         }
-
         .navbar-top .icon {
             color: lightskyblue;
             margin-left: 10px;
         }
-
         .navbar-top .content {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
         }
-
         .navbar-top .content span {
             margin-right: 20px;
         }
-
         .social-media-icons {
             display: flex;
             justify-content: flex-end;
             margin-right: 100px;
             margin-top: -17px;
         }
-
         .social-media-icons a {
             color: white !important;
             margin-left: 30px;
             font-size: 16px;
         }
-
-
         .navbar {
             background-color: white;
             height: 50px;
@@ -140,44 +133,35 @@
             position: fixed;
             top: 60px;
         }
-
         .navbar .navbar-nav {
             display: flex;
             justify-content: center;
             width: 100%;
         }
-
         .navbar .navbar-nav .nav-item {
             margin: 0 15px;
         }
-
         .navbar .navbar-nav .nav-item .nav-link {
             padding: 5px 10px;
             color: black;
             font-weight: bold;
         }
-
         .navbar .navbar-nav .nav-item .nav-link:hover {
             color: blue;
         }
-
         .navbar .navbar-nav .nav-item {
             margin-right: 20px;
         }
-
         .navbar-brand img {
             margin-left: 50px;
             height: 120px;
             margin-top: 45px;
             width: auto;
         }
-
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
-
         }
-
     </style>
 </head>
 <body>
@@ -186,7 +170,7 @@
         <div class="content">
             <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
             <span><i class="fas fa-phone icon"></i>011 257 4646</span>
-            <span><i class="fas fa-link icon"></i> <a href="https://yourwebsite.com" class="text-white">marketing@travelco.lk</a></span>
+            <span><i class="fas fa-link icon"></i> <a href="mailto:marketing@travelco.lk" class="text-white">marketing@travelco.lk</a></span>
         </div>
         <div class="social-media-icons">
             <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
@@ -274,6 +258,9 @@
             if (password.trim() === "") {
                 $("#passwordError").show();
                 isValid = false;
+            } else if (password.length < 3) {
+                $("#passwordError").text("Password must be at least 6 characters long.").show();
+                isValid = false;
             }
 
             if (isValid) {
@@ -284,29 +271,23 @@
                     contentType: 'application/json',
                     success: function (response) {
                         localStorage.setItem('token', response.data.token);
-                        if (response.code === 201) {
-                            let dashboardUrl = "dashboard.html";
 
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Login successful!',
-                                text: `Welcome, User. Redirecting to your dashboard.`,
-                                confirmButtonText: 'Go to Dashboard'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = dashboardUrl;
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Invalid Credentials',
-                                text: 'Please check your email and password.',
-                                confirmButtonText: 'Try Again'
-                            });
-                        }
+                        var decodedToken = parseJwt(response.data.token);
+                        var userRole = decodedToken.role;
+
+                        var redirectUrl = userRole === 'Admin' ? "dash.html" : "test2.html";
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login successful!',
+                            text: `Welcome, ${userRole}. Redirecting to your dashboard.`,
+                            confirmButtonText: 'Go to Dashboard'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = redirectUrl;
+                            }
+                        });
                     },
-
                     error: function (xhr, status, error) {
                         Swal.fire({
                             icon: 'error',
@@ -322,6 +303,15 @@
         function validateEmail(email) {
             var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             return re.test(email);
+        }
+
+        function parseJwt(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
         }
     });
 </script>
