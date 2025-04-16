@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <title>Tour and Travel Dashboard</title>
     <style>
         body {
@@ -29,12 +31,12 @@
 
         .dashboard-container {
             display: flex;
-            justify-content: center; /* Centers the cards horizontally */
-            align-items: flex-start; /* Aligns items to the top */
+            justify-content: center;
+            align-items: flex-start;
             flex-wrap: wrap;
             gap: 20px;
             padding: 30px;
-            margin-top: 50px; /* Adds space from the top */
+            margin-top: 50px;
         }
 
         .dashboard-card {
@@ -42,46 +44,34 @@
             background: linear-gradient(to top right, rgba(255, 255, 255, 0.7), rgba(0, 0, 0, 0.3));
             border-radius: 10px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            width: 220px; /* Reduced card width */
-            padding: 20px; /* Reduced padding */
+            width: 220px;
+            padding: 20px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .dashboard-card .icon {
-            font-size: 30px; /* Smaller icon size */
-            margin-bottom: 15px; /* Adjusted margin */
+            font-size: 30px;
+            margin-bottom: 15px;
         }
 
         .dashboard-card h2 {
-            font-size: 18px; /* Smaller header size */
-            margin-bottom: 10px; /* Adjusted margin */
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
         .dashboard-card p {
-            font-size: 14px; /* Smaller paragraph font size */
-            margin-bottom: 15px; /* Adjusted margin */
+            font-size: 14px;
+            margin-bottom: 15px;
         }
 
         .dashboard-card a {
-            padding: 8px 15px; /* Smaller button padding */
-            font-size: 14px; /* Smaller font size for the button */
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .dashboard-card a {
+            padding: 8px 15px;
+            font-size: 14px;
             text-decoration: none;
             color: #fff;
             background-color: #2a2a72;
-            padding: 12px 25px;
             border-radius: 5px;
-            font-size: 16px;
-            height: 20px;
-            width: 40px;
             transition: background-color 0.3s ease;
         }
 
@@ -95,13 +85,6 @@
             background-color: #333;
             color: #fff;
             margin-top: 140px;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-container {
-                flex-direction: column;
-                align-items: center;
-            }
         }
 
         .navbar-top {
@@ -144,7 +127,6 @@
             font-size: 16px;
         }
 
-
         .navbar {
             background-color: white;
             height: 50px;
@@ -175,10 +157,6 @@
             color: blue;
         }
 
-        .navbar .navbar-nav .nav-item {
-            margin-right: 20px;
-        }
-
         .navbar-brand img {
             margin-left: 50px;
             height: 120px;
@@ -187,9 +165,40 @@
         }
 
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
+        }
 
+        #map {
+            height: 80vh;
+            width: 100%;
+            margin-top: 30px;
+            border-radius: 10px;
+        }
+
+        .places-list, #weather-info {
+            position: absolute;
+            top: 120px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        .places-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .places-list li {
+            margin-bottom: 10px;
+        }
+
+        .place-name {
+            font-weight: bold;
         }
     </style>
 </head>
@@ -213,26 +222,16 @@
         <a class="navbar-brand" href="#">
             <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="rejister.html">Booking</a>
-                </li>
+                <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="rejister.html">Booking</a></li>
             </ul>
         </div>
     </nav>
@@ -243,43 +242,59 @@
 </div>
 
 <div class="dashboard-container">
-    <div class="dashboard-card">
-        <div class="icon">✈️</div>
-        <h2>Tour Packages</h2>
-        <p>Explore a variety of exciting tour packages to your dream destinations.</p>
-        <a href="show.html">View Packages</a>
-    </div>
-
-    <div class="dashboard-card">
-        <div class="icon">💬</div>
-        <h2>Reviews</h2>
-        <p>Check out reviews from fellow travelers about your chosen destinations.</p>
-        <a href="Reveiw.html">Read Reviews</a>
-    </div>
-
-    <div class="dashboard-card">
-        <div class="icon">🗺️</div>
-        <h2>Map Page</h2>
-        <p>Explore the world with interactive maps.</p>
-        <a href="map.html">Go to Map</a>
-    </div>
-    <div class="dashboard-card">
-        <div class="icon">👥</div>
-        <h2>Manage Users</h2>
-        <p>View and manage users, edit details, and deactivate accounts.</p>
-        <a href="user.html">Manage Users</a>
-    </div>
-    <div class="dashboard-card">
-        <div class="icon">🌤️</div>
-        <h2>Weather Page</h2>
-        <p>Check the current weather in any location.</p>
-        <a href="weather.html">Check Weather</a>
-    </div>
+    <div class="dashboard-card"><div class="icon">✈️</div><h2>Tour Packages</h2><p>Explore a variety of exciting tour packages to your dream destinations.</p><a href="show.html">View Packages</a></div>
+    <div class="dashboard-card"><div class="icon">💬</div><h2>Reviews</h2><p>Check out reviews from fellow travelers about your chosen destinations.</p><a href="Reveiw.html">Read Reviews</a></div>
+    <div class="dashboard-card"><div class="icon">🗺️</div><h2>Map Page</h2><p>Explore the world with interactive maps.</p><a href="#map">Explore Map</a></div>
+    <div class="dashboard-card"><div class="icon">👥</div><h2>Manage Users</h2><p>View and manage users, edit details, and deactivate accounts.</p><a href="user.html">Manage Users</a></div>
+    <div class="dashboard-card"><div class="icon">🌤️</div><h2>Weather Page</h2><p>Check the current weather in any location.</p><a href="weather.html">Check Weather</a></div>
 </div>
+
+<div id="map"></div>
+<div class="places-list" id="places-list"></div>
+<div id="weather-info"></div>
 
 <div class="footer">
     <p>&copy; 2025 Tour and Travel. All rights reserved.</p>
 </div>
 
+<script>
+    var map = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+    var geocoder = L.Control.geocoder({ placeholder: "Search for a location...", geocoder: new L.Control.Geocoder.Nominatim() }).addTo(map);
+
+    geocoder.on('markgeocode', function(e) {
+        var latlng = e.geocode.center;
+        L.marker(latlng).addTo(map).bindPopup("You searched for: " + e.geocode.name).openPopup();
+        map.setView(latlng, 13);
+        fetchNearbyPlaces(latlng);
+        fetchWeather(latlng);
+    });
+
+    function fetchNearbyPlaces(latlng) {
+        var overpassURL = `https://overpass-api.de/api/interpreter?data=[out:json];(node(around:2000,${latlng.lat},${latlng.lng})[tourism=attraction];node(around:2000,${latlng.lat},${latlng.lng})[amenity=restaurant];node(around:2000,${latlng.lat},${latlng.lng})[tourism=hotel];);out;`;
+        fetch(overpassURL).then(r => r.json()).then(data => displayPlaces(data.elements)).catch(e => console.error('Places error:', e));
+    }
+
+    function displayPlaces(places) {
+        const list = document.getElementById('places-list');
+        list.innerHTML = places.length ? '<ul>' + places.map(p => `<li><div><p class='place-name'>${p.tags.name || 'Unnamed'}</p><p>Type: ${p.tags.amenity || p.tags.tourism}</p></div></li>`).join('') + '</ul>' : '<p>No places found nearby.</p>';
+    }
+
+    function fetchWeather(latlng) {
+        const apiKey = '1f63215819e1a497a27e13f440eaf8ec';
+        const weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${latlng.lat}&lon=${latlng.lng}&appid=${apiKey}&units=metric`;
+        fetch(weatherURL).then(r => r.json()).then(displayWeather).catch(e => console.error('Weather error:', e));
+    }
+
+    function displayWeather(data) {
+        document.getElementById('weather-info').innerHTML = `
+            <h5>Weather in ${data.name}, ${data.sys.country}</h5>
+            <p><strong>Description:</strong> ${data.weather[0].description}</p>
+            <p><strong>Temperature:</strong> ${data.main.temp}&deg;C</p>
+            <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+            <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
+        `;
+    }
+</script>
 </body>
 </html>
