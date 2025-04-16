@@ -1,6 +1,7 @@
 package com.example.InstaPay_Travel_Tours.service;
 
 
+import com.example.InstaPay_Travel_Tours.entity.Tour;
 import com.example.InstaPay_Travel_Tours.model.Payment;
 import com.example.InstaPay_Travel_Tours.repo.PaymentRepository;
 import com.stripe.Stripe;
@@ -41,12 +42,14 @@ public class PaymentService {
         return response;
     }
 
-    public void savePayment(String paymentId, String email, Double amount, String status) {
+    public void savePayment(String paymentId, String email, Double amount, String status, Tour tour) {
         Payment payment = new Payment();
         payment.setPaymentId(paymentId);
         payment.setEmail(email);
         payment.setAmount(amount);
         payment.setStatus(status);
+        payment.setTour(tour); // Set the foreign key relationship
         paymentRepository.save(payment);
     }
+
 }
