@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/booking")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,16 +18,22 @@ public class PlaceBookingController {
     private PlaceBookingService placeBookingService;
 
     @PostMapping("place")
-    public ResponseUtil saveBooking(@RequestBody BookingDTO bookingDTO) {
-        System.out.println("Received booking data: " + bookingDTO);
-
-        boolean res = placeBookingService.addBooking(bookingDTO);
-        if (res) {
-            return new ResponseUtil(201, "Booking Saved", null);
-        } else {
-            return new ResponseUtil(200, "Failed to save booking", null);
+    public ResponseEntity<?> saveBooking(@RequestBody BookingDTO bookingDTO) {
+        try {
+            boolean res = placeBookingService.addBooking(bookingDTO);
+            if (res) {
+                return ResponseEntity.status(201).body(new ResponseUtil(201, "Booking Saved", null));
+            } else {
+                return ResponseEntity.status(500).body(new ResponseUtil(500, "Failed to save booking", null));
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ResponseUtil(400, e.getMessage(), null));
         }
     }
 
+    @GetMapping("view")
+    public List<BookingDTO> getAllBookings() {
+        return placeBookingService.getAllBookings();
+    }
 
 }
