@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Fetcher</title>
+    <style>
+        /* Styles for form and page */
+    </style>
+</head>
+<body>
+<h1>Fetch Image from URL and Save to Database</h1>
+
+<form id="imageForm">
+    <label for="imageUrl">Enter Image URL:</label>
+    <input type="text" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg" required>
+    <button type="submit">Fetch and Save Image</button>
+</form>
+
+<div id="message"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#imageForm').on('submit', function (e) {
+            e.preventDefault();
+
+            var imageUrl = $('#imageUrl').val();
+
+            if (imageUrl === '') {
+                showMessage('Please enter a valid image URL.', 'alert');
+                return;
+            }
+
+            // Send AJAX request to the backend
+            $.ajax({
+                url: 'http://localhost:8080/api/images/save',  // Backend URL
+                type: 'POST',
+                data: { imageUrl: imageUrl },
+                success: function (response) {
+                    showMessage('Image Saved to Database Successfully!', 'success');
+                },
+                error: function () {
+                    showMessage('Failed to save image. Please try again.', 'alert');
+                }
+            });
+        });
+
+        function showMessage(message, type) {
+            var messageDiv = $('#message');
+            messageDiv.removeClass('alert success').addClass(type).text(message);
+        }
+    });
+</script>
+</body>
+</html>
