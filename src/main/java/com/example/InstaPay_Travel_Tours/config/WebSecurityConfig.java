@@ -92,7 +92,7 @@ public class WebSecurityConfig {
                                 "/api/v1/user/getAll",
                                 "/api/v1/user/delete/**",
                                 "/api/v1/tourguide/save",
-                                "/api/v1/tourguide/getAll",
+                                "api/v1/tourguide/getAll",
                                 "/api/v1/tourguide/update",
                                 "/api/v1/tourguide/delete/**",
                                 "/chat/**",

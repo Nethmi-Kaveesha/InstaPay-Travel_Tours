@@ -7,9 +7,16 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body{
-    background: #E3F2FD;
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('../images/background-home-2.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Optional: keeps the image fixed while scrolling */
 }
+
+
 
 .chatbot-toggle {
     position: fixed;
@@ -26,6 +33,7 @@ body{
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    z-index: 99999999999;
 }
 
 .show-chatbot .chatbot-toggle {
@@ -43,6 +51,7 @@ body{
     opacity: 1;
 }
 .chatbot{
+    z-index: 999999999999999;
     position: fixed;
     right: 40px;
     bottom: 100px;
@@ -71,11 +80,13 @@ body{
 }
 
 .chatbot header h2{
+    z-index: 999999999999999999;
     color: #fff;
     font-size: 1.4rem;
 }
 
 .chatbot header span {
+    z-index: 99999999999999999999;
     position: absolute;
     right: 20px;
     top: 50%;
@@ -99,6 +110,7 @@ body{
     height: 32px;
     width: 32px;
     color: #fff;
+    z-index: 99999999999999;
     background: #724ae8;
     text-align: center;
     line-height: 32px;

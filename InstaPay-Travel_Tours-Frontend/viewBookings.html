@@ -2,437 +2,137 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Records</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .navbar-top {
-            background-color: black;
+        /* Custom styling */
+        th {
+            cursor: pointer;
+        }
+        .badge-succeeded {
+            background-color: green;
             color: white;
-            padding: 21px 0;
-            z-index: 1000;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
         }
-
-        .navbar-top .icon {
-            color: lightskyblue;
-            margin-left: 10px;
-        }
-
-        .navbar-top .content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        .navbar-top .content span {
-            margin-right: 20px;
-        }
-
-        .social-media-icons {
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
-            margin-top: -17px;
-        }
-
-        .social-media-icons a {
-            color: white !important;
-            margin-left: 30px;
-            font-size: 16px;
-        }
-
-        .navbar {
-            background-color: white;
-            height: 50px;
-            padding: 5px 0;
-            z-index: 90999;
-            width: 100%;
-            position: fixed;
-            top: 60px;
-        }
-
-        .navbar .navbar-nav {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .navbar .navbar-nav .nav-item {
-            margin: 0 15px;
-        }
-
-        .navbar .navbar-nav .nav-item .nav-link {
-            padding: 5px 10px;
-            color: black;
-            font-weight: bold;
-        }
-
-        .navbar .navbar-nav .nav-item .nav-link:hover {
-            color: blue;
-        }
-
-        .navbar-brand img {
-            margin-left: 50px;
-            height: 120px;
-            margin-top: 45px;
-            width: auto;
-        }
-
-        .navbar-all-in-one {
-            background-color: white;
-            height: 100px;
-        }
-        .sidebar {
-            width: 240px;
-            background-color: #1f2937;
+        .badge-failed {
+            background-color: red;
             color: white;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            position: fixed;
-            top: 130px;
-            left: 0;
-            bottom: 0;
-            z-index: 1000;
-            overflow-y: auto;
         }
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
-        }
-        .sidebar a:hover {
-            background-color: #374151;
-        }
-
-        .container{
-            margin-left: 250px;
+        #pagination {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-<div class="navbar-all-in-one fixed-top">
-    <div class="navbar-top">
-        <div class="content">
-            <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
-            <span><i class="fas fa-phone icon"></i>011 257 4646</span>
-            <span><i class="fas fa-link icon"></i> <a href="https://yourwebsite.com" class="text-white">marketing@travelco.lk</a></span>
-        </div>
-        <div class="social-media-icons">
-            <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
-        </div>
-    </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-            <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="rejister.html">Booking</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</div>
-<aside class="sidebar">
-    <a href="show.html">🧳 Tours</a>
-    <a href="Reveiw.html">📝 Review</a>
-    <a href="map.html">🗺️ Map</a>
-    <a href="weather.html">🌦️ Weather</a>
-    <a href="random.html">🌍 Spin the Globe</a>
-    <a href="currency-converter.html">💱 Currency Converter</a>
-    <a href="email.html">✉️ Send Email</a>
-    <a href="language-translator.html">🌐 Language Translator</a>
-    <a href="chatbot.html">🤖 AI Chatbot</a>
-    <a href="chat.html">💬 Real-Time Chat</a>
-    <a href="tracker-homepage.html">💰 Expense Tracker</a>
-    <a href="gallery.html">🖼️ Gallery</a>
-    <a href="blog.html">✍️ Blog</a>
-    <a href="user.html">👤 Users</a>
-    <a href="tourGuide.html">🧭 Tour Guides</a>
-    <a href="tour.html">🏖️ Manage Tours</a>
-    <a href="ReviewForm.html">📝 Add Review</a>
-    <a href="ViewPayments.html">💳 Payment Details</a>
-    <a href="viewBookings.html">📋 Booking Details</a>
-    <a href="userDetails.html">🧾 User Details</a>
-</aside>
 <div class="container mt-5">
-    <h2 class="mb-4">Payment Records</h2>
+    <h2>Payment Records</h2>
 
-    <!-- Search and Filter Section -->
-    <div class="row mb-3">
-        <div class="col-md-3">
-            <input type="text" id="searchEmail" class="form-control" placeholder="Search by email">
-        </div>
-        <div class="col-md-3">
-            <select id="filterStatus" class="form-control">
-                <option value="">All Statuses</option>
-                <option value="succeeded">Succeeded</option>
-                <option value="failed">Failed</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="date" id="startDate" class="form-control" placeholder="Start Date">
-        </div>
-        <div class="col-md-3">
-            <input type="date" id="endDate" class="form-control" placeholder="End Date">
-        </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th onclick="sortTable('id')">ID ⬍</th>
+                <th onclick="sortTable('amount')">Amount ⬍</th>
+                <th>Email</th>
+                <th>Payment ID</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="paymentTableBody">
+            <!-- Table rows will be inserted here -->
+            </tbody>
+        </table>
     </div>
 
-    <!-- Table Section -->
-    <table class="table table-bordered table-hover" id="paymentTable">
-        <thead class="table-dark">
-        <tr>
-            <th onclick="sortTable('id')">ID ⬍</th>
-            <th onclick="sortTable('amount')">Amount ⬍</th>
-            <th>Email</th>
-            <th>Payment ID</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody id="paymentTableBody">
-        <!-- Content populated dynamically -->
-        </tbody>
-    </table>
-
-    <!-- Pagination Section -->
-    <div class="d-flex justify-content-center mt-3">
-        <button class="btn btn-primary me-2" onclick="prevPage()">Previous</button>
-        <span id="pageInfo" class="align-self-center"></span>
-        <button class="btn btn-primary ms-2" onclick="nextPage()">Next</button>
+    <div id="pagination">
+        <button onclick="changePage('prev')" class="btn btn-primary">Previous</button>
+        <button onclick="changePage('next')" class="btn btn-primary">Next</button>
     </div>
 
-    <!-- Chart Section -->
-    <div class="mt-4">
-        <canvas id="paymentChart" width="400" height="200"></canvas>
-    </div>
-
-    <!-- Export Section -->
-    <div class="mt-4">
-        <button class="btn btn-success" onclick="exportToExcel()">Export Excel</button>
-        <button class="btn btn-danger" onclick="exportToPDF()">Export PDF</button>
-    </div>
+    <p id="pageInfo"></p>
 </div>
 
 <script>
-    let allPayments = [];
+    // Example payments data (mocked)
+    const allPayments = [
+        { id: 1, amount: 100, email: 'user1@example.com', paymentId: 'abc123', status: 'succeeded' },
+        { id: 2, amount: 150, email: 'user2@example.com', paymentId: 'def456', status: 'failed' },
+        { id: 3, amount: 200, email: 'user3@example.com', paymentId: 'ghi789', status: 'succeeded' },
+        { id: 4, amount: 250, email: 'user4@example.com', paymentId: 'jkl012', status: 'failed' },
+        { id: 5, amount: 300, email: 'user5@example.com', paymentId: 'mno345', status: 'succeeded' },
+        { id: 6, amount: 350, email: 'user6@example.com', paymentId: 'pqr678', status: 'failed' },
+        { id: 7, amount: 400, email: 'user7@example.com', paymentId: 'stu901', status: 'succeeded' },
+        { id: 8, amount: 450, email: 'user8@example.com', paymentId: 'vwx234', status: 'failed' },
+        { id: 9, amount: 500, email: 'user9@example.com', paymentId: 'yzx567', status: 'succeeded' },
+        { id: 10, amount: 550, email: 'user10@example.com', paymentId: 'abc890', status: 'failed' },
+        // Add more payments as needed
+    ];
+
     let currentPage = 1;
-    const rowsPerPage = 5;
-    let currentSort = { field: 'id', asc: true };
+    const rowsPerPage = 3; // Number of records per page
+    let currentSort = { field: '', asc: true };
 
-    // Fetch data from the backend API
-    fetch('http://localhost:8080/api/payments/view')
-        .then(res => res.json())
-        .then(data => {
-            allPayments = data;
-            renderTable();
-            renderChart();
-        });
-
-    // Render table based on current filter & search
+    // Render the table based on the current data and pagination
     function renderTable() {
-        const emailSearch = document.getElementById('searchEmail').value.toLowerCase();
-        const statusFilter = document.getElementById('filterStatus').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-
-        let filtered = allPayments.filter(p =>
-            p.email.toLowerCase().includes(emailSearch) &&
-            (statusFilter === "" || p.status === statusFilter) &&
-            (!startDate || new Date(p.date) >= new Date(startDate)) &&
-            (!endDate || new Date(p.date) <= new Date(endDate))
-        );
-
-        // Sorting
-        filtered.sort((a, b) => {
-            let valA = a[currentSort.field];
-            let valB = b[currentSort.field];
-            if (typeof valA === 'string') valA = valA.toLowerCase();
-            if (typeof valB === 'string') valB = valB.toLowerCase();
-            return currentSort.asc ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
-        });
-
-        // Pagination
-        const start = (currentPage - 1) * rowsPerPage;
-        const paginated = filtered.slice(start, start + rowsPerPage);
-
         const tbody = document.getElementById('paymentTableBody');
         tbody.innerHTML = "";
-        paginated.forEach(p => {
-            const statusClass = p.status === 'succeeded' ? 'badge bg-success' : 'badge bg-danger';
+
+        // Sort the data before rendering
+        const sortedPayments = [...allPayments].sort((a, b) => {
+            if (currentSort.field === 'id') {
+                return currentSort.asc ? a.id - b.id : b.id - a.id;
+            } else if (currentSort.field === 'amount') {
+                return currentSort.asc ? a.amount - b.amount : b.amount - a.amount;
+            }
+            return 0;  // Default (no sorting)
+        });
+
+        // Paginate the sorted data
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedPayments = sortedPayments.slice(startIndex, endIndex);
+
+        // Render the paginated data
+        paginatedPayments.forEach(p => {
+            const statusClass = p.status === 'succeeded' ? 'badge-succeeded' : 'badge-failed';
             const row = `<tr>
-          <td>${p.id}</td>
-          <td>${p.amount}</td>
-          <td>${p.email}</td>
-          <td>${p.paymentId}</td>
-          <td><span class="${statusClass}">${p.status}</span></td>
-        </tr>`;
+                <td>${p.id}</td>
+                <td>${p.amount}</td>
+                <td>${p.email}</td>
+                <td>${p.paymentId}</td>
+                <td><span class="badge ${statusClass}">${p.status}</span></td>
+            </tr>`;
             tbody.insertAdjacentHTML('beforeend', row);
         });
 
-        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(filtered.length / rowsPerPage)}`;
+        // Update pagination info
+        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(allPayments.length / rowsPerPage)}`;
     }
 
-    // Event listeners for filters
-    document.getElementById('searchEmail').addEventListener('input', () => {
-        currentPage = 1;
-        renderTable();
-    });
-
-    document.getElementById('filterStatus').addEventListener('change', () => {
-        currentPage = 1;
-        renderTable();
-    });
-
-    document.getElementById('startDate').addEventListener('change', () => {
-        currentPage = 1;
-        renderTable();
-    });
-
-    document.getElementById('endDate').addEventListener('change', () => {
-        currentPage = 1;
-        renderTable();
-    });
-
-    // Pagination functions
-    function prevPage() {
-        if (currentPage > 1) {
-            currentPage--;
-            renderTable();
-        }
-    }
-
-    function nextPage() {
-        const emailSearch = document.getElementById('searchEmail').value.toLowerCase();
-        const statusFilter = document.getElementById('filterStatus').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        const filtered = allPayments.filter(p =>
-            p.email.toLowerCase().includes(emailSearch) &&
-            (statusFilter === "" || p.status === statusFilter) &&
-            (!startDate || new Date(p.date) >= new Date(startDate)) &&
-            (!endDate || new Date(p.date) <= new Date(endDate))
-        );
-        if (currentPage < Math.ceil(filtered.length / rowsPerPage)) {
-            currentPage++;
-            renderTable();
-        }
-    }
-
-    // Sorting table by column
+    // Handle sorting when a table header is clicked
     function sortTable(field) {
-        if (currentSort.field === field) {
-            currentSort.asc = !currentSort.asc;
-        } else {
-            currentSort = { field: field, asc: true };
+        const isAscending = currentSort.field === field && currentSort.asc;
+        currentSort = { field, asc: !isAscending };  // Toggle the sort order
+        renderTable();  // Re-render the table based on the new sort order
+    }
+
+    // Change page (previous or next)
+    function changePage(direction) {
+        if (direction === 'prev' && currentPage > 1) {
+            currentPage--;
+        } else if (direction === 'next' && currentPage < Math.ceil(allPayments.length / rowsPerPage)) {
+            currentPage++;
         }
-        renderTable();
+        renderTable();  // Re-render the table based on the new page
     }
 
-    // Excel export function
-    function exportToExcel() {
-        const wb = XLSX.utils.book_new();
-        const wsData = [['ID', 'Amount', 'Email', 'Payment ID', 'Status']];
-        allPayments.forEach(p => {
-            wsData.push([p.id, p.amount, p.email, p.payment_id, p.status]);
-        });
-        const ws = XLSX.utils.aoa_to_sheet(wsData);
-        XLSX.utils.book_append_sheet(wb, ws, 'Payments');
-        XLSX.writeFile(wb, 'payments.xlsx');
-    }
-
-    // PDF export function
-    async function exportToPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        doc.setFontSize(12);
-        doc.text("Payment Records", 14, 15);
-        const rows = [["ID", "Amount", "Email", "Payment ID", "Status"]];
-        allPayments.forEach(p => {
-            rows.push([p.id, p.amount, p.email, p.payment_id, p.status]);
-        });
-
-        let y = 25;
-        rows.forEach((row, i) => {
-            row.forEach((col, j) => {
-                doc.text(String(col), 10 + j * 40, y);
-            });
-            y += 10;
-            if (y > 270) {
-                doc.addPage();
-                y = 20;
-            }
-        });
-
-        doc.save('payments.pdf');
-    }
-
-    // Chart visualization
-    function renderChart() {
-        const ctx = document.getElementById('paymentChart').getContext('2d');
-        const grouped = allPayments.reduce((acc, p) => {
-            acc[p.email] = (acc[p.email] || 0) + p.amount;
-            return acc;
-        }, {});
-
-        const labels = Object.keys(grouped);
-        const data = Object.values(grouped);
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Total Payment Amount by User',
-                    data: data,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
+    // Initial rendering of the table
+    renderTable();
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
