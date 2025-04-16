@@ -102,6 +102,8 @@ public class WebSecurityConfig {
                                 "/api/v1/tours/save",
                                 "/api/v1/tours/getAll",
                                 "/api/v1/tours/edit",
+                                "/api/v1/tours/delete/**",
+                                "/api/v1/tours/update",
                                 "/api/v1/tours/1",
                                 "/api/v1/tours/uploadImage",
                                 "/api/v1/reviews",
@@ -143,7 +145,10 @@ public class WebSecurityConfig {
                                 "/api/v1/gallery/featured",
                                 "/api/v1/gallery/filter",
                                 "/api/v1/gallery/delete/**",
-                                "/api/events"
+                                "/api/events",
+                                "api/v1/booking/view",
+                                "/api/transfer/create",
+                                "/api/payments/view"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
