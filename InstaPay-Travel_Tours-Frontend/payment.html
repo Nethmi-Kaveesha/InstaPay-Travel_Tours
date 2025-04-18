@@ -103,7 +103,8 @@
             tours.forEach(tour => {
                 const option = document.createElement("option");
                 option.value = tour.tourID;
-                option.textContent = tour.tourName;
+                option.textContent = `${tour.tourName} - $${tour.price}`; // Assuming price is a property of tour
+                option.dataset.price = tour.price; // Store the price in a data attribute
                 tourSelect.appendChild(option);
             });
         } catch (err) {
@@ -114,6 +115,21 @@
                 title: 'Error',
                 text: 'Unable to load tours. Please try again later.'
             });
+        }
+    });
+
+    // Update the amount field when a tour is selected
+    document.getElementById("tourSelect").addEventListener("change", function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const price = selectedOption.dataset.price;
+
+        // Update the amount field with the selected tour's price and set it as readonly
+        if (price) {
+            const amountField = document.getElementById("amount");
+            amountField.value = price;
+            amountField.setAttribute("readonly", "true");  // Make amount input readonly
+        } else {
+            document.getElementById("amount").value = '';
         }
     });
 

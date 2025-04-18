@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PayHere Payment</title>
+
+    <!-- Roboto font preload and load -->
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"></noscript>
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f2f2f2;
+            padding: 30px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Make a Payment</h2>
+    <form id="paymentForm">
+        <label for="bookingId">Booking ID</label>
+        <input type="number" id="bookingId" name="bookingId" required />
+
+        <label for="paymentMethod">Payment Method</label>
+        <input type="text" id="paymentMethod" name="paymentMethod" value="Card" required />
+
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" name="cardNumber" required />
+
+        <label for="expiryDate">Expiry Date (MM/YY)</label>
+        <input type="text" id="expiryDate" name="expiryDate" required />
+
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" name="cvv" required />
+
+        <button type="submit">Pay Now</button>
+    </form>
+</div>
+
+<!-- PayHere Sandbox Script -->
+<script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+
+<script>
+    // Setup PayHere configuration
+    payhere.onCompleted = function(orderId) {
+        alert("Payment completed. OrderID: " + orderId);
+        // Redirect or call your backend to mark the booking as paid
+    };
+
+    payhere.onDismissed = function() {
+        alert("Payment dismissed.");
+    };
+
+    payhere.onError = function(error) {
+        alert("Error occurred: " + error);
+    };
+
+    // Handle form submission
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const bookingId = document.getElementById("bookingId").value;
+
+        // Example values, you may fetch actual user & tour data from backend
+        const payment = {
+            sandbox: true,
+            merchant_id: "4OVxz80voh64JFnJVEHEwt3LI", // 🔁 Replace with your actual merchant ID
+            return_url: "http://localhost:8080/payment-success",
+            cancel_url: "http://localhost:8080/payment-cancel",
+            notify_url: "http://localhost:8080/api/payments/notify",
+            order_id: "Order_" + Date.now(),
+            items: "Travel Tour Booking",
+            amount: "2500.00", // Replace with dynamic amount
+            currency: "LKR",
+            first_name: "Test",
+            last_name: "User",
+            email: "test@example.com",
+            phone: "0771234567",
+            address: "123 Test Street",
+            city: "Colombo",
+            country: "Sri Lanka",
+            custom_1: bookingId
+        };
+
+        // Start payment
+        payhere.startPayment(payment);
+    });
+</script>
+</body>
+</html>

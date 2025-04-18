@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -117,4 +118,10 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    public Booking findById(Long id) {
+        Optional<Booking> booking = bookingRepo.findById(Math.toIntExact(id));
+        return booking.orElseThrow(() -> new RuntimeException("Booking not found with ID: " + id));
+    }
+
 }

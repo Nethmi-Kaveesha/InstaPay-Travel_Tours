@@ -117,7 +117,8 @@ public class WebSecurityConfig {
                                 "/api/v1/tourschedule/update",
                                 "/api/v1/tourschedule/delete/**",
                                 "/api/v1/payment/**",
-                                "/api/v1/booking/**",
+                                "/api/v1/booking/place",
+                                "/api/v1/booking/view",
                                 "/api/v1/expense/save",
                                 "/api/v1/expense/",
                                 "/api/v1/expense/saveExpense",
@@ -148,7 +149,11 @@ public class WebSecurityConfig {
                                 "/api/events",
                                 "api/v1/booking/view",
                                 "/api/transfer/create",
-                                "/api/payments/view"
+                                "/api/payments/view",
+                                "/api/payments/payment-details/**",
+                                "/payhere/notify",
+                                "/api/payhere/create",
+                                "/payhere/initiate-payment"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

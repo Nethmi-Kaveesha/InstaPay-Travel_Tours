@@ -1,5 +1,6 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
+import com.example.InstaPay_Travel_Tours.dto.PaymentDTO;
 import com.example.InstaPay_Travel_Tours.entity.Tour;
 import com.example.InstaPay_Travel_Tours.model.Payment;
 import com.example.InstaPay_Travel_Tours.repo.PaymentRepository;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -70,15 +72,15 @@ public class PaymentController {
         }
     }
 
-    @GetMapping("/view")
-    public ResponseEntity<List<Payment>> getAllPayments() {
-        try {
-            List<Payment> payments = paymentRepository.findAll();
-            return ResponseEntity.ok(payments);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null); // Or return a custom error message
-        }
-    }
+//    @GetMapping("/view")
+//    public ResponseEntity<List<Payment>> getAllPayments() {
+//        try {
+//            List<Payment> payments = paymentRepository.findAll();
+//            return ResponseEntity.ok(payments);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(null); // Or return a custom error message
+//        }
+//    }
 
     /**
      * Endpoint to fetch all tours (for your frontend to populate the tour dropdown).
@@ -92,4 +94,36 @@ public class PaymentController {
             return ResponseEntity.badRequest().body(null); // Or return a custom error message
         }
     }
+
+    @GetMapping("/payment-details/{paymentId}")
+    public ResponseEntity<Payment> getPaymentDetails(@PathVariable String paymentId) {
+        try {
+            // Fetch the payment details from the service or directly from the repository
+            Payment payment = paymentRepository.findById(Long.valueOf(paymentId))
+                    .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + paymentId));
+            return ResponseEntity.ok(payment);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/view")
+    public ResponseEntity<List<PaymentDTO>> getAllPayments() {
+        List<Payment> payments = paymentRepository.findAll();
+
+        List<PaymentDTO> dtos = payments.stream()
+                .map(p -> new PaymentDTO(
+                        p.getId(),
+                        p.getEmail(),
+                        p.getPaymentId(),
+                        p.getStatus(),
+                        p.getAmount(),
+                        p.getTour() != null ? p.getTour().getTourName() : "N/A"
+                ))
+                .toList();
+
+        return ResponseEntity.ok(dtos);
+    }
+
+
 }

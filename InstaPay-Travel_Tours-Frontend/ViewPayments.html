@@ -2,248 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Payment Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Records</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .navbar-top {
-            background-color: black;
-            color: white;
-            padding: 21px 0;
-            z-index: 1000;
-            width: 100%;
-            position: fixed;
-            top: 0px;
-            left: 0;
+        body {
+            font-family: Arial, sans-serif;
         }
-
-        .navbar-top .icon {
-            top: 0;
-            padding: 21px 0;
-            color: lightskyblue;
-            margin-left: 10px;
-        }
-
-        .navbar-top .content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        .navbar-top .content span {
-            margin-right: 20px;
-        }
-
-        .social-media-icons {
-            display: flex;
-            justify-content: flex-end;
-            margin-right: 100px;
-            margin-top: -17px;
-        }
-
-        .social-media-icons a {
-            color: white !important;
-            margin-left: 30px;
-            font-size: 16px;
-        }
-
-        .navbar {
-            background-color: white;
-            height: 50px;
-            padding: 5px 0;
-            z-index: 90999;
-            width: 100%;
-            position: fixed;
-            top: 60px;
-        }
-
-        .navbar .navbar-nav {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .navbar .navbar-nav .nav-item {
-            margin: 0 15px;
-        }
-
-        .navbar .navbar-nav .nav-item .nav-link {
-            padding: 5px 10px;
-            color: black;
-            font-weight: bold;
-        }
-
-        .navbar .navbar-nav .nav-item .nav-link:hover {
-            color: blue;
-        }
-
-        .navbar-brand img {
-            margin-left: 50px;
-            height: 120px;
-            margin-top: 45px;
-            width: auto;
-        }
-
-        .navbar-all-in-one {
-            background-color: white;
-            height: 100px;
-        }
-
-        .sidebar {
-            width: 240px;
-            background-color: #1f2937;
-            color: white;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            position: fixed;
-            top: 130px;
-            left: 0;
-            bottom: 0;
-            z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .sidebar a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
-        }
-
-        .sidebar a:hover {
-            background-color: #374151;
-        }
-
         .container {
-            margin-left: 229px;
+            margin-top: 50px;
         }
-
-        table {
-            margin-top: 45px;
+        .table {
+            margin-top: 20px;
         }
-
-        /* Add some styling to the table */
-        table th, table td {
+        .loading {
             text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
 <body>
-<div class="navbar-all-in-one fixed-top">
-    <div class="navbar-top">
-        <div class="content">
-            <span><i class="fas fa-map-marker-alt icon"></i>No 333 2/2, Galle Road, Colombo 03</span>
-            <span><i class="fas fa-phone icon"></i>011 257 4646</span>
-            <span><i class="fas fa-link icon"></i> <a href="mailto:marketing@travelco.lk" class="text-white">marketing@travelco.lk</a></span>
-        </div>
-        <div class="social-media-icons">
-            <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="icon"><i class="fab fa-twitter"></i></a>
-            <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#" class="icon"><i class="fab fa-instagram"></i></a>
-        </div>
-    </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-            <img src="images/Travelco-Footer-Logo.webp" alt="Logo">
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="rejister.html">Booking</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</div>
-
-<aside class="sidebar">
-    <a href="show.html">🧳 Tours</a>
-    <a href="Reveiw.html">📝 Review</a>
-    <a href="map.html">🗺️ Map</a>
-    <a href="weather.html">🌦️ Weather</a>
-    <a href="random.html">🌍 Spin the Globe</a>
-    <a href="currency-converter.html">💱 Currency Converter</a>
-    <a href="email.html">✉️ Send Email</a>
-    <a href="language-translator.html">🌐 Language Translator</a>
-    <a href="chatbot.html">🤖 AI Chatbot</a>
-    <a href="chat.html">💬 Real-Time Chat</a>
-    <a href="tracker-homepage.html">💰 Expense Tracker</a>
-    <a href="gallery.html">🖼️ Gallery</a>
-    <a href="blog.html">✍️ Blog</a>
-    <a href="user.html">👤 Users</a>
-    <a href="tourGuide.html">🧭 Tour Guides</a>
-    <a href="tour.html">🏖️ Manage Tours</a>
-    <a href="ReviewForm.html">📝 Add Review</a>
-    <a href="ViewPayments.html">💳 Payment Details</a>
-    <a href="viewBookings.html">📋 Booking Details</a>
-    <a href="userDetails.html">🧾 User Details</a>
-</aside>
-
-<div class="container mt-5">
-    <h2 class="mb-4">Payment Records</h2>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
+<div class="container">
+    <h2>Payment Records</h2>
+    <table class="table table-striped" id="paymentTable">
+        <thead>
         <tr>
             <th>ID</th>
-            <th>Amount (LKR)</th>
             <th>Email</th>
             <th>Payment ID</th>
             <th>Status</th>
-            <th>Tour ID</th> <!-- Added Tour ID column -->
+            <th>Amount</th>
+            <th>Tour Name</th>
         </tr>
         </thead>
-        <tbody id="paymentTableBody">
-        <!-- Data will be inserted here -->
+        <tbody>
+        <!-- Payment data will be inserted here via JavaScript -->
         </tbody>
     </table>
 </div>
 
-<script>
-    fetch('http://localhost:8080/api/payments/view')
-        .then(response => response.json())
-        .then(data => {
-            const payments = data.payments; // Assuming 'payments' is the array in the response
-            const tbody = document.getElementById('paymentTableBody');
-            payments.forEach(payment => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${payment.id}</td>
-                <td>${payment.amount}</td>
-                <td>${payment.email}</td>
-                <td>${payment.paymentId}</td>
-                <td>${payment.status}</td>
-                <td>${payment.tourName}</td>
-            `;
-                tbody.appendChild(row);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching payments:', error);
-        });
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+        // Show the loading message before making the request
+        $('#loadingMessage').show();
+
+        // AJAX request to fetch payment data
+        $.ajax({
+            url: 'http://localhost:8080/api/payments/view', // Correct API endpoint for fetching payments
+            method: 'GET',
+            success: function (data) {
+                console.log(data);  // Check the structure of the response
+                if (Array.isArray(data)) {
+                    let tableBody = $('#paymentTable tbody');
+                    tableBody.empty();  // Clear any existing rows
+
+                    // Loop through the array and add rows to the table
+                    data.forEach(function (payment) {
+                        let row = `<tr>
+        <td>${payment.id}</td>
+        <td>${payment.email}</td>
+        <td>${payment.paymentId}</td>
+        <td>${payment.status}</td>
+        <td>${payment.amount}</td>
+        <td>${payment.tourName}</td>
+    </tr>`;
+                        tableBody.append(row);
+                    });
+
+                } else {
+                    console.error('Expected an array but received:', data);
+                }
+            },
+            error: function (err) {
+                console.log('Error fetching payment data:', err);
+            }
+        });
+    });
 </script>
+
 </body>
 </html>

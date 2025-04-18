@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -50,6 +51,10 @@ public class PaymentService {
         payment.setStatus(status);
         payment.setTour(tour); // Set the foreign key relationship
         paymentRepository.save(payment);
+    }
+
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
     }
 
 }
