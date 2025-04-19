@@ -1,18 +1,25 @@
 package com.example.InstaPay_Travel_Tours.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.util.List;
 
+@Getter
 @Entity
 @Table(name = "booking")
 public class Booking {
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingId;
 
     private LocalDate bookingDate;
     private double totalPrice;
+
+    @Column(nullable = false)
+    private String status = "PENDING"; // New field
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -24,14 +31,16 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(int bookingId, LocalDate bookingDate, double totalPrice, User user, List<BookingDetail> bookingDetails) {
+    public Booking(int bookingId, LocalDate bookingDate, double totalPrice, String status, User user, List<BookingDetail> bookingDetails) {
         this.bookingId = bookingId;
         this.bookingDate = bookingDate;
         this.totalPrice = totalPrice;
+        this.status = status;
         this.user = user;
         this.bookingDetails = bookingDetails;
     }
 
+    // Getters and setters
     public int getBookingId() {
         return bookingId;
     }
@@ -54,6 +63,14 @@ public class Booking {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public User getUser() {

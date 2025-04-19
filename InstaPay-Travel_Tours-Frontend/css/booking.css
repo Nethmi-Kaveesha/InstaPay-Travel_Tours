@@ -1,0 +1,393 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url("images/1000_F_120022199_oWkco1KRUa7jm7Swcp1AIULfKnA2lNDP.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    font-weight: bold;
+}
+
+
+
+.container {
+    width: 80%;
+    max-width: 900px;
+    margin: 120px auto;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 20px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.booking-detail {
+    padding: 15px;
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.removeDetail {
+    background-color: #e74c3c;
+    padding: 6px 12px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.removeDetail:hover {
+    background-color: #c0392b;
+}
+
+#responseMessage {
+    text-align: center;
+    font-size: 16px;
+    color: #2ecc71;
+    margin-top: 20px;
+}
+
+#userId option {
+    color: black;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .removeDetail {
+        width: 100%;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select {
+        font-size: 16px;
+    }
+}
+
+/* Add detail button */
+#addDetail {
+    display: block;
+    width: 100%;
+    background-color: #2ecc71;
+    padding: 10px;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#addDetail:hover {
+    background-color: #27ae60;
+}
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    background-color: white;
+    width: 350px;
+    padding: 20px;
+    margin: 100px auto;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Flex container for inline inputs */
+.inline-inputs {
+    display: flex;
+    gap: 20px; /* Adjust space between inputs */
+    margin-bottom: 15px;
+}
+
+.input-group {
+    flex: 1;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Flex container for the inline form fields */
+.inline-fields {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    flex: 1 1 calc(33% - 10px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.input-group input,
+.input-group select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+@media screen and (max-width: 768px) {
+    .inline-fields {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .input-group {
+        flex: 1 1 100%;
+    }
+}
+
+.navbar-top {
+    background-color: black;
+    color: white;
+    padding: 5px 0;
+    z-index: 1000;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.navbar-top .icon {
+    color: lightskyblue;
+    margin-left: 10px;
+}
+
+.navbar-top .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-top .content span {
+    margin-right: 20px;
+}
+
+.social-media-icons {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 100px;
+    margin-top: -17px;
+}
+
+.social-media-icons a {
+    color: white !important;
+    margin-left: 30px;
+    font-size: 16px;
+}
+
+
+.navbar {
+    background-color: white;
+    height: 50px;
+    padding: 5px 0;
+    z-index: 90999;
+    width: 100%;
+    position: fixed;
+    top: 60px;
+}
+
+.navbar .navbar-nav {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.navbar .navbar-nav .nav-item {
+    margin: 0 15px;
+}
+
+.navbar .navbar-nav .nav-item .nav-link {
+    padding: 5px 10px;
+    color: black;
+    font-weight: bold;
+}
+
+.navbar .navbar-nav .nav-item .nav-link:hover {
+    color: blue;
+}
+
+.navbar .navbar-nav .nav-item {
+    margin-right: 20px;
+}
+
+.navbar-brand img {
+    margin-left: 50px;
+    height: 120px;
+    margin-top: 45px;
+    width: auto;
+}
+
+.navbar-all-in-one {
+    background-color: white;
+    height: 100px;
+
+}
+
+.go-back-btn {
+    margin-top: 120px;
+    margin-left: 1270px;
+    background-color: transparent;
+    border: 3px solid whitesmoke;
+    color: #007bff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.go-back-btn i {
+    margin-right: 8px;
+}
+
+.go-back-btn:hover {
+    background: linear-gradient(to right, lightblue, pink);
+    color: white;
+    cursor: pointer;
+}
+
+.go-back-btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.6);
+}
+
+.go-back-btn:active {
+    background-color: #0056b3;
+    transform: translateY(2px);
+}

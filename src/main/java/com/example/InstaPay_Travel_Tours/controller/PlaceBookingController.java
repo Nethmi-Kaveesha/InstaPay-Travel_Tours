@@ -1,13 +1,17 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.dto.BookingDTO;
+import com.example.InstaPay_Travel_Tours.entity.Booking;
+import com.example.InstaPay_Travel_Tours.repo.BookingRepository;
 import com.example.InstaPay_Travel_Tours.service.PlaceBookingService;
 import com.example.InstaPay_Travel_Tours.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/booking")
@@ -36,4 +40,8 @@ public class PlaceBookingController {
         return placeBookingService.getAllBookings();
     }
 
+
 }
+
+
+

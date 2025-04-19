@@ -11,6 +11,10 @@ public interface PlaceBookingService {
 
     List<BookingDTO> getAllBookings();
 
+    boolean updateStatusToPaid(Long bookingId);
+
+
+
     //List<Booking> getAllBookings();
 
 }

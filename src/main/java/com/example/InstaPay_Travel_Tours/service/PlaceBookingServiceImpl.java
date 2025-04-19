@@ -124,4 +124,16 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
         return booking.orElseThrow(() -> new RuntimeException("Booking not found with ID: " + id));
     }
 
+    public boolean updateStatusToPaid(Long bookingId) {
+        Optional<Booking> bookingOpt = bookingRepo.findById(Math.toIntExact(bookingId));
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            booking.setStatus("PAID");
+            bookingRepo.save(booking);
+            return true;
+        }
+        return false;
+    }
+
+
 }

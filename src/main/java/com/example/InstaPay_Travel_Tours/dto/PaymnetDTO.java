@@ -5,13 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PaymentRequest {
+public class PaymnetDTO {
     private Long bookingId;
     private String cardNumber;
     private String cardName;
     private String expiry;
     private String cvv;
     private Double amount;
-
-    // Getters & Setters
 }
