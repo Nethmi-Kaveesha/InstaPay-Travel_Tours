@@ -24,10 +24,8 @@ public class PaymentRequest {
     private String cvv;
     private Double amount;
 
-    // Default constructor
     public PaymentRequest() {}
 
-    // Constructor with parameters
     public PaymentRequest(Long bookingId, String cardNumber, String cardName, String expiry, String cvv, Double amount) {
         this.bookingId = bookingId;
         this.cardNumber = cardNumber;

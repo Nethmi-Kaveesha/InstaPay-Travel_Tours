@@ -130,7 +130,7 @@
             background-color: #374151;
         }
 
-        /* Responsive adjustments */
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -419,8 +419,8 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Event saved successfully', data);
-                displayEvent(data); // Update event log UI
-                renderCalendar(); // Refresh calendar UI
+                displayEvent(data);
+                renderCalendar();
             })
             .catch(error => {
                 console.error('Error saving event:', error);

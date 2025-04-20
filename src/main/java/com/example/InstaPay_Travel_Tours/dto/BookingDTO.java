@@ -47,11 +47,11 @@ public class BookingDTO {
         this.totalPrice = totalPrice;
     }
 
-    public UUID getUserId() {  // Getter for UUID userId
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(UUID userId) {  // Setter for UUID userId
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 

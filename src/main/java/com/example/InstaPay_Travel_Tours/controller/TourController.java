@@ -30,7 +30,6 @@ public class TourController {
     @Autowired
     private TourRepository tourRepository;
 
-    // In your TourController.java
     @PutMapping("/api/v1/tours/{id}")
     public ResponseEntity<Tour> updateTourSeats(@PathVariable Integer id, @RequestBody Tour updatedTour) {
         Optional<Tour> optionalTour = tourRepository.findById(id);
@@ -59,15 +58,13 @@ public class TourController {
     public ResponseEntity<List<TourDTO>> searchTours(@RequestParam(required = false) String keyword) {
         List<TourDTO> tours;
         if (keyword != null && !keyword.trim().isEmpty()) {
-            // If a keyword is provided, search for tours by name
             tours = tourService.searchToursByName(keyword);
         } else {
-            // If no keyword is provided, return all tours
             tours = tourService.getAllTours();
         }
         return new ResponseEntity<>(tours, HttpStatus.OK);
     }
-    // Save a new tour
+
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveTour(@RequestBody TourDTO tourDTO) {
         try {
@@ -78,7 +75,6 @@ public class TourController {
         }
     }
 
-    // Get all tours
     @GetMapping("/getAll")
     public List<TourDTO> getAllTours() {
         return tourService.getAllTours();

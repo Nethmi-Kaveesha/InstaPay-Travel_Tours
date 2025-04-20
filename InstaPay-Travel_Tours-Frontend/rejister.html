@@ -27,13 +27,12 @@
 
         }
 
-        /* Heading Styles */
         h1, h2, h3, h4, h5, h6 {
-            color: #2F4F4F; /* Dark Slate Gray */
+            color: #2F4F4F;
             font-family: 'Arial', sans-serif;
             font-weight: bold;
-            text-align: center; /* Center-align headings */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
             margin: 20px 0;
         }
 
@@ -55,13 +54,13 @@
             font-size: 24px;
             font-weight: bold;
         }
-        /* Paragraph Styles */
+
         p {
-            color: #333333; /* Dark Gray */
+            color: #333333;
             font-family: 'Arial', sans-serif;
-            font-size: 16px; /* Slightly larger font for easy readability */
-            line-height: 1.6; /* More space between lines */
-            text-align: justify; /* Justify text for a neat alignment */
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: justify;
             margin: 20px 0;
             padding: 0 10px;
         }
@@ -214,7 +213,7 @@
         }
 
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
 
         }
@@ -328,27 +327,23 @@
         };
 
         $.ajax({
-            url: 'http://localhost:8080/api/v1/user/register', // Ensure this is correct
+            url: 'http://localhost:8080/api/v1/user/register',
             type: 'POST',
-            contentType: 'application/json', // Send data as JSON
-            data: JSON.stringify(formData), // Convert data to JSON
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
             success: function(response) {
-                // Assuming the response contains the user data with the role (either "Admin" or "User")
                 const role = response.role;
 
-                // Display success message
                 Swal.fire({
                     icon: 'success',
                     title: 'Registration Successful',
                     text: 'You have successfully registered!'
                 }).then(function() {
-                    // Redirect based on the user's role
                     if (role === 'Admin') {
-                        window.location.href = "admin-dashboard.html"; // Redirect to admin dashboard
+                        window.location.href = "admin-dashboard.html";
                     } else if (role === 'User') {
-                        window.location.href = "user-dashboard.html"; // Redirect to user dashboard
+                        window.location.href = "user-dashboard.html";
                     } else {
-                        // If role is unexpected, redirect to login page
                         window.location.href = "login.html";
                     }
                 });

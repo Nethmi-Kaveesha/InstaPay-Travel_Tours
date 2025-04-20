@@ -15,7 +15,6 @@ public class Image implements Serializable {
     @Lob
     private byte[] imageData;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }

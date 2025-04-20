@@ -1,7 +1,7 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
 import com.example.InstaPay_Travel_Tours.dto.ReviewDTO;
-import com.example.InstaPay_Travel_Tours.model.Review;
+import com.example.InstaPay_Travel_Tours.entity.Review;
 import com.example.InstaPay_Travel_Tours.repo.ReviewRepository;
 import com.example.InstaPay_Travel_Tours.service.impl.ReviewServiceImpl;
 import com.example.InstaPay_Travel_Tours.util.ResponseUtil;
@@ -24,12 +24,10 @@ public class ReviewController {
 
     @PostMapping
     public void saveReview(@RequestBody Review review) {
-        // Print review to debug
         System.out.println("Review data received: " + review);
-        reviewRepository.save(review);  // Save to the database
+        reviewRepository.save(review);
     }
 
-    // GET method to retrieve reviews
     @GetMapping
     public List<Review> getAllReview() {
         return reviewRepository.findAll();

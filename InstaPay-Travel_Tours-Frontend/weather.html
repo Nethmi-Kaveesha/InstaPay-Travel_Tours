@@ -62,24 +62,7 @@
             transition: color 0.3s ease;
         }
 
-        /* Custom color styles for weather icons */
-        .sunny {
-            color: #f39c12;  /* Yellow */
-        }
 
-        .cloudy {
-            color: #95a5a6;  /* Grey */
-        }
-
-        .rainy {
-            color: #3498db;  /* Blue */
-        }
-
-        .snowy {
-            color: #ecf0f1;  /* Light Grey/White */
-        }
-
-        /* Input and button for weather */
         .input-group {
             display: flex;
             justify-content: center;
@@ -130,7 +113,6 @@
             }
         }
 
-        /* Sidebar Styles */
         .sidebar {
             width: 240px;
             background-color: #1f2937;
@@ -160,7 +142,6 @@
             background-color: #374151;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .sidebar {
                 width: 200px;
@@ -259,7 +240,7 @@
         }
 
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
 
         }
@@ -335,10 +316,8 @@
         <button onclick="fetchWeather()">Get Weather</button>
     </div>
 
-    <!-- Weather Info Display -->
     <div id="weather-info"></div>
 
-    <!-- Local Guide Button -->
     <button class="local-guide-btn" onclick="getLocalGuide()">Local Guide</button>
 </div>
 

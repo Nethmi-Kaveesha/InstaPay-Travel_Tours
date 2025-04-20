@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     void deleteByEmail(String email);
 
-    Optional<User> findById(UUID userId);  // Use UUID instead of Integer
+    Optional<User> findById(UUID userId);
 
 }

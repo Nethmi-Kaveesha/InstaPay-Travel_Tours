@@ -10,23 +10,17 @@ import org.springframework.http.*;
 public class PayHereService {
 
     public String makePayment(PaymentRequest paymentRequest) {
-        // PayHere API endpoint
-        String payHereUrl = "https://sandbox.payhere.lk/pay/checkoutJ"; // Use sandbox URL for testing
+        String payHereUrl = "https://sandbox.payhere.lk/pay/checkoutJ";
 
-        // Create RestTemplate instance to send the POST request
         RestTemplate restTemplate = new RestTemplate();
 
-        // Set headers for the request
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Create the request body using the PaymentRequest object
         HttpEntity<PaymentRequest> entity = new HttpEntity<>(paymentRequest, headers);
 
-        // Send the request to PayHere
         ResponseEntity<String> response = restTemplate.exchange(payHereUrl, HttpMethod.POST, entity, String.class);
 
-        // Return the response from PayHere
         return response.getBody();
     }
 }

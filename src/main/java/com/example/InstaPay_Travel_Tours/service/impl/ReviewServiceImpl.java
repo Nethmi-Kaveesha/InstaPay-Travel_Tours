@@ -1,8 +1,9 @@
 package com.example.InstaPay_Travel_Tours.service.impl;
 
 import com.example.InstaPay_Travel_Tours.dto.ReviewDTO;
-import com.example.InstaPay_Travel_Tours.model.Review;
 
+
+import com.example.InstaPay_Travel_Tours.entity.Review;
 import com.example.InstaPay_Travel_Tours.repo.ReviewRepository;
 import com.example.InstaPay_Travel_Tours.service.ReviewService;
 import org.modelmapper.ModelMapper;

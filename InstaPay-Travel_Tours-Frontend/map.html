@@ -17,7 +17,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom right, #f0f9ff, #fff0f5); /* soft and light */
+            background: linear-gradient(to bottom right, #f0f9ff, #fff0f5);
             color: #333;
         }
 
@@ -60,7 +60,7 @@
             position: absolute;
             top: 150px;
             left: 280px;
-            max-width: 700px; /* Increased width */
+            max-width: 700px;
             padding: 20px;
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #ffe0f0);
@@ -71,13 +71,13 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             overflow-y: auto;
-            max-height: 500px; /* Restricting the height */
+            max-height: 500px;
         }
 
         .places-list ul {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columns for inline display */
-            gap: 20px; /* Space between each item */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
             padding: 0;
             margin: 0;
         }
@@ -91,7 +91,7 @@
         }
 
         .places-list li:hover {
-            background-color: rgba(0, 123, 255, 0.3); /* Darker on hover */
+            background-color: rgba(0, 123, 255, 0.3);
         }
 
         .place-name {
@@ -241,7 +241,7 @@
         }
 
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
 
         }
@@ -344,7 +344,7 @@
     function fetchNearbyPlaces(latlng) {
         var lat = latlng.lat;
         var lon = latlng.lng;
-        var radius = 2000; // Search radius in meters
+        var radius = 2000;
         var overpassURL = `https://overpass-api.de/api/interpreter?data=[out:json];(node(around:${radius},${lat},${lon})[tourism=attraction];node(around:${radius},${lat},${lon})[amenity=restaurant];node(around:${radius},${lat},${lon})[tourism=hotel];);out;`;
 
         fetch(overpassURL)
@@ -358,8 +358,8 @@
 
     function displayPlaces(places) {
         const placesList = document.getElementById('places-list');
-        placesList.style.display = 'block'; // Show the popup
-        placesList.innerHTML = ''; // Clear previous
+        placesList.style.display = 'block';
+        placesList.innerHTML = '';
 
         // Add close button at the top
         const closeBtn = document.createElement('button');
@@ -370,7 +370,7 @@
         };
         placesList.appendChild(closeBtn);
 
-        // Add place list
+
         if (places.length === 0) {
             placesList.innerHTML += '<p>No places found nearby.</p>';
             return;

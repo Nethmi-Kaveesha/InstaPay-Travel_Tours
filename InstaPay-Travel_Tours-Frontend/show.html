@@ -320,7 +320,7 @@
         }
 
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
 
         }
@@ -454,7 +454,6 @@
 
                 toursContainer.innerHTML = tours.length ? "" : "<p>No tours available.</p>";
 
-                // Populate the dropdown with tour names
                 tours.forEach(tour => {
                     const option = document.createElement("option");
                     option.value = tour.tourName;
@@ -629,7 +628,7 @@
 </script>
 <script>
     function goBack() {
-        window.history.back();  // Goes back to the previous page
+        window.history.back();
     }
 </script>
 </body>

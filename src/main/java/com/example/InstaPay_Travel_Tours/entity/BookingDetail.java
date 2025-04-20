@@ -11,12 +11,11 @@ public class BookingDetail {
 
     @ManyToOne
     @JoinColumn(name = "booking_id", nullable = false)
-    private Booking booking;  // Assuming you have a Booking entity
+    private Booking booking;
 
     @ManyToOne
     @JoinColumn(name = "tour_id", nullable = false)
-    private Tour tour;  // Assuming you have a Tour entity
-
+    private Tour tour;
     private double quantity;
     private double price;
     private double total;

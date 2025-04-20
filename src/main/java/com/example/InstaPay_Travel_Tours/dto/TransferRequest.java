@@ -4,12 +4,10 @@ import java.util.UUID;
 
 public class TransferRequest {
 
-    private UUID userId; // The userId to identify the user making the transfer
-    private Integer bookingId; // The bookingId associated with the transfer
-    private String orderId; // The orderId for the transfer
-    private Double amount; // The amount to be transferred
-
-    // Getters and Setters
+    private UUID userId;
+    private Integer bookingId;
+    private String orderId;
+    private Double amount;
 
     public UUID getUserId() {
         return userId;

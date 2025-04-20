@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class Pay {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-increment paymentId
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
 
     private String cardNumber;

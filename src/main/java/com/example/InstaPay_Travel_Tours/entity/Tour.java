@@ -53,7 +53,6 @@ public class Tour {
     @Column(name = "images", length = 255, nullable = true)
     private String images;
 
-    // Constructors
     public Tour(int tourID, String tourName, String description, String location, int duration, double price,
                 String tourType, int availableSeats, Date startDate, Date endDate, String images) {
         this.tourID = tourID;
@@ -72,7 +71,6 @@ public class Tour {
     public Tour() {
     }
 
-    // Getters and setters
     public int getTourID() {
         return tourID;
     }

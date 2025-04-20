@@ -66,9 +66,8 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
                     throw new RuntimeException("Only " + availableSeats + " seats available for " + tour.getTourName());
                 }
 
-                // Reduce the available seats
                 tour.setAvailableSeats(availableSeats - requestedSeats);
-                tourRepo.save(tour); // update seat count in DB
+                tourRepo.save(tour);
 
                 BookingDetail bookingDetail = new BookingDetail();
                 bookingDetail.setQuantity(bookingDetailDTO.getQuantity());
@@ -88,7 +87,6 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
 
             return true;
         } catch (Exception e) {
-            // You can log this or pass a custom error message
             throw new RuntimeException("Booking failed: " + e.getMessage());
         }
     }
@@ -101,7 +99,6 @@ public class PlaceBookingServiceImpl implements PlaceBookingService {
             dto.setTotalPrice(booking.getTotalPrice());
             dto.setUserId(booking.getUser().getUid());
 
-            // Map booking detail list
             List<BookingDetailDTO> detailDTOs = booking.getBookingDetails().stream().map(detail -> {
                 BookingDetailDTO detailDTO = new BookingDetailDTO();
                 detailDTO.setId(detail.getId());

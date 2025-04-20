@@ -250,7 +250,7 @@
         }
 
         .navbar-all-in-one {
-            background-color: white; /* Set background to white */
+            background-color: white;
             height: 100px;
 
         }
@@ -338,10 +338,9 @@
 </div>
 
 <script>
-    let map;  // Map instance
+    let map;
 
     function initializeMap(lat, lng) {
-        // Initialize map only if it is not already initialized
         if (!map) {
             map = L.map('map').setView([lat, lng], 10); // Set initial view
 
@@ -349,7 +348,6 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
         } else {
-            // Update map view
             map.setView([lat, lng], 10);
         }
     }
@@ -362,23 +360,18 @@
         const imageSlideShow = document.getElementById('imageSlideShow');
         const historyList = document.getElementById('historyList');
 
-        // Clear previous slideshow
         imageSlideShow.innerHTML = '';
 
-        // Start spin animation
         globe.style.animation = "spin 2s ease-in-out";
 
-        // Hide result card during spin
         card.classList.remove('show');
 
-        // Stop animation and fetch after 2s
         setTimeout(() => {
             globe.style.animation = "none";
 
             fetch('http://localhost:8080/api/random-destination')
                 .then(response => response.json())
                 .then(data => {
-                    // Handle the case when data.images is missing or not an array
                     if (!data || !Array.isArray(data.images) || data.images.length === 0) {
                         title.textContent = "✈️ No images available for this destination!";
                         desc.textContent = "Try again later.";
@@ -387,7 +380,6 @@
                         title.textContent = `✈️ ${data.city}, ${data.country}`;
                         desc.textContent = data.tip;
 
-                        // Loop through the images and create image elements
                         data.images.forEach(img => {
                             const imgElement = document.createElement('img');
                             imgElement.src = `/images/${img}`;
@@ -396,15 +388,12 @@
                         });
                     }
 
-                    // Initialize or update the map with the new destination's coordinates
                     initializeMap(data.lat, data.lng);
 
-                    // Show card with transition
                     setTimeout(() => {
                         card.classList.add('show');
                     }, 100);
 
-                    // Update the history list
                     const historyItem = document.createElement('li');
                     historyItem.classList.add('history-item');
                     historyItem.textContent = `${data.city}, ${data.country}`;

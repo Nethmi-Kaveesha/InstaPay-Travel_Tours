@@ -29,25 +29,22 @@ public class TransferController {
     @PostMapping("/create")
     public ResponseEntity<Transfer> createTransfer(@RequestBody TransferRequest request) {
 
-        // Check if the booking exists
         Booking booking = bookingRepository.findById(request.getBookingId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
 
-        // Correctly handle Optional<User> using UUID
-        User user = userRepository.findById(request.getUserId())  // Assuming request.getUserId() is a UUID
+        User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        // Create a new transfer
+
         Transfer transfer = new Transfer();
         transfer.setOrderId(request.getOrderId());
         transfer.setAmount(request.getAmount());
         transfer.setStatus("Pending");
-        transfer.setMethod("Transfer");  // Or any other method you define
+        transfer.setMethod("Transfer");
 
         transfer.setBooking(booking);
         transfer.setUser(user);
 
-        // Save the transfer and return the response
         Transfer saved = transferRepository.save(transfer);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }

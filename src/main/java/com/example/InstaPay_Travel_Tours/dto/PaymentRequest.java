@@ -13,5 +13,4 @@ public class PaymentRequest {
     private String cvv;
     private Double amount;
 
-    // Getters & Setters
 }

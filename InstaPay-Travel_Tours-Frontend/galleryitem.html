@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traveler's Gallery Wall</title>
     <style>
-        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -77,35 +76,25 @@
     </style>
 </head>
 <body>
-
-<!-- Header Section -->
 <header>
     <h1>Traveler's Gallery Wall</h1>
 </header>
-
-<!-- Filters Section -->
 <div class="filters">
     <button class="filter" onclick="loadGallery('nature')">Nature</button>
     <button class="filter" onclick="loadGallery('culture')">Culture</button>
     <button class="filter" onclick="loadGallery('food')">Food</button>
     <button class="filter" onclick="loadGallery('adventure')">Adventure</button>
 </div>
-
-<!-- Kaveesha Picks Section -->
 <div class="kaveesha-picks">
     <h2>Kaveesha Picks</h2>
     <div class="gallery" id="kaveesha-picks-gallery"></div>
 </div>
-
-<!-- All Gallery Items Section -->
 <div class="gallery" id="gallery"></div>
 
 <script>
-    // Get elements for gallery and Kaveesha Picks
     const galleryContainer = document.getElementById('gallery');
     const kaveeshaPicksContainer = document.getElementById('kaveesha-picks-gallery');
 
-    // Sample data for gallery - Replace these with your actual travel images and details
     const galleryItems = [
         { imageUrl: 'images/nature1.jpg', category: 'nature', location: 'Mountain View' },
         { imageUrl: 'images/culture1.jpg', category: 'culture', location: 'Ancient Temple' },
@@ -117,13 +106,11 @@
         { imageUrl: 'images/adventure2.jpg', category: 'adventure', location: 'Bungee Jumping' }
     ];
 
-    // Featured Items (Kaveesha Picks) - Replace these with your favorite travels
     const featuredItems = [
         { imageUrl: 'images/featured_nature.jpg', location: 'Featured Nature Destination' },
         { imageUrl: 'images/featured_food.jpg', location: 'Featured Food Journey' }
     ];
 
-    // Load all gallery items
     function loadGallery(category = '') {
         const filteredItems = category
             ? galleryItems.filter(item => item.category === category)
@@ -131,9 +118,8 @@
         displayGalleryItems(filteredItems);
     }
 
-    // Load featured items (Kaveesha Picks)
     function loadFeaturedGalleryItems() {
-        kaveeshaPicksContainer.innerHTML = ''; // Clear previous picks
+        kaveeshaPicksContainer.innerHTML = '';
         featuredItems.forEach(item => {
             const img = document.createElement('img');
             img.src = item.imageUrl;
@@ -142,9 +128,8 @@
         });
     }
 
-    // Display gallery items dynamically
     function displayGalleryItems(items) {
-        galleryContainer.innerHTML = ''; // Clear existing gallery items
+        galleryContainer.innerHTML = '';
         items.forEach(item => {
             const img = document.createElement('img');
             img.src = item.imageUrl;
@@ -153,9 +138,8 @@
         });
     }
 
-    // Load initial content
     loadFeaturedGalleryItems();
-    loadGallery(); // Load all items by default
+    loadGallery();
 </script>
 </body>
 </html>

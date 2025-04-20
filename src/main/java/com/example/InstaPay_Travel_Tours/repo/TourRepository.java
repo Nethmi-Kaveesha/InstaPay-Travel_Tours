@@ -15,21 +15,15 @@ import java.util.Optional;
 @Repository
 public interface TourRepository extends JpaRepository<Tour, Integer> {
 
-    // Find tours by name (case-insensitive)
     List<Tour> findByTourNameContainingIgnoreCase(String tourName);
-
-    // Find tour by ID
     Optional<Tour> findByTourID(int tourID);
 
-    // Paginated query to find tours by location
     @Query("SELECT t FROM Tour t WHERE t.location = :location")
     Page<Tour> findByLocation(@Param("location") String location, Pageable pageable);
-
-    // Paginated query to find tours with available seats greater than the specified number
     @Query("SELECT t FROM Tour t WHERE t.availableSeats > :seats")
     Page<Tour> findToursWithSeatsGreaterThan(@Param("seats") int seats, Pageable pageable);
 
-    // Find tours available in a specific date range
+
     @Query("SELECT t FROM Tour t WHERE t.startDate >= :startDate AND t.endDate <= :endDate")
     List<Tour> findAvailableTours(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 

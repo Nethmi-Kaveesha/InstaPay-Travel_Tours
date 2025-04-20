@@ -21,7 +21,6 @@ public class ReviewDTO {
     @Size(max = 500, message = "Comment must be at most 500 characters")
     private String comment;
 
-    // Constructors
     public ReviewDTO() {}
 
     public ReviewDTO(Long id, String name, String email, int rating, String comment) {
@@ -32,7 +31,6 @@ public class ReviewDTO {
         this.comment = comment;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

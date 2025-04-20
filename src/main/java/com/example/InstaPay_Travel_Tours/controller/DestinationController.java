@@ -24,7 +24,6 @@ public class DestinationController {
         int index = new Random().nextInt(destinations.size());
         Map<String, Object> randomDestination = destinations.get(index);
 
-        // Add to history, keeping the last 5 results
         if (history.size() >= 5) {
             history.removeFirst();
         }

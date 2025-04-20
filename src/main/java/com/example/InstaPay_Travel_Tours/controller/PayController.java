@@ -1,7 +1,5 @@
 package com.example.InstaPay_Travel_Tours.controller;
 
-
-
 import com.example.InstaPay_Travel_Tours.dto.PaymnetDTO;
 import com.example.InstaPay_Travel_Tours.entity.PaymentRequest;
 
@@ -10,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/payment")
-@CrossOrigin(origins = "http://localhost:3000") // Adjust this to your frontend port
+@CrossOrigin(origins = "http://localhost:3000")
 public class PayController {
 
     @Autowired
@@ -36,5 +36,10 @@ public class PayController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Failed to save payment");
         }
+    }
+
+    @GetMapping("/getAll")
+    public List<PaymentRequest> getAllPayments() {
+        return paymentRequestRepository.findAll();
     }
 }

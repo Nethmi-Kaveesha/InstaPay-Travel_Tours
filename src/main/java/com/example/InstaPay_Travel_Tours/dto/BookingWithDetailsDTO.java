@@ -10,5 +10,4 @@ public class BookingWithDetailsDTO {
     private Double detailTotal;
     private Long tourId;
 
-    // Getters and Setters
 }

@@ -155,7 +155,8 @@ public class WebSecurityConfig {
                                 "/api/payhere/create",
                                 "/payhere/initiate-payment",
                                 "/payment/confirm",
-                                "api/v1/booking/latest-booking-id"
+                                "api/v1/booking/latest-booking-id",
+                                "/payment/getAll"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

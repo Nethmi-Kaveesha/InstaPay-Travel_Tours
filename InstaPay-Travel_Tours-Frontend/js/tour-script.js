@@ -10,20 +10,17 @@ $("#tourForm").submit(function (event) {
     }
 });
 
-// Handle image upload and conversion to base64
 function handleImageUpload(files) {
     const file = files[0];
     if (file) {
         const reader = new FileReader();
         reader.onloadend = function () {
-            // Here you can handle the uploaded image (e.g., save as base64 or upload to your server)
-            $("#images").val(reader.result);  // Set the image data as the value (Base64 encoded)
+            $("#images").val(reader.result);
         };
-        reader.readAsDataURL(file); // Convert the image to a base64 string
+        reader.readAsDataURL(file);
     }
 }
 
-// When a user selects an image
 $("#images").change(function (event) {
     handleImageUpload(event.target.files);
 });
@@ -40,7 +37,7 @@ function saveTour() {
         availableSeats: $("#availableSeats").val(),
         startDate: $("#startDate").val(),
         endDate: $("#endDate").val(),
-        images: $("#images").val()  // This will be a base64 string or an image URL
+        images: $("#images").val()
     };
 
     $.ajax({
@@ -81,7 +78,6 @@ function getAllTours() {
             tours.forEach(tour => {
                 let imageHTML = '';
                 if (tour.images) {
-                    // If the image is stored as base64
                     imageHTML = `<img src="${tour.images}" alt="${tour.tourName}" style="width: 100px; height: 100px; object-fit: cover;">`;
                 } else {
                     imageHTML = '<p>No image available</p>';

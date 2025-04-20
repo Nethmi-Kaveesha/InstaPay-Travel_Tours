@@ -23,7 +23,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Table rows will be dynamically added here -->
         </tbody>
     </table>
 </div>
@@ -33,12 +32,12 @@
 <script>
     function loadBookingData() {
         $.ajax({
-            url: 'http://localhost:8080/api/v1/booking/view',  // Updated endpoint
+            url: 'http://localhost:8080/api/v1/booking/view',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 var tableBody = $('#bookingTable tbody');
-                tableBody.empty();  // Clear existing rows
+                tableBody.empty();
 
                 data.forEach(function(booking) {
                     var row = $('<tr></tr>');
@@ -46,8 +45,8 @@
                     row.append('<td>' + booking.bookingDate + '</td>');
                     row.append('<td>' + booking.totalPrice + '</td>');
                     row.append('<td>' + booking.userName + '</td>');
-                    row.append('<td>' + booking.bookingDetails[0].tourName + '</td>'); // Assuming only one tour
-                    row.append('<td>' + booking.bookingDetails[0].seats + '</td>'); // Same assumption
+                    row.append('<td>' + booking.bookingDetails[0].tourName + '</td>');
+                    row.append('<td>' + booking.bookingDetails[0].seats + '</td>');
                     row.append('<td><button class="btn btn-info">View</button></td>');
                     tableBody.append(row);
                 });

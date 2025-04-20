@@ -19,7 +19,7 @@ public class Booking {
     private double totalPrice;
 
     @Column(nullable = false)
-    private String status = "PENDING"; // New field
+    private String status = "PENDING";
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

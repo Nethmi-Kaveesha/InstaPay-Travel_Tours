@@ -35,15 +35,13 @@
   }
 
   function connect() {
-    // Make sure the WebSocket URL matches your Spring Boot WebSocket endpoint
-    var socket = new SockJS('http://localhost:8080/chat'); // WebSocket URL for your backend
+    var socket = new SockJS('http://localhost:8080/chat');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
       console.log("Connected: " + frame);
       setConnected(true);
 
-      // Subscribe to the topic where messages will be sent
       stompClient.subscribe('/topic/message', function (message) {
         showMessage(JSON.parse(message.body));
       });
@@ -56,7 +54,7 @@
     messageElement.textContent = message.sender + ": " + message.content;
     messageElement.classList.add("border-bottom", "mb-1");
     chat.appendChild(messageElement);
-    chat.scrollTop = chat.scrollHeight; // Auto scroll to the bottom when a new message is added
+    chat.scrollTop = chat.scrollHeight;
   }
 
   function sendMessage() {
@@ -68,21 +66,17 @@
       return;
     }
 
-    // Create a message object to send to the backend
     var chatMessage = {
       sender: sender,
       content: content
     };
 
-    // Send the message to the backend WebSocket endpoint
     stompClient.send("/app/sendMessage", {}, JSON.stringify(chatMessage));
-    document.getElementById('messageInput').value = ''; // Clear message input field
+    document.getElementById('messageInput').value = '';
   }
 
-  // Bind the Send button click event
   document.getElementById('sendMessage').onclick = sendMessage;
 
-  // Connect when the page loads
   window.onload = connect;
 </script>
 </body>

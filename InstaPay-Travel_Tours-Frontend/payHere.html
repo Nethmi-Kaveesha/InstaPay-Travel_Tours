@@ -4,12 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PayHere Payment</title>
-
-    <!-- Roboto font preload and load -->
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto"></noscript>
-
-    <!-- Custom CSS -->
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -78,15 +74,11 @@
         <button type="submit">Pay Now</button>
     </form>
 </div>
-
-<!-- PayHere Sandbox Script -->
 <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
 
 <script>
-    // Setup PayHere configuration
     payhere.onCompleted = function(orderId) {
         alert("Payment completed. OrderID: " + orderId);
-        // Redirect or call your backend to mark the booking as paid
     };
 
     payhere.onDismissed = function() {
@@ -97,22 +89,20 @@
         alert("Error occurred: " + error);
     };
 
-    // Handle form submission
     document.getElementById('paymentForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
         const bookingId = document.getElementById("bookingId").value;
 
-        // Example values, you may fetch actual user & tour data from backend
         const payment = {
             sandbox: true,
-            merchant_id: "4OVxz80voh64JFnJVEHEwt3LI", // 🔁 Replace with your actual merchant ID
+            merchant_id: "4OVxz80voh64JFnJVEHEwt3LI",
             return_url: "http://localhost:8080/payment-success",
             cancel_url: "http://localhost:8080/payment-cancel",
             notify_url: "http://localhost:8080/api/payments/notify",
             order_id: "Order_" + Date.now(),
             items: "Travel Tour Booking",
-            amount: "2500.00", // Replace with dynamic amount
+            amount: "2500.00",
             currency: "LKR",
             first_name: "Test",
             last_name: "User",
@@ -124,7 +114,6 @@
             custom_1: bookingId
         };
 
-        // Start payment
         payhere.startPayment(payment);
     });
 </script>

@@ -15,6 +15,5 @@ public interface PlaceBookingService {
 
 
 
-    //List<Booking> getAllBookings();
 
 }

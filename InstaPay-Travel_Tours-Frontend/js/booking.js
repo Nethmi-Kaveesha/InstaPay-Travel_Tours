@@ -1,34 +1,29 @@
-// Declare global variable for tours data
+
 let toursData = [];
 
-// Declare global variable for storing the bookingId after booking is placed
 let currentBookingId = null;
 
-// When the 'Pay Now' button is clicked
 document.getElementById("payNowButton").addEventListener("click", function () {
 
     document.getElementById("bookingId").value = selectedBooking.bookingId;
     document.getElementById("amount").value = selectedBooking.totalAmount.toFixed(2);
 
-    // Show modal
     const myModal = new bootstrap.Modal(document.getElementById("paymentModal"));
     myModal.show();
 });
 
-// Function to retrieve selected booking details
 function getSelectedBooking() {
     const selectedRow = document.querySelector(".booking-row.selected");
     if (!selectedRow) {
-        return null;  // Return null if no booking row is selected
+        return null;
     }
 
     return {
-        bookingId: selectedRow.dataset.bookingId,  // Get the booking ID
-        totalAmount: parseFloat(selectedRow.dataset.amount)  // Get the total amount
+        bookingId: selectedRow.dataset.bookingId,
+        totalAmount: parseFloat(selectedRow.dataset.amount)
     };
 }
 
-// Confirm payment and send to backend
 function confirmPayment() {
     const bookingId = document.getElementById("bookingId").value;
     const cardNumber = document.getElementById("cardNumber").value;
@@ -37,13 +32,11 @@ function confirmPayment() {
     const cvv = document.getElementById("cvv").value;
     const amount = document.getElementById("amount").value;
 
-    // Validate the form fields
     if (!bookingId || !cardNumber || !cardName || !expiry || !cvv || !amount) {
         Swal.fire("Error", "Please fill in all the fields.", "warning");
         return;
     }
 
-    // Prepare the payload
     const payload = {
         bookingId: bookingId,
         cardNumber: cardNumber,
@@ -53,27 +46,22 @@ function confirmPayment() {
         amount: parseFloat(amount)
     };
 
-    // Make an AJAX request to backend to process payment
     $.ajax({
-        url: "http://localhost:8080/payment/confirm",  // Your payment confirmation API
+        url: "http://localhost:8080/payment/confirm",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(payload),
         success: function (response) {
             Swal.fire("Success", "Payment completed successfully!", "success");
 
-            // Close the payment modal after success
             const paymentModal = bootstrap.Modal.getInstance(document.getElementById("paymentModal"));
             paymentModal.hide();
 
-            // Update booking status in UI (if applicable)
             const bookingStatusElement = document.getElementById(`status-${payload.bookingId}`);
             if (bookingStatusElement) {
                 bookingStatusElement.innerText = "PAID";
             }
 
-            // Optionally, redirect to a confirmation page or other UI actions
-            // window.location.href = "confirmationPage.html";
         },
         error: function (xhr, status, error) {
             console.error("Payment error:", xhr.responseText);

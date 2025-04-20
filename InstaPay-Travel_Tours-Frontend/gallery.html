@@ -111,10 +111,10 @@
             .then(response => response.json())
             .then(photos => {
                 const gallery = document.getElementById('gallery');
-                gallery.innerHTML = ''; // Clear existing gallery
+                gallery.innerHTML = '';
                 photos.forEach(photo => {
                     const imgElement = document.createElement('img');
-                    imgElement.src = photo.imageUrl; // Assuming imageUrl is in the response
+                    imgElement.src = photo.imageUrl;
                     imgElement.alt = photo.title;
                     gallery.appendChild(imgElement);
                 });
@@ -122,7 +122,6 @@
             .catch(error => console.error('Error loading gallery:', error));
     }
 
-    // Upload photo using AJAX
     document.getElementById('uploadForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -139,15 +138,14 @@
         })
             .then(response => response.json())
             .then(data => {
-                alert(data.msg); // Show success message
-                loadGallery(); // Reload gallery
+                alert(data.msg);
+                loadGallery();
             })
             .catch(error => {
                 alert('Error uploading photo: ' + error);
             });
     });
 
-    // Load the gallery on page load
     window.onload = function() {
         loadGallery();
     };

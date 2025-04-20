@@ -49,20 +49,17 @@
 
 <script>
     $(document).ready(function() {
-        // Show the loading message before making the request
         $('#loadingMessage').show();
 
-        // AJAX request to fetch payment data
         $.ajax({
-            url: 'http://localhost:8080/api/payments/view', // Correct API endpoint for fetching payments
+            url: 'http://localhost:8080/api/payments/view',
             method: 'GET',
             success: function (data) {
-                console.log(data);  // Check the structure of the response
+                console.log(data);
                 if (Array.isArray(data)) {
                     let tableBody = $('#paymentTable tbody');
-                    tableBody.empty();  // Clear any existing rows
+                    tableBody.empty();
 
-                    // Loop through the array and add rows to the table
                     data.forEach(function (payment) {
                         let row = `<tr>
         <td>${payment.id}</td>

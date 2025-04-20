@@ -41,7 +41,6 @@ public class IncomeController {
         }
     }
 
-    // Add this method for updating income
     @PutMapping("/updateIncome/{id}")
     public ResponseEntity<Income> updateIncome(@PathVariable("id") Long id, @RequestBody Income incomeDetails) {
         Income updatedIncome = incomeService.updateIncome(id, incomeDetails);

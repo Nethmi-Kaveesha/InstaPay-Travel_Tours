@@ -1,4 +1,4 @@
-package com.example.InstaPay_Travel_Tours.model;
+package com.example.InstaPay_Travel_Tours.entity;
 
 
 import jakarta.persistence.Entity;

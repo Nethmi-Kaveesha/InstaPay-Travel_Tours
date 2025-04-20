@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatbotCloseBtn = document.querySelector(".close-btn");
 
 
-    const API_KEY = "AIzaSyCxs07_m2WjA7TpNAps8XIIHBij8gpcrBo"; // Replace with your actual key
+    const API_KEY = "AIzaSyCxs07_m2WjA7TpNAps8XIIHBij8gpcrBo";
     const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
     const inputInitHeight = chatInput.scrollHeight;
     const createChatLi = (message, className) => {

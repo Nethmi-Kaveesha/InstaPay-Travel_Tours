@@ -29,5 +29,4 @@ public class BookingAdminViewDTO {
         this.total = total;
     }
 
-    // Getters and Setters ...
 }

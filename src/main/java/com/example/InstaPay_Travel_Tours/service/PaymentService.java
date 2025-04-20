@@ -30,7 +30,7 @@ public class PaymentService {
         Stripe.apiKey = stripeSecretKey;
 
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount((long) (amount * 100)) // Convert to cents
+                .setAmount((long) (amount * 100))
                 .setCurrency("usd")
                 .setReceiptEmail(email)
                 .build();
@@ -49,7 +49,7 @@ public class PaymentService {
         payment.setEmail(email);
         payment.setAmount(amount);
         payment.setStatus(status);
-        payment.setTour(tour); // Set the foreign key relationship
+        payment.setTour(tour);
         paymentRepository.save(payment);
     }
 
